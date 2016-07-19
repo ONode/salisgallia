@@ -1,26 +1,37 @@
 {
-  "name": "10-minute-dynamic-mobile-app",
+  "name": "Base",
   "version": "1.0.0",
-  "description": "In this demo I'm going to create a dynamic mobile application in 10 minutes <sup>give or take, more or less ;)</sup>",
-  "main": "index.js",
+  "main": "api/server/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "test": "node_modules/.bin/mocha tests/**",
+    "pretest": "jshint .",
     "services": "./node_modules/loopback-sdk-angular-cli/bin/lb-ng -u /api api/server/server.js app/www/lib/lb-services.js",
     "dev_services": "./node_modules/loopback-sdk-angular-cli/bin/lb-ng -u http://localhost:3000/api api/server/server.js app/www/lib/lb-services.js",
     "start": "npm run services; node api/server/server.js",
     "dev": "npm run dev_services; nodemon api/server/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/beeman/10-minute-dynamic-mobile-app.git"
-  },
-  "author": "Bram Borggreve <borggreve@gmail.com> (http://github.com/beeman)",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/beeman/10-minute-dynamic-mobile-app/issues"
-  },
-  "homepage": "https://github.com/beeman/10-minute-dynamic-mobile-app",
+  "keywords": [
+    "base",
+    "project",
+    "node",
+    "express",
+    "structure"
+  ],
+  "author": "Terlici Ltd.",
+  "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "jade": "^1.11.0",
+    "aws-sdk": "^2.4.7",
+    "multer-s3": "^2.3.2",
+    "mapslice": "^1.2.0",
+    "multer": "^1.1.0",
+    "gm": "^1.22.0",
+    "imagemagick": "https://github.com/rsms/node-imagemagick.git",
+
+
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "errorhandler": "^1.1.1",
@@ -31,10 +42,13 @@
     "loopback-sdk-angular-cli": "^1.1.4",
     "serve-favicon": "^2.0.1"
   },
+  "devDependencies": {
+    "mocha": "^2.2.4",
+    "should": "^6.0.1",
+    "jshint": "^2.5.6"
+  },
   "optionalDependencies": {
     "loopback-explorer": "^1.1.0"
   },
-  "devDependencies": {
-    "jshint": "^2.5.6"
-  }
+  "description": "api"
 }

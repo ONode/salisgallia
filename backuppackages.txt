@@ -1,0 +1,1 @@
+  // "imgresizer-node": "https://github.com/ONode/imgresizer-node.git"

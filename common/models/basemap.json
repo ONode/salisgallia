@@ -1,0 +1,67 @@
+{
+  "name": "Basemap",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "total_zoom_levels": {
+      "type": [
+        {
+          "scale": "number",
+          "width": "number",
+          "height": "number",
+          "x": "number",
+          "y": "number",
+          "size": "number",
+          "level": "number",
+          "tiles": [
+            {
+              "x": "number",
+              "y": "number",
+              "tile": {
+                "x": "number",
+                "y": "number"
+              }
+            }
+          ]
+        }
+      ],
+      "required": true
+    },
+    "folder_base_name": {
+      "type": "string",
+      "required": true
+    },
+    "secret_base_map_file": {
+      "type": "string",
+      "required": true
+    },
+    "rename_file": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "number",
+      "required": true
+    },
+    "owner": {
+      "type": "string"
+    },
+    "image_type": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "category": {
+      "type": "belongsTo",
+      "model": "Category",
+      "foreignKey": "categoryId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}
