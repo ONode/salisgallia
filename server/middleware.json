@@ -1,16 +1,10 @@
 {
   "initial:before": {
-    "loopback#favicon": {}
+    "loopback#favicon": {},
+    "loopback#compress": {}
   },
   "initial": {
-    "compression": {},
-    "cors": {
-      "params": {
-        "origin": true,
-        "credentials": true,
-        "maxAge": 86400
-      }
-    }
+    "compression": {}
   },
   "session": {
   },
@@ -19,16 +13,22 @@
   "parse": {
   },
   "routes": {
+    "loopback#rest": {
+      "paths": [
+        "${restApiRoot}"
+      ]
+    }
   },
-  "files":  {
+  "files": {
     "loopback#static": {
-      "params": "$!../../app/www"
+      "params": "$!../client"
     }
   },
   "final": {
     "loopback#urlNotFound": {}
   },
   "final:after": {
+    "./middleware/custom-error": {},
     "errorhandler": {}
   }
 }

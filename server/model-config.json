@@ -26,12 +26,24 @@
     "dataSource": "db",
     "public": false
   },
-  "Category": {
-    "dataSource": "db",
+  "CoffeeShop": {
+    "dataSource": "mysqlDs",
     "public": true
   },
-  "Product": {
-    "dataSource": "db",
+  "Basemap": {
+    "dataSource": "mysqlDs",
+    "public": true
+  },
+  "Review": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Reviewer": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "container": {
+    "dataSource": "storage",
     "public": true
   }
 }

@@ -45,6 +45,7 @@ tmp
 *.xml
 .DS_Store
 .idea
+*.idea
 .project
 .strong-pm
 coverage

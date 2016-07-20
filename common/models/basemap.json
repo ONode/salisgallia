@@ -56,10 +56,10 @@
   },
   "validations": [],
   "relations": {
-    "category": {
+    "reviewer": {
       "type": "belongsTo",
-      "model": "Category",
-      "foreignKey": "categoryId"
+      "model": "Reviewer",
+      "foreignKey": "publisherId"
     }
   },
   "acls": [],
