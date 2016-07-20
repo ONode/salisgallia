@@ -5,7 +5,9 @@
   "scripts": {
     "pretest": "jshint .",
     "test": "mocha -R spec test",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+	  "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+  "heroku-postbuild": "echo This runs afterwards."
   },
   "dependencies": {
     "async": "^0.9.0",
