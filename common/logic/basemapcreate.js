@@ -143,8 +143,19 @@ const wrapping_process = function (basemap, req, res, next_step) {
     limits: {fileSize: 104857600, files: 1}
   }).single(upload_file_field);
 
+  // console.log(req);
+
+//  var tmp_path = req.files["art"].path;
+  //var isArtDefined = !_.isNull(req.files["art"]);
+  // var isArtDefined = !_.isNull(req.body["art"]);
+  //console.log(req.files);
+
+  // if (req.files && isArtDefined) {
+
   uploadStarter(req, res, function (err) {
     if (err) {
+
+      console.log(logTag, "error from upload", +err.message);
       output.outResErro(err.message, res);
       return;
     }
@@ -175,13 +186,18 @@ const wrapping_process = function (basemap, req, res, next_step) {
     removefileshelper(upload_helper_folder);
     im.resize(options, function (err) {
       if (err) {
-        console.log(logTag, 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image');
+        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image'
+        console.log(logTag, notworking);
         // throw err;
-      }
+        output.outResErro(notworking, res);
+        return;
+      } else
       // res.end("Image resize complete");
-      mapSlicer.start();
+        mapSlicer.start();
     });
   });
+
+
 };
 var removefileshelper = function (uploadsDir) {
   fs.readdir(uploadsDir, function (err, files) {
