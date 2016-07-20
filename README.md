@@ -1,15 +1,6 @@
 #loopback-getting-started-intermediate
-https://github.com/strongloop/loopback-example
-
-Please see LoopBack [Getting started part II](http://docs.strongloop.com/display/LB/Getting+started+part+II) for the tutorial that walks you through creating this application.
-
-```
-$ git clone https://github.com/strongloop/loopback-getting-started-intermediate.git
-$ cd loopback-getting-started-intermediate
-$ npm install
-$ node .
-```
+https://github.com/ONode/salisgallia
 
 ---
 
-[More LoopBack examples](https://github.com/strongloop/loopback-example)
+[The gallery k21 server](https://github.com/ONode/salisgallia)
