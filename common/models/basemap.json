@@ -44,7 +44,13 @@
       "required": true
     },
     "price": {
+      "default": 0,
       "type": "number",
+      "required": true
+    },
+    "currency": {
+      "default": "HKD",
+      "type": "string",
       "required": true
     },
     "owner": {
@@ -56,9 +62,9 @@
   },
   "validations": [],
   "relations": {
-    "reviewer": {
+    "artist": {
       "type": "belongsTo",
-      "model": "Reviewer",
+      "model": "Artist",
       "foreignKey": "publisherId"
     }
   },

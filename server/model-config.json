@@ -30,15 +30,19 @@
     "dataSource": "mysqlDs",
     "public": true
   },
-  "Basemap": {
-    "dataSource": "mysqlDs",
-    "public": true
-  },
   "Review": {
     "dataSource": "mongoDs",
     "public": true
   },
   "Reviewer": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Artist": {
+    "dataSource": "mongoDs",
+    "public": true
+  },
+  "Basemap": {
     "dataSource": "mongoDs",
     "public": true
   },

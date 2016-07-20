@@ -12,19 +12,20 @@ const
   async = require('async'),
   im = require('imagemagick'),
   rimraf = require('gulp-rimraf'),
-  fs = require('fs')
+  fs = require('fs'),
+  save_data = require('./addmapbaseinfo.js')
   ;
 /**
  * setup system configurations
  * @type {string}
  */
-const logTag = 'file info',
+const logTag = '> file info',
   __parentDir = path.dirname(module.main),
   upload_hash_file_secret = 'catherineboobsarebig69',
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
-  base_folder = __parentDir + "/storage/tmp/storage_f/"
-
+  base_folder = __parentDir + "/storage/tmp/storage_f/",
+  public_folder_path = "/static/storage_f/"
   ;
 
 const fileFilterFn = function fileFilter(req, file, cb) {
@@ -63,7 +64,7 @@ const basic_config = {
   // Skips all the empty tiles
   zoomMin: 3
 };
-const wrapping_process = function (basemap, req, res) {
+const wrapping_process = function (basemap, req, res, next_step) {
 //res.writeHead(200);
 //http://www.scantips.com/basics1d.html
   var is_done = false;
@@ -80,7 +81,7 @@ const wrapping_process = function (basemap, req, res) {
     destination: function (req, file, cb) {
       console.log(logTag, "rename destination");
       O.folder_base_name = 'basemap-' + Date.now();
-      O.folder_path = "/storage_f/" + O.folder_base_name + "/";
+      O.folder_path = public_folder_path + O.folder_base_name + "/";
       mkp(base_folder + O.folder_base_name, function (err) {
         if (err) console.error(err);
         else console.log('create folder that is not existed!')
@@ -110,8 +111,9 @@ const wrapping_process = function (basemap, req, res) {
 
       mapSlicer.on("error", function (err) {
         console.error(err);
-        output.outResErro(err.message, res);
+        // output.outResErro(err.message, res);
         is_done = true;
+        next_step(err, res);
       });
 
       mapSlicer.on("progress", function (progress, total, current, file) {
@@ -123,7 +125,8 @@ const wrapping_process = function (basemap, req, res) {
       mapSlicer.on("end", function () {
         console.info("Finished processing slices.");
         if (!is_done) {
-          output.outResSuccess(O, res);
+          // output.outResSuccess(O, res);
+          next_step(O, res);
         }
       });
       mapSlicer.on("levels", function (levels_found) {
@@ -158,8 +161,11 @@ const wrapping_process = function (basemap, req, res) {
       quality: 0.9,
       format: 'jpg'
     };
+    console.log("=======create resize input==========");
+    console.log("====================================");
     console.log(logTag, a);
     console.log(logTag, b);
+    console.log("====================================");
     var options = {
       width: 1000,
       height: 400,
@@ -203,5 +209,13 @@ var removefileshelper = function (uploadsDir) {
 //https://github.com/martinheidegger/mapslice
 //https://www.npmjs.com/package/multer
 module.exports = function (loopbackBasemap, req, res) {
-  wrapping_process(loopbackBasemap, req, res);
+  wrapping_process(loopbackBasemap, req, res, function (result, res) {
+    if (_.isError(result)) {
+      output.outResErro(result.message, res);
+    } else {
+      save_data(loopbackBasemap, result, function () {
+        output.outResSuccess(result, res);
+      });
+    }
+  });
 };

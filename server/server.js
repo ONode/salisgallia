@@ -20,7 +20,7 @@ app.start = function () {
     }
   });
 };
-app.use(require(".././common/routerisland/express_status"));
+//app.use(require(".././common/routerisland/express_status"));
 //app.use(require(".././common/routerisland/common_upload_slice"));
 /*
  Using the technique shown above, the application will still run all the boot scripts in /server/boot in alphabetical order (unless you move or delete them) after your custom-ordered boot scripts specified in bootScripts.
