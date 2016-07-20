@@ -27,23 +27,23 @@
     "public": false
   },
   "CoffeeShop": {
-    "dataSource": "mysqlDs",
+    "dataSource": "rocket_us_east",
     "public": true
   },
   "Review": {
-    "dataSource": "mongoDs",
+    "dataSource": "rocket_us_east",
     "public": true
   },
   "Reviewer": {
-    "dataSource": "mongoDs",
+    "dataSource": "rocket_us_east",
     "public": true
   },
   "Artist": {
-    "dataSource": "mongoDs",
+    "dataSource": "rocket_us_east",
     "public": true
   },
   "Basemap": {
-    "dataSource": "mongoDs",
+    "dataSource": "rocket_us_east",
     "public": true
   },
   "container": {

@@ -8,6 +8,7 @@ var async = require('async');
 module.exports = function(app) {
   // data sources
   var mongoDs = app.dataSources.mongoDs;
+  var rocket = app.dataSources.rocket_us_east;
   var mysqlDs = app.dataSources.mysqlDs;
 
   // create all models
@@ -25,7 +26,7 @@ module.exports = function(app) {
 
   // create reviewers
   function createReviewers(cb) {
-    mongoDs.automigrate('Reviewer', function(err) {
+    rocket.automigrate('Reviewer', function(err) {
       if (err) return cb(err);
 
       app.models.Reviewer.create([
@@ -38,7 +39,7 @@ module.exports = function(app) {
 
   // create coffee shops
   function createCoffeeShops(cb) {
-    mysqlDs.automigrate('CoffeeShop', function(err) {
+    rocket.automigrate('CoffeeShop', function(err) {
       if (err) return cb(err);
 
       app.models.CoffeeShop.create([
@@ -51,7 +52,7 @@ module.exports = function(app) {
 
   // create reviews
   function createReviews(reviewers, coffeeShops, cb) {
-    mongoDs.automigrate('Review', function(err) {
+    rocket.automigrate('Review', function(err) {
       if (err) return cb(err);
 
       var DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;

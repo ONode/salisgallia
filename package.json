@@ -17,6 +17,7 @@
     "loopback-connector-mongodb": "^1.5.0",
     "loopback-connector-mysql": "^1.4.7",
     "loopback-component-storage": "^1.5.0",
+    "loopback-connector-redis": "https://github.com/strongloop/loopback-connector-redis",
     "loopback-datasource-juggler": "^2.7.0",
     "serve-favicon": "^2.0.1",
     "body-parser": "^1.15.2",
