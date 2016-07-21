@@ -6,14 +6,13 @@ const
   multer = require('multer'),
   mapSliceArc = require('mapslice'),
   output = require('.././util/outputjson.js'),
+  rmdir = require('.././util/rmdir.js'),
   path = require('path'),
   _ = require('lodash'),
   mkp = require('mkdirp'),
   async = require('async'),
   im = require('imagemagick'),
-  rimraf = require('gulp-rimraf'),
-  fs = require('fs'),
-  save_data = require('./addmapbaseinfo.js')
+  save_data = require('./basemapinfo.js')
   ;
 /**
  * setup system configurations
@@ -71,7 +70,9 @@ const wrapping_process = function (basemap, req, res, next_step) {
 
   var mapSlicer;
   var O = {
-    total_zoom_levels: 0,
+    carry_id: "",
+    complete: -1,
+    total_zoom_levels: [],
     folder_base_name: "",
     secret_base_map_file: "",
     rename_file: "",
@@ -117,9 +118,11 @@ const wrapping_process = function (basemap, req, res, next_step) {
       });
 
       mapSlicer.on("progress", function (progress, total, current, file) {
-        var percent = Math.round(progress * 100) + "%";
+        var percentNum = Math.round(progress * 100);
+        var percent = percentNum + "%";
         console.info("Progress: " + percent);
-        //res.write(percent);
+        
+        save_data.progress(basemap, percentNum, O.carry_id, null);
       });
 
       mapSlicer.on("end", function () {
@@ -144,23 +147,18 @@ const wrapping_process = function (basemap, req, res, next_step) {
   }).single(upload_file_field);
 
   // console.log(req);
-
-//  var tmp_path = req.files["art"].path;
-  //var isArtDefined = !_.isNull(req.files["art"]);
+  // var tmp_path = req.files["art"].path;
+  // var isArtDefined = !_.isNull(req.files["art"]);
   // var isArtDefined = !_.isNull(req.body["art"]);
-  //console.log(req.files);
-
+  // console.log(req.files);
   // if (req.files && isArtDefined) {
 
   uploadStarter(req, res, function (err) {
     if (err) {
-
       console.log(logTag, "error from upload", +err.message);
       output.outResErro(err.message, res);
       return;
     }
-    // mapSlicer.start();
-
     //   var storage = "127.0.0.5:3000/";
     var a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
     var b = base_folder + O.folder_base_name + "/" + O.rename_file;
@@ -183,41 +181,22 @@ const wrapping_process = function (basemap, req, res, next_step) {
       srcPath: a,
       dstPath: b
     };
-    removefileshelper(upload_helper_folder);
+    //rmdir(upload_helper_folder);
     im.resize(options, function (err) {
       if (err) {
-        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image'
+        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
-        // throw err;
         output.outResErro(notworking, res);
         return;
-      } else
-      // res.end("Image resize complete");
-        mapSlicer.start();
-    });
-  });
-
-
-};
-var removefileshelper = function (uploadsDir) {
-  fs.readdir(uploadsDir, function (err, files) {
-    files.forEach(function (file, index) {
-      fs.stat(path.join(uploadsDir, file), function (err, stat) {
-        var endTime, now;
-        if (err) {
-          return console.error(err);
-        }
-        now = new Date().getTime();
-        endTime = new Date(stat.ctime).getTime() + 3600000;
-        if (now > endTime) {
-          return rimraf(path.join(uploadsDir, file), function (err) {
-            if (err) {
-              return console.error(err);
-            }
-            console.log('successfully deleted');
-          });
-        }
-      });
+      } else {
+        save_data.start(basemap, O, function (id) {
+          O.carry_id = id;
+          output.outResSuccess(O, res);
+          mapSlicer.start();
+        }, function (err) {
+          output.outResErro(err.message, res);
+        });
+      }
     });
   });
 };
@@ -229,8 +208,12 @@ module.exports = function (loopbackBasemap, req, res) {
     if (_.isError(result)) {
       output.outResErro(result.message, res);
     } else {
-      save_data(loopbackBasemap, result, function () {
-        output.outResSuccess(result, res);
+      var _id = result.carry_id;
+      delete result.carry_id;
+      delete result.complete;
+      save_data.complete(loopbackBasemap, _id, result, function () {
+        //output.outResSuccess(result, res);
+        console.log(logTag, "save and update complete status");
       });
     }
   });

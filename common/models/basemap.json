@@ -7,6 +7,10 @@
       "type": "string",
       "required": true
     },
+    "complete": {
+      "type": "number",
+      "required": true
+    },
     "total_zoom_levels": {
       "type": [
         {
@@ -29,7 +33,7 @@
           ]
         }
       ],
-      "required": true
+      "required": false
     },
     "folder_base_name": {
       "type": "string",

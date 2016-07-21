@@ -5,6 +5,7 @@
 const
 
   createbasemap = require("../../common/logic/basemapcreate"),
+  clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   express = require('express')
 
@@ -28,4 +29,11 @@ module.exports = function (app) {
 
   app.use('/static', express.static(__parentDir + "/storage/tmp/"));
   console.log('> server static file path is created and started from http://{domain}/static');
+
+  app.use('/removeallxxx', function (req, res) {
+    var Basemap_model = app.models.Basemap;
+    clearall(Basemap_model, req, res);
+  });
+  console.log('> remove all uploaded tmp files with http://{domain}/removeallxxx');
+
 };

@@ -6,8 +6,8 @@
     "pretest": "jshint .",
     "test": "mocha -R spec test",
     "start": "node server/server.js",
-	  "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
-  "heroku-postbuild": "echo This runs afterwards."
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+    "heroku-postbuild": "echo This runs afterwards."
   },
   "dependencies": {
     "async": "^0.9.0",
@@ -24,6 +24,7 @@
     "strong-wait-till-listening": "https://github.com/strongloop/strong-wait-till-listening.git",
     "serve-favicon": "^2.0.1",
     "body-parser": "^1.15.2",
+    "imagemagick": "https://github.com/rsms/node-imagemagick.git",
     "express": "^4.14.0",
     "jade": "^1.11.0",
     "aws-sdk": "^2.4.7",
@@ -32,7 +33,8 @@
     "multer": "^1.1.0",
     "gulp-rimraf": "^0.2.0",
     "gm": "^1.22.0",
-    "imagemagick": "https://github.com/rsms/node-imagemagick.git"
+    "fs-extra": "^0.30.0",
+    "gulp": "^3.9.1"
   },
   "devDependencies": {
     "jshint": "^2.5.6",
