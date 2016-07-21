@@ -46,5 +46,5 @@ node_modules
 coverage
 node_modules
 npm-debug.log
-\storage\tmp\storage_f\**
+\storage\tmp\storage_f\**\*.jpg
 \storage\tmp\tmpsgi\**
