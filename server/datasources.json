@@ -33,11 +33,5 @@
   "mlabheroku": {
     "connector": "mongodb",
     "url": "mongodb://usergraceg:cf73425a9b663428e7cf734XX39@ds023455.mlab.com:23455/heroku_dk71d7jj"
-  },
-  "storage": {
-    "name": "storage",
-    "connector": "loopback-component-storage",
-    "provider": "filesystem",
-    "root": "./storage"
   }
 }
