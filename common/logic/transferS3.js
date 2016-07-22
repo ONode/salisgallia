@@ -23,8 +23,8 @@ const
 const
   file_format = "/{z}/t_{y}_{x}.jpg",
   access = {
-    accessKeyId: "AKIAJPZMGVFA6BSGJGSQ",
-    secretAccessKey: "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"
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
   };
 
 
