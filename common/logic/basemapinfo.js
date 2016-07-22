@@ -7,10 +7,10 @@ module.exports.start = function (mapModel, result_object, next, nextError) {
   var saveClip = new mapModel(result_object);
   saveClip.save(function (err, doc) {
     if (err) {
-      console.log(logTag, "new basemap error", err);
+      console.log(logTag, "base map error", err);
       nextError(err);
     } else {
-      console.log(logTag, "new basemap success", doc.id);
+      console.log(logTag, "base map success", doc.id);
       next(doc.id);
     }
   });
@@ -27,9 +27,9 @@ module.exports.complete_once_off = function (mapModel, result_object, next) {
   var saveClip = new mapModel(result_object);
   saveClip.save(function (err) {
     if (err) {
-      console.log(logTag, "new basemap error", err);
+      console.log(logTag, "base map error", err);
     } else {
-      console.log(logTag, "new basemap success", err);
+      console.log(logTag, "base map success", err);
     }
     next();
   });

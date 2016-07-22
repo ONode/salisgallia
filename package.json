@@ -10,7 +10,7 @@
     "heroku-postbuild": "echo This runs afterwards."
   },
   "dependencies": {
-    "async": "^0.9.0",
+    "async": "https://github.com/caolan/async.git",
     "compression": "https://github.com/expressjs/compression.git",
     "errorhandler": "^1.1.1",
     "loopback": "^2.29.1",
@@ -25,13 +25,15 @@
     "serve-favicon": "^2.0.1",
     "body-parser": "^1.15.2",
     "imagemagick": "https://github.com/rsms/node-imagemagick.git",
+    "aws-sdk": "https://github.com/aws/aws-sdk-js.git",
+    "s3": "https://github.com/andrewrk/node-s3-client.git",
     "express": "^4.14.0",
     "jade": "^1.11.0",
-    "aws-sdk": "^2.4.7",
     "multer-s3": "^2.3.2",
     "mapslice": "^1.2.0",
     "multer": "^1.1.0",
     "gulp-rimraf": "^0.2.0",
+    "gulp-async-func-runner": "https://github.com/Cellarise/gulp-async-func-runner.git",
     "gm": "^1.22.0",
     "fs-extra": "^0.30.0",
     "gulp": "^3.9.1"

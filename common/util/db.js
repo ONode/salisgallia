@@ -16,12 +16,19 @@ var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, n
 };
 var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
   persistentModel.findById(_id_, function (err, r) {
-    console.log(update_object);
     r.updateAttributes(update_object, function (err, r) {
       if (_.isFunction(next)) {
         next();
       }
     })
+  });
+};
+var getInstanceById = function (persistentModel, _id, next, errnext) {
+  persistentModel.findById(_id, function (err, r) {
+    if (_.isError(next)) {
+      return errnext(err);
+    }
+    next(r);
   });
 };
 var removeAll = function (persistentModel, where, callback) {
@@ -30,3 +37,4 @@ var removeAll = function (persistentModel, where, callback) {
 module.exports.updateByIdAndIncrease = updateByIdAndIncrease;
 module.exports.updateByIdUpdate = updateByIdUpdate;
 module.exports.removeAll = removeAll;
+module.exports.getInstanceById = getInstanceById;

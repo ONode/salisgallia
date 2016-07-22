@@ -2,29 +2,36 @@
  * Created by zJJ on 7/18/2016.
  */
 const
+
   crypto = require('crypto'),
+  numCPUs = require('os').cpus.length,
+  path = require('path'),
   multer = require('multer'),
   mapSliceArc = require('mapslice'),
   output = require('.././util/outputjson.js'),
   rmdir = require('.././util/rmdir.js'),
-  path = require('path'),
   _ = require('lodash'),
   mkp = require('mkdirp'),
   async = require('async'),
   im = require('imagemagick'),
+  s3thread = require('./transferS3.js'),
   save_data = require('./basemapinfo.js')
+
   ;
 /**
  * setup system configurations
  * @type {string}
  */
-const logTag = '> file info',
+const
+
+  logTag = '> file info',
   __parentDir = path.dirname(module.main),
   upload_hash_file_secret = 'catherineboobsarebig69',
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
   public_folder_path = "/static/storage_f/"
+
   ;
 
 const fileFilterFn = function fileFilter(req, file, cb) {
@@ -45,6 +52,7 @@ const fileFilterFn = function fileFilter(req, file, cb) {
     cb(new Error(str));
   }
 };
+
 const basic_config = {
   tileSize: 256,
   // (default: 256) Tile-size to be used
@@ -55,7 +63,7 @@ const basic_config = {
   // tmp: "./tmp",
   tmp: upload_helper_folder,
   // (default: '.tmp') Temporary directory to be used to store helper files
-  parallelLimit: 4,
+  parallelLimit: 5,
   // (default: 5) Maximum parallel tasks to be run at the same time (warning: processes can consume a lot of memory!)
   minWidth: 900,
   // See explanation about Size detection below
@@ -67,7 +75,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
 //res.writeHead(200);
 //http://www.scantips.com/basics1d.html
   var is_done = false;
-
+  console.log(logTag, "cpu: " + numCPUs);
   var mapSlicer;
   var O = {
     carry_id: "",
@@ -120,13 +128,11 @@ const wrapping_process = function (basemap, req, res, next_step) {
       mapSlicer.on("progress", function (progress, total, current, file) {
         var percentNum = Math.round(progress * 100);
         var percent = percentNum + "%";
-        console.info("Progress: " + percent);
-        
+        //console.info("Progress: " + percent);
         save_data.progress(basemap, percentNum, O.carry_id, null);
       });
 
       mapSlicer.on("end", function () {
-        console.info("Finished processing slices.");
         if (!is_done) {
           // output.outResSuccess(O, res);
           next_step(O, res);
@@ -211,9 +217,12 @@ module.exports = function (loopbackBasemap, req, res) {
       var _id = result.carry_id;
       delete result.carry_id;
       delete result.complete;
+      console.info(logTag, "Finished processing slices. start saving to DB.");
       save_data.complete(loopbackBasemap, _id, result, function () {
         //output.outResSuccess(result, res);
         console.log(logTag, "save and update complete status");
+        console.log(logTag, "S3 transfer");
+        s3thread.transferSyncBaseMapS3(loopbackBasemap, _id, result);
       });
     }
   });
