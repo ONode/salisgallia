@@ -71,7 +71,7 @@ const basic_config = {
   // See explanation about Size detection below
   skipEmptyTiles: true,
   // Skips all the empty tiles
-  zoomMin: 3
+  zoomMin: 1
 };
 const wrapping_process = function (basemap, req, res, next_step) {
 //res.writeHead(200);
