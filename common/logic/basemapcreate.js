@@ -13,6 +13,7 @@ const
   _ = require('lodash'),
   mkp = require('mkdirp'),
   async = require('async'),
+  fse = require('fs-extra'),
   im = require('imagemagick'),
   s3thread = require('./transferS3.js'),
   save_data = require('./basemapinfo.js')
@@ -30,6 +31,7 @@ const
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
+  base_folder_process = __parentDir + "/storage/tmp/tmpsgi/",
   public_folder_path = "/static/storage_f/"
 
   ;
@@ -86,17 +88,30 @@ const wrapping_process = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
+
   var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      console.log(logTag, "rename destination");
+
+      console.log(logTag, '==================================');
+      console.log(logTag, 'check folder structure and define upload folder structures');
+      console.log(logTag, '==================================');
+      
       O.folder_base_name = 'basemap-' + Date.now();
       O.folder_path = public_folder_path + O.folder_base_name + "/";
-      mkp(base_folder + O.folder_base_name, function (err) {
-        if (err) console.error(err);
-        else console.log('create folder that is not existed!')
+      var folder_tmp = base_folder + O.folder_base_name;
+      fse.mkdirs(folder_tmp, function (err) {
+        if (err) {
+          return console.error(err);
+        } else {
+          fse.mkdirsSync(base_folder_process);
+          console.log(logTag, '==================================');
+          console.log(logTag, 'create folder that is not existed!');
+          console.log(logTag, folder_tmp);
+          console.log(logTag, base_folder_process);
+          console.log(logTag, '==================================');
+          cb(null, folder_tmp);
+        }
       });
-
-      cb(null, base_folder + O.folder_base_name);
     },
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
