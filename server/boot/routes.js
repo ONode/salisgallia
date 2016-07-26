@@ -34,6 +34,11 @@ module.exports = function (app) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
+
+  app.use('/first_install', function (req, res) {
+    var Basemap_model = app.models.Basemap;
+    clearall(Basemap_model, req, res);
+  });
   console.log('> remove all uploaded tmp files with http://{domain}/removeallxxx');
 
 };

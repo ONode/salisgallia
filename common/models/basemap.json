@@ -52,6 +52,14 @@
       "type": "number",
       "required": true
     },
+    "baseprice": {
+      "default": 0,
+      "type": "number",
+      "required": true
+    },
+    "estprice": {
+      "type": "string"
+    },
     "currency": {
       "default": "HKD",
       "type": "string",
@@ -62,6 +70,25 @@
     },
     "image_type": {
       "type": "string"
+    },
+    "image_meta": {
+      "type": {
+        "shape": "number",
+        "path": "array",
+        "tag": "string",
+        "city": "string",
+        "country": "string",
+        "era_native": "string",
+        "article_name_native": "string",
+        "dimension": {
+          "type": {
+            "x": "number",
+            "y": "number"
+          }
+        },
+        "measure_unit": "string",
+        "material": "number"
+      }
     }
   },
   "validations": [],
