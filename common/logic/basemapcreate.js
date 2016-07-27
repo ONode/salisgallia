@@ -65,7 +65,7 @@ const basic_config = {
   // tmp: "./tmp",
   tmp: upload_helper_folder,
   // (default: '.tmp') Temporary directory to be used to store helper files
-  parallelLimit: 5,
+  parallelLimit: 1,
   // (default: 5) Maximum parallel tasks to be run at the same time (warning: processes can consume a lot of memory!)
   minWidth: 900,
   // See explanation about Size detection below
@@ -95,7 +95,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
       console.log(logTag, '==================================');
       console.log(logTag, 'check folder structure and define upload folder structures');
       console.log(logTag, '==================================');
-      
+
       O.folder_base_name = 'basemap-' + Date.now();
       O.folder_path = public_folder_path + O.folder_base_name + "/";
       var folder_tmp = base_folder + O.folder_base_name;
@@ -155,6 +155,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
       });
       mapSlicer.on("levels", function (levels_found) {
         O.total_zoom_levels = levels_found;
+        console.info("Levels calculated: ", levels_found.length);
       });
       cb(null, O.secret_base_map_file);
     }

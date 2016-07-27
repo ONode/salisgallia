@@ -23,9 +23,13 @@ const
 const
   file_format = "/{z}/t_{y}_{x}.jpg",
   access = {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY
-  };
+    accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || ""
+  },
+  remote_base_path = "http://dobsh22.s3.amazonaws.com/basemap/"
+  remote_base_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/"
+ 
+  ;
 
 
 var getLocalPath = function (the_rest) {
@@ -36,10 +40,14 @@ var getRemotePath = function (the_rest) {
   return "basemap/" + the_rest;
 };
 var getFolderPathS3 = function (path) {
-  return "http://xboxdoc.s3.amazonaws.com/basemap/" + path;
+  return remote_base_path + path;
 };
 var worker_transfer = function (instance_model, _id, bns) {
   console.log(logTag, "before process: ", bns);
+  if (_.isEmpty(access.accessKeyId) || _.isEmpty(access.secretAccessKey)) {
+    console.log(logTag, "S3 process access is not found. Process stop here");
+    return;
+  }
   var obfiles = [];
   //  AWS.config.region
   if (_.isArray(bns.total_zoom_levels)) {
