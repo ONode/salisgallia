@@ -21,6 +21,7 @@
     "loopback-component-storage": "https://github.com/strongloop/loopback-component-storage.git",
     "loopback-connector-redis": "https://github.com/strongloop/loopback-connector-redis.git",
     "loopback-datasource-juggler": "https://github.com/strongloop/loopback-datasource-juggler.git",
+    "loopback-filters": "https://github.com/strongloop/loopback-filters.git",
     "strong-wait-till-listening": "https://github.com/strongloop/strong-wait-till-listening.git",
     "serve-favicon": "^2.0.1",
     "body-parser": "^1.15.2",
