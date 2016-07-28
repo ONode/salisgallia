@@ -26,12 +26,9 @@ const
     accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || ""
   },
-  remote_base_path = "http://dobsh22.s3.amazonaws.com/basemap/"
+  remote_base_path = "http://dobsh22.s3.amazonaws.com/basemap/",
   remote_base_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/"
- 
   ;
-
-
 var getLocalPath = function (the_rest) {
   return path.dirname(module.main) + "/storage/tmp/storage_f/" + the_rest;
 };
@@ -47,6 +44,8 @@ var worker_transfer = function (instance_model, _id, bns) {
   if (_.isEmpty(access.accessKeyId) || _.isEmpty(access.secretAccessKey)) {
     console.log(logTag, "S3 process access is not found. Process stop here");
     return;
+  } else {
+    console.log(logTag, access);
   }
   var obfiles = [];
   //  AWS.config.region
