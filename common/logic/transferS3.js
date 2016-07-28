@@ -26,6 +26,8 @@ const
     accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || ""
   },
+  bucket_active = "dobsh22",
+  bucket_inactive = "xboxdoc",
   remote_base_path = "http://dobsh22.s3.amazonaws.com/basemap/",
   remote_base_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/"
   ;
@@ -37,7 +39,9 @@ var getRemotePath = function (the_rest) {
   return "basemap/" + the_rest;
 };
 var getFolderPathS3 = function (path) {
-  return remote_base_path + path;
+  var f = remote_base_path + path;
+  console.log(logTag, "check path", f);
+  return f;
 };
 var worker_transfer = function (instance_model, _id, bns) {
   console.log(logTag, "before process: ", bns);
@@ -115,7 +119,7 @@ var set_aws_worker = function (path_key) {
   const config = {
     localFile: getLocalPath(path_key),
     s3Params: {
-      Bucket: "xboxdoc",
+      Bucket: bucket_active,
       Key: getRemotePath(path_key),
       ContentType: 'image/jpeg',
       ACL: 'public-read'
