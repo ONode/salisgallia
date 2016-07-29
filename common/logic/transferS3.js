@@ -13,6 +13,7 @@ const
   _ = require('lodash'),
   outputResolve = require("mapslice/lib/util/outputResolve"),
   fse = require('fs-extra'),
+  save_data = require('./basemapinfo.js'),
   s3 = require('s3'),
   cluster = require('cluster'),
   numCPUs = require('os').cpus.length,
@@ -77,8 +78,11 @@ var worker_transfer = function (instance_model, _id, bns) {
      */
     console.log(logTag, "CPU found:" + numCPUs);
     triggerS3(obfiles, 0, function () {
+      //When all the S3 files are uploaded.
+      console.log(logTag, "trigger database update.");
       db_worker.updateByIdUpdate(instance_model, _id, {
-        "folder_path": getFolderPathS3(bns.folder_base_name)
+        "folder_path": getFolderPathS3(bns.folder_base_name),
+        "complete": 100
       }, null);
     });
   } else {

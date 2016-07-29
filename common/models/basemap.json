@@ -5,7 +5,16 @@
   "properties": {
     "id": {
       "type": "string",
+      "id": true,
+      "generated": true,
       "required": true
+    },
+    "fast_id": {
+      "type": "number",
+      "generated": true,
+      "id": true,
+      "required": false,
+      "doc": "This is the secondary ID used to identify a basemap"
     },
     "complete": {
       "type": "number",

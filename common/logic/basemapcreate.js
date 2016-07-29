@@ -144,7 +144,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
         var percentNum = Math.round(progress * 100);
         var percent = percentNum + "%";
         //console.info("Progress: " + percent);
-        save_data.progress(basemap, percentNum, O.carry_id, null);
+        save_data.progress(basemap, percentNum / 2, O.carry_id, null);
       });
 
       mapSlicer.on("end", function () {

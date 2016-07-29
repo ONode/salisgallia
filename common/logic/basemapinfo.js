@@ -34,3 +34,9 @@ module.exports.complete_once_off = function (mapModel, result_object, next) {
     next();
   });
 };
+/*
+module.exports.complete_processing_image = function (mapModel, map_id, next) {
+  db_worker.updateByIdUpdate(mapModel, map_id, {
+    "complete": 100
+  }, next);
+};*/
