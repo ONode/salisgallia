@@ -14,7 +14,7 @@ module.exports = function (app) {
       console.log('> filter object', ctx.args.filter);
       filter = ctx.args.filter.where;
     }
-    if (!ctx.res._headerSent) {
+    if (!ctx.res._headerSent&&ctx.args.filter.limit>0) {
      // console.log('> ctx.res._headerSentt', ctx.res._headerSent);
       this.count(filter, function (err, count) {
         ctx.res.set('X-Total-Count', count);
