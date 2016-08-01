@@ -8,22 +8,33 @@
     ]
   },
   "User": {
-    "dataSource": "db"
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": false
+  },
+  "user": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": true
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "CoffeeShop": {
@@ -35,10 +46,6 @@
     "public": true
   },
   "Reviewer": {
-    "dataSource": "rocket_us_east",
-    "public": true
-  },
-  "Artist": {
     "dataSource": "rocket_us_east",
     "public": true
   },

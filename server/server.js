@@ -2,12 +2,10 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 var loopback = require('loopback');
 var boot = require('loopback-boot');
-
 var app = module.exports = loopback();
-
+//app.use(loopback.token({model: app.models.accessToken}));
 app.start = function () {
   // start the web server
   return app.listen(function () {
@@ -33,16 +31,17 @@ app.buildError = function (err) {
   return err;
 };
 
-var bootOptions = {
-  "appRootDir": __dirname,
-  "bootScripts": [
-    "/full/path/to/boot/script/first.js",
-    "//full/path/to/boot/script/second.js"
-  ]
-};
-
+app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}));
+/*var bootOptions = {
+ "appRootDir": __dirname,
+ "bootScripts": [
+ "/full/path/to/boot/script/first.js",
+ "//full/path/to/boot/script/second.js"
+ ]
+ };*/
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
+
 boot(app, __dirname, function (err) {
   if (err) throw err;
   // start the server if `$ node server.js`

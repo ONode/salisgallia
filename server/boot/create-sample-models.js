@@ -12,7 +12,7 @@ module.exports = function(app) {
   var mysqlDs = app.dataSources.mysqlDs;
 
   // create all models
-  async.parallel({
+  /*async.parallel({
     reviewers: async.apply(createReviewers),
     coffeeShops: async.apply(createCoffeeShops)
   }, function(err, results) {
@@ -22,7 +22,7 @@ module.exports = function(app) {
       if (err) throw err;
       console.log('> models created successfully');
     });
-  });
+  });*/
 
   // create reviewers
   function createReviewers(cb) {

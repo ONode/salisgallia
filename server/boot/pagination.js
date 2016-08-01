@@ -8,8 +8,8 @@ module.exports = function (app) {
   remotes.after('*.find', function (ctx, next) {
     var filter;
 /*    var currentPage = Number(options.page) || 1;
-    var resultsPerPage = Number(options.perPage) || 8;
-    var maxPages = Number(options.maxPages) || 10;*/
+      var resultsPerPage = Number(options.perPage) || 8;
+      var maxPages = Number(options.maxPages) || 10;       */
     if (ctx.args && ctx.args.filter) {
       console.log('> filter object', ctx.args.filter);
       filter = ctx.args.filter.where;

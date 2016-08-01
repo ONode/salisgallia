@@ -1,0 +1,129 @@
+/**
+ * Created by zJJ on 7/20/2016.
+ */
+var speakeasy = require('speakeasy');
+var https = require('https');
+module.exports = function (User) {
+  
+
+  
+  User.requestCode = function (credentials, fn) {
+    this.findOne({where: {email: credentials.email}}, function (err, user) {
+      user.hasPassword(credentials.password, function (err, isMatch) {
+        if (isMatch) {
+          // Note that you'll want to change the secret to something a lot more secure!
+          var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
+          console.log('Two factor code for ' + credentials.email + ': ' + code);
+
+          // [TODO] hook into your favorite SMS API and send your user their code!
+
+          https.get(
+            'https://rest.nexmo.com' +
+            '/sms/json?api_key=[YOUR_KEY]&amp;api_secret=[YOUR_SECRET]' +
+            '&amp;from=[YOUR_NUMBER]&amp;to=[USER_MOBILE_#]' +
+            '&amp;text=Your+verification+code+is+' + code,
+            function () {
+              res.on('data', function (data) {
+                // all done! handle the data as you need to
+                fn(null, data);
+              });
+            }
+          ).on('error', function () {
+            // handle errors somewhow
+            console.log('Error in here from using nexmo');
+            var err = new Error('Sorry, nexmo is having issue from making the sms request!');
+            err.statusCode = 401;
+            err.code = 'LOGIN_FAILED';
+            return fn(err);
+          });
+          
+        } else {
+          var err = new Error('Sorry, but that email and password do not match!');
+          err.statusCode = 401;
+          err.code = 'LOGIN_FAILED';
+          return fn(err);
+        }
+      });
+    });
+  };
+
+  // Set up remote methods from model config schema json.
+  User.loginWithCode = function (credentials, fn) {
+    var err = new Error('Sorry, but that verification code does not work!');
+    err.statusCode = 401;
+    err.code = 'LOGIN_FAILED';
+
+    this.findOne({where: {email: credentials.email}}, function (err, user) {
+      // And don't forget to match this secret to the one in requestCode()
+      var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
+
+      if (code !== credentials.twofactor) {
+        return fn(err);
+      }
+
+      // Everything looks good, so now we can create the access token, which
+      // is used for all future API calls to authenticate the user.
+      user.createAccessToken(86400, function (err, token) {
+        if (err) return fn(err);
+        token.__data.user = user;
+        fn(err, token);
+      });
+    });
+  };
+
+
+
+  User.afterRemote('create', function(context, user, next) {
+    console.log('> user.afterRemote triggered');
+
+    /*var options = {
+      type: 'email',
+      to: user.email,
+      from: 'noreply@loopback.com',
+      subject: 'Thanks for registering.',
+      template: path.resolve(__dirname, '../../server/views/verify.ejs'),
+      redirect: '/verified',
+      user: user
+    };
+
+    user.verify(options, function(err, response) {
+      if (err) return next(err);
+
+      console.log('> verification email sent:', response);
+
+      context.res.render('response', {
+        title: 'Signed up successfully',
+        content: 'Please check your email and click on the verification link ' +
+        'before logging in.',
+        redirectTo: '/',
+        redirectToLinkText: 'Log in'
+      });
+    });*/
+  });
+
+  //send password reset link when requested
+  User.on('resetPasswordRequest', function(info) {
+    var url = 'http://' + config.host + ':' + config.port + '/reset-password';
+    var html = 'Click <a href="' + url + '?access_token=' +
+      info.accessToken.id + '">here</a> to reset your password';
+
+  /*  user.app.models.Email.send({
+      to: info.email,
+      from: info.email,
+      subject: 'Password reset',
+      html: html
+    }, function(err) {
+      if (err) return console.log('> error sending password reset email');
+      console.log('> sending password reset email to:', info.email);
+    });*/
+    
+  });
+  
+  
+  
+  
+  
+  
+  
+  
+};
