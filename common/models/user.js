@@ -4,9 +4,8 @@
 var speakeasy = require('speakeasy');
 var https = require('https');
 module.exports = function (User) {
-  
 
-  
+
   User.requestCode = function (credentials, fn) {
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       user.hasPassword(credentials.password, function (err, isMatch) {
@@ -36,7 +35,7 @@ module.exports = function (User) {
             err.code = 'LOGIN_FAILED';
             return fn(err);
           });
-          
+
         } else {
           var err = new Error('Sorry, but that email and password do not match!');
           err.statusCode = 401;
@@ -72,58 +71,52 @@ module.exports = function (User) {
   };
 
 
-
-  User.afterRemote('create', function(context, user, next) {
+  User.afterRemote('create', function (context, user, next) {
     console.log('> user.afterRemote triggered');
 
     /*var options = {
-      type: 'email',
-      to: user.email,
-      from: 'noreply@loopback.com',
-      subject: 'Thanks for registering.',
-      template: path.resolve(__dirname, '../../server/views/verify.ejs'),
-      redirect: '/verified',
-      user: user
-    };
+     type: 'email',
+     to: user.email,
+     from: 'noreply@loopback.com',
+     subject: 'Thanks for registering.',
+     template: path.resolve(__dirname, '../../server/views/verify.ejs'),
+     redirect: '/verified',
+     user: user
+     };
 
-    user.verify(options, function(err, response) {
-      if (err) return next(err);
+     user.verify(options, function(err, response) {
+     if (err) return next(err);
 
-      console.log('> verification email sent:', response);
+     console.log('> verification email sent:', response);
 
-      context.res.render('response', {
-        title: 'Signed up successfully',
-        content: 'Please check your email and click on the verification link ' +
-        'before logging in.',
-        redirectTo: '/',
-        redirectToLinkText: 'Log in'
-      });
-    });*/
+     context.res.render('response', {
+     title: 'Signed up successfully',
+     content: 'Please check your email and click on the verification link ' +
+     'before logging in.',
+     redirectTo: '/',
+     redirectToLinkText: 'Log in'
+     });
+     });*/
+    next();
   });
 
   //send password reset link when requested
-  User.on('resetPasswordRequest', function(info) {
+  User.on('resetPasswordRequest', function (info) {
     var url = 'http://' + config.host + ':' + config.port + '/reset-password';
     var html = 'Click <a href="' + url + '?access_token=' +
       info.accessToken.id + '">here</a> to reset your password';
 
-  /*  user.app.models.Email.send({
-      to: info.email,
-      from: info.email,
-      subject: 'Password reset',
-      html: html
-    }, function(err) {
-      if (err) return console.log('> error sending password reset email');
-      console.log('> sending password reset email to:', info.email);
-    });*/
-    
+    /*  user.app.models.Email.send({
+     to: info.email,
+     from: info.email,
+     subject: 'Password reset',
+     html: html
+     }, function(err) {
+     if (err) return console.log('> error sending password reset email');
+     console.log('> sending password reset email to:', info.email);
+     });*/
+
   });
-  
-  
-  
-  
-  
-  
-  
-  
+
+
 };
