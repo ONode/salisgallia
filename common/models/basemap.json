@@ -7,7 +7,7 @@
       "type": "string",
       "id": true,
       "generated": true,
-      "required": true
+      "required": false
     },
     "fast_id": {
       "type": "number",
@@ -104,7 +104,7 @@
   "relations": {
     "artist": {
       "type": "belongsTo",
-      "model": "Artist",
+      "model": "user",
       "foreignKey": "publisherId"
     }
   },

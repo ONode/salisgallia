@@ -81,20 +81,19 @@ module.exports = function (user) {
     /* var ctx = loopback.getCurrentContext();
      var accessToken = ctx.get('accessToken');
      var userid = accessToken.userId;*/
-  //  var ojec = JSON.parse(data);
-  //  console.log("update ojec", ojec);
-    console.log("update data", data);
+    //  var ojec = JSON.parse(data);
+    //  console.log("update ojec", ojec);
+    //console.log("update data", data);
     var err = new Error('Sorry, but that verification code does not work!');
     err.statusCode = 401;
     err.code = 'LOGIN_FAILED';
-    console.log("update", "line3");
-
+    //  console.log("update", "line3");
     db.updateByIdUpdate(user, id, {
       "photo": data
     }, function (doc) {
-      console.log("update", "completed update and photo object");
+      // console.log("update", "completed update and photo object");
       //fn(null, doc);
-      console.log("update", doc);
+      // console.log("update", doc);
       fn(null, doc);
     });
   };

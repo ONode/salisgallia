@@ -90,6 +90,16 @@
       "property": "loginWithCode"
     }
   ],
+
+  "relations": {
+    "basemaps": {
+      "type": "hasMany",
+      "model": "Basemap",
+      "foreignKey": "publisherId"
+    }
+  },
+
+
   "methods": {
     "requestCode": {
       "isStatic": false,

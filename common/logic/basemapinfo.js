@@ -16,6 +16,7 @@ module.exports.start = function (mapModel, result_object, next, nextError) {
   });
 };
 module.exports.progress = function (mapModel, progress, id, next) {
+  console.info(logTag, "check id", id);
   db_worker.updateByIdUpdate(mapModel, id, {
     "complete": progress
   }, next);
@@ -35,8 +36,8 @@ module.exports.complete_once_off = function (mapModel, result_object, next) {
   });
 };
 /*
-module.exports.complete_processing_image = function (mapModel, map_id, next) {
-  db_worker.updateByIdUpdate(mapModel, map_id, {
-    "complete": 100
-  }, next);
-};*/
+ module.exports.complete_processing_image = function (mapModel, map_id, next) {
+ db_worker.updateByIdUpdate(mapModel, map_id, {
+ "complete": 100
+ }, next);
+ };*/

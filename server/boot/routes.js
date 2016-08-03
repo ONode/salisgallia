@@ -22,11 +22,14 @@ module.exports = function (app) {
   });
   console.log('> created /ping request router');
   app.post('/sbupload', function (req, res) {
-    var Basemap_model = app.models.Basemap;
-    createbasemap(Basemap_model, req, res);
+    var model_instance = app.models.Basemap;
+    createbasemap(model_instance, req, res);
+  });
+  app.post('/:owner/sbupload', function (req, res) {
+    var model_instance = app.models.Basemap;
+    createbasemap(model_instance, req, res);
   });
   console.log('> created /sbupload request router');
-
   app.use('/static', express.static(__parentDir + "/storage/tmp/"));
   console.log('> server static file path is created and started from http://{domain}/static');
 

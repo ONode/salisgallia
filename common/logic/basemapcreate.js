@@ -144,6 +144,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
         var percentNum = Math.round(progress * 100);
         var percent = percentNum + "%";
         //console.info("Progress: " + percent);
+        //console.info(logTag, "Progress: ", basemap);
         save_data.progress(basemap, percentNum / 2, O.carry_id, null);
       });
 
@@ -233,7 +234,12 @@ module.exports = function (loopbackBasemap, req, res) {
       var _id = result.carry_id;
       delete result.carry_id;
       delete result.complete;
+      if (req.params.owner != null) {
+        console.info(logTag, "Id adding..");
+        result["owner"] = req.params.owner;
+      }
       console.info(logTag, "Finished processing slices. start saving to DB.");
+      console.info(logTag, "process before", result);
       save_data.complete(loopbackBasemap, _id, result, function () {
         //output.outResSuccess(result, res);
         console.log(logTag, "save and update complete status");

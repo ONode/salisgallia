@@ -2,27 +2,35 @@
  * Created by zJJ on 7/19/2016.
  */
 var loopback = require('loopback');
+var _ = require('lodash');
+const log = "> basemap op";
 module.exports = function (basemap) {
   /**
    * throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (context, next) {
-    if (!context.query.where) {
-      context.query.where = {}
+    /**
+     * the query specific for getting the complete listing
+     */
+    if (_.isEqual(context.query['ready'], 'on')) {
+      if (!context.query.where) {
+        context.query.where = {}
+      }
+      context.query.where['complete'] = 100;
+      console.log('Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     }
-    context.query.where['complete'] = 100;
-    // console.log('Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     next()
   });
 
-/*  remotes.after('*.find', function (ctx, next) {
-    var filter;
-    if (ctx.args && ctx.args.filter) {
-      console.log('> filter object', ctx.args.filter);
-      filter = ctx.args.filter.where;
-      console.log('> ctx.res. basemap', filter);
-    }
-  });*/
+
+  /*  remotes.after('*.find', function (ctx, next) {
+   var filter;
+   if (ctx.args && ctx.args.filter) {
+   console.log('> filter object', ctx.args.filter);
+   filter = ctx.args.filter.where;
+   console.log('> ctx.res. basemap', filter);
+   }
+   });*/
 
   /*
    if (!ctx.res._headerSent) {
