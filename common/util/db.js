@@ -18,7 +18,7 @@ var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
   persistentModel.findById(_id_, function (err, r) {
     r.updateAttributes(update_object, function (err, r) {
       if (_.isFunction(next)) {
-        next();
+        next(r);
       }
     })
   });

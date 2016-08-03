@@ -3,10 +3,11 @@
  */
 var speakeasy = require('speakeasy');
 var https = require('https');
-module.exports = function (User) {
+var db = require('../../common/util/db.js');
+module.exports = function (user) {
 
 
-  User.requestCode = function (credentials, fn) {
+  user.requestCode = function (credentials, fn) {
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       user.hasPassword(credentials.password, function (err, isMatch) {
         if (isMatch) {
@@ -47,15 +48,16 @@ module.exports = function (User) {
   };
 
   // Set up remote methods from model config schema json.
-  User.loginWithCode = function (credentials, fn) {
+  user.loginWithCode = function (credentials, fn) {
     var err = new Error('Sorry, but that verification code does not work!');
     err.statusCode = 401;
     err.code = 'LOGIN_FAILED';
 
+    console.log("update", "loginWithCode");
+
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       // And don't forget to match this secret to the one in requestCode()
       var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
-
       if (code !== credentials.twofactor) {
         return fn(err);
       }
@@ -70,8 +72,62 @@ module.exports = function (User) {
     });
   };
 
+  user.insertimagemeta = function (data, id, fn) {
+    if (typeof data === 'function') {
+      // fn = include;
+      data = undefined;
+    }
+    //   console.log("update", "line1");
+    /* var ctx = loopback.getCurrentContext();
+     var accessToken = ctx.get('accessToken');
+     var userid = accessToken.userId;*/
+  //  var ojec = JSON.parse(data);
+  //  console.log("update ojec", ojec);
+    console.log("update data", data);
+    var err = new Error('Sorry, but that verification code does not work!');
+    err.statusCode = 401;
+    err.code = 'LOGIN_FAILED';
+    console.log("update", "line3");
 
-  User.afterRemote('create', function (context, user, next) {
+    db.updateByIdUpdate(user, id, {
+      "photo": data
+    }, function (doc) {
+      console.log("update", "completed update and photo object");
+      //fn(null, doc);
+      console.log("update", doc);
+      fn(null, doc);
+    });
+  };
+
+
+  user.remoteMethod(
+    "insertimagemeta",
+    {
+      description: ["Update jumlah ruangan tersedia berdasarkan id dan tanggal"],
+      accepts: [
+        {arg: "data", type: "object", http: {source: 'body'}, required: true, description: "document in json"},
+        {arg: "id", type: "string", http: {source: 'path'}, required: true, description: "id"}
+      ],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      // isStatic: false, /* this is to need id systematically */
+      http: {verb: "post", path: "/:id/insertimagemeta"}
+    }
+  );
+
+  /*
+   GetRcEscalation.remoteMethod(
+   'getEscalations', {
+   http: { verb: 'get',path:'/getEscalations' },
+   description: "Gets Escalation by the current user",
+   accepts: { arg: 'Id_Number', type: 'number' },
+   return: { arg: 'data', type: ['GetRcEscalation'], root: true }
+   });
+   */
+
+
+  user.afterRemote('create', function (context, user, next) {
     console.log('> user.afterRemote triggered');
 
     /*var options = {
@@ -101,7 +157,7 @@ module.exports = function (User) {
   });
 
   //send password reset link when requested
-  User.on('resetPasswordRequest', function (info) {
+  user.on('resetPasswordRequest', function (info) {
     var url = 'http://' + config.host + ':' + config.port + '/reset-password';
     var html = 'Click <a href="' + url + '?access_token=' +
       info.accessToken.id + '">here</a> to reset your password';

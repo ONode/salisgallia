@@ -71,7 +71,7 @@
       "description": "the age of the user"
     },
     "photo": {
-      "type": "string",
+      "type": "object",
       "required": false,
       "description": "the path or url to display the head photo"
     }
