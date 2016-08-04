@@ -3,15 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 const
-
   createbasemap = require("../../common/logic/basemapcreate"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   express = require('express')
-
   ;
-
-
 const
   __parentDir = path.dirname(module.main)
   ;
@@ -25,7 +21,7 @@ module.exports = function (app) {
     var model_instance = app.models.Basemap;
     createbasemap(model_instance, req, res);
   });
-  app.post('/:owner/sbupload', function (req, res) {
+  app.post('/api/basemapupload/:owner/', function (req, res) {
     var model_instance = app.models.Basemap;
     createbasemap(model_instance, req, res);
   });
