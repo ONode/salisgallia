@@ -212,6 +212,9 @@ const wrapping_process = function (basemap, req, res, next_step) {
         output.outResErro(notworking, res);
         return;
       } else {
+        if (req.params.owner != null) {
+          O.owner = req.params.owner;
+        }
         save_data.start(basemap, O, function (id) {
           O.carry_id = id;
           output.outResSuccess(O, res);
