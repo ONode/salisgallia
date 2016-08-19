@@ -88,8 +88,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
-  //IF u have large image then. use this to avoid timeout..
-  req.connection.setTimeout(120000);
+
   var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
 
@@ -230,7 +229,13 @@ const wrapping_process = function (basemap, req, res, next_step) {
 //limit is 100mb
 //https://github.com/martinheidegger/mapslice
 //https://www.npmjs.com/package/multer
+//Add your routes here, etc.
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
 module.exports = function (loopbackBasemap, req, res) {
+  //IF u have large image then. use this to avoid timeout..
+  //req.connection.setTimeout(120000);
   wrapping_process(loopbackBasemap, req, res, function (result, res) {
     if (_.isError(result)) {
       output.outResErro(result.message, res);

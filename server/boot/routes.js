@@ -6,7 +6,8 @@ const
   createbasemap = require("../../common/logic/basemapcreate"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
-  express = require('express')
+  express = require('express'),
+  timeout = require('req-timeout')
   ;
 const
   __parentDir = path.dirname(module.main)
@@ -23,6 +24,7 @@ module.exports = function (app) {
   });
   app.post('/api/basemapupload/:owner/', function (req, res) {
     var model_instance = app.models.Basemap;
+    req.resetTimeout(120000);
     createbasemap(model_instance, req, res);
   });
   console.log('> created /sbupload request router');
