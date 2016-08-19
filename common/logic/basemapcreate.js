@@ -88,7 +88,8 @@ const wrapping_process = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
-
+  //IF u have large image then. use this to avoid timeout..
+  req.connection.setTimeout(120000);
   var _storage = multer.diskStorage({
     destination: function (req, file, cb) {
 
