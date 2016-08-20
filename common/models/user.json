@@ -98,8 +98,6 @@
       "foreignKey": "publisherId"
     }
   },
-
-
   "methods": {
     "requestCode": {
       "isStatic": false,
