@@ -96,13 +96,24 @@
           }
         },
         "measure_unit": "string",
-        "material": "number"
+        "material": "number",
+        "publication": "string"
       }
+    },
+    "createtime": {
+      "default": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
     }
   },
   "validations": [],
   "relations": {
-    "artist": {
+    "user": {
       "type": "belongsTo",
       "model": "user",
       "foreignKey": "publisherId"
