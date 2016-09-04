@@ -88,10 +88,8 @@
             "y": "number"
           }
         },
-
         "material": "number",
         "shape": "number",
-
         "path": "array",
         "tag": "string",
         "city": "string",
@@ -100,7 +98,11 @@
         "article_name_native": "string",
         "measure_unit": "string",
         "publication": "string",
-        "introduction": "string"
+        "introduction": "string",
+        "frame_color": "string",
+        "frame_width": "number",
+        "frame_shadow": "number",
+        "backdrop_color": "string"
       }
     },
     "createtime": {
