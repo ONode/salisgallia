@@ -4,6 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 const
   createbasemap = require("../../common/logic/basemapcreate"),
+  createbasestd = require("../../common/logic/basemapstd"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   express = require('express'),
@@ -22,10 +23,18 @@ module.exports = function (app) {
     var model_instance = app.models.Basemap;
     createbasemap(model_instance, req, res);
   });
+  app.post('/sbuploadstd', function (req, res) {
+    var model_instance = app.models.Basemap;
+    createbasestd(model_instance, req, res);
+  });
   app.post('/api/basemapupload/:owner/', function (req, res) {
     var model_instance = app.models.Basemap;
     req.resetTimeout(120000);
     createbasemap(model_instance, req, res);
+  });
+  app.post('/api/basemapnonstd/:owner/', function (req, res) {
+    var model_instance = app.models.Basemap;
+    createbasestd(model_instance, req, res);
   });
   console.log('> created /sbupload request router');
   app.use('/static', express.static(__parentDir + "/storage/tmp/"));

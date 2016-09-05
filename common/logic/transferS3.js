@@ -90,7 +90,27 @@ var worker_transfer = function (instance_model, _id, bns) {
     console.log(logTag, bns);
   }
 };
-
+var worker_transfer_simple = function (instance_model, _id, bns) {
+  console.log(logTag, "simple transfer process: ", bns);
+  if (_.isEmpty(access.accessKeyId) || _.isEmpty(access.secretAccessKey)) {
+    console.log(logTag, "S3 process access is not found. Process stop here");
+    return;
+  } else {
+    console.log(logTag, access);
+    var obfiles = [];
+    obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
+    obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
+    console.log(logTag, "CPU found:" + numCPUs);
+    triggerS3(obfiles, 0, function () {
+      //When all the S3 files are uploaded.
+      console.log(logTag, "trigger database update.");
+      db_worker.updateByIdUpdate(instance_model, _id, {
+        "folder_path": getFolderPathS3(bns.folder_base_name),
+        "complete": 100
+      }, null);
+    });
+  }
+};
 var setRemoteParams = function (key) {
   return {
     params: {
@@ -153,8 +173,7 @@ var set_aws_worker = function (path_key) {
     });
   };
 };
-
-
+module.exports.transferSimpleSingleSmallMapS3 = worker_transfer_simple;
 module.exports.transferSyncBaseMapS3 = worker_transfer;
 /*
 
