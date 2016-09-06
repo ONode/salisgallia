@@ -29,7 +29,7 @@ module.exports = function (app) {
   });
   app.post('/api/basemapupload/:owner/', function (req, res) {
     var model_instance = app.models.Basemap;
-    req.resetTimeout(120000);
+    //req.resetTimeout(120000);
     createbasemap(model_instance, req, res);
   });
   app.post('/api/basemapnonstd/:owner/', function (req, res) {

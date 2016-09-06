@@ -105,6 +105,15 @@
         "backdrop_color": "string"
       }
     },
+    "listing": {
+      "type": {
+        "meta_ready": "boolean",
+        "date_auction_from": "Date",
+        "date_auction_to": "Date",
+        "status_sold": "Date",
+        "searchable": "boolean"
+      }
+    },
     "createtime": {
       "type": "Date",
       "default": "$now",

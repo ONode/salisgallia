@@ -173,12 +173,40 @@ var set_aws_worker = function (path_key) {
     });
   };
 };
+var worker_remove = function (path) {
+
+  const client = new AWS.S3(access);
+  var params = {
+    Bucket: bucket_active,
+    Prefix: getRemotePath(path)
+  };
+
+  client.listObjects(params, function (err, data) {
+    if (err) return console.log(err);
+    //params = {Bucket: bucket_active};
+    params.Delete = {};
+    params.Delete.Objects = [];
+    data.Contents.forEach(function (content) {
+      params.Delete.Objects.push({Key: content.Key});
+      console.log(logTag, content.Key);
+    });
+    client.deleteObjects(params, function (err, data) {
+      if (err) return console.log(err);
+      return console.log(data.Deleted.length);
+    });
+
+  });
+
+};
+
+
 module.exports.transferSimpleSingleSmallMapS3 = worker_transfer_simple;
 module.exports.transferSyncBaseMapS3 = worker_transfer;
+module.exports.S3RemoveItemFolder = worker_remove;
 /*
-
  var S = require("string"),
  path = require("path");
  module.exports.outputresolve = function outputResolve(format, z, y, x) {
  return S(format).template({z: z, y: y, x: x, google: path.join(String(z), String(y), String(x))}, '{', '}').s;
- };*/
+ };
+ */

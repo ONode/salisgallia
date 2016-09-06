@@ -3,6 +3,8 @@
  */
 var loopback = require('loopback');
 var _ = require('lodash');
+var db_worker = require("./../util/db.js");
+var s3_worker = require("./../logic/transferS3");
 const log = "> basemap op";
 module.exports = function (basemap) {
   /**
@@ -21,8 +23,33 @@ module.exports = function (basemap) {
     }
     next()
   });
+  basemap.observe('before delete', function (ctx, next) {
+    console.log('Going to delete %s matching %j',
+      ctx.Model.pluralModelName,
+      ctx.where);
 
+    var _basemap_id = ctx.where['id'];
+    db_worker.getInstanceById(ctx.Model, _basemap_id,
+      function (data) {
+        console.log('remove item', data);
+        if (data != null) {
+          console.log('=================== continue');
+          var base_path = data.folder_base_name;
+          console.log('remove base_path', base_path);
+          s3_worker.S3RemoveItemFolder(base_path);
+          console.log('=================== end');
+        }
+        next();
+      }, function (err) {
+        console.log('remove item', err);
+        next();
+      });
+  });
 
+  basemap.observe('after delete', function (context, next) {
+    console.log('remove item', 'done');
+    next();
+  });
   /*  remotes.after('*.find', function (ctx, next) {
    var filter;
    if (ctx.args && ctx.args.filter) {
