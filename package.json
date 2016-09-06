@@ -9,9 +9,7 @@
     "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
     "heroku-postbuild": "echo This runs afterwards."
   },
-  "engines": {
-    "node": "4.5.0"
-  },
+ 
   "dependencies": {
     "async": "https://github.com/caolan/async.git",
     "compression": "https://github.com/expressjs/compression.git",
