@@ -178,7 +178,7 @@ var worker_remove = function (path) {
   const client = new AWS.S3(access);
   var params = {
     Bucket: bucket_active,
-    Prefix: getRemotePath(path)
+    Key: getRemotePath(path)
   };
 
   client.listObjects(params, function (err, data) {
