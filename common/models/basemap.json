@@ -85,7 +85,8 @@
         "dimension": {
           "type": {
             "x": "number",
-            "y": "number"
+            "y": "number",
+            "r": "number"
           }
         },
         "material": "number",
@@ -100,9 +101,9 @@
         "publication": "string",
         "introduction": "string",
         "frame_color": "string",
+        "backdrop_color": "string",
         "frame_width": "number",
-        "frame_shadow": "number",
-        "backdrop_color": "string"
+        "frame_shadow": "number"
       }
     },
     "listing": {
