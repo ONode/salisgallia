@@ -8,6 +8,8 @@ const
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   express = require('express'),
+  output = require('../../common/util/outputjson.js'),
+  catmeta = require('../../common/meta/cat.json'),
   timeout = require('req-timeout')
   ;
 const
@@ -36,15 +38,17 @@ module.exports = function (app) {
     var model_instance = app.models.Basemap;
     createbasestd(model_instance, req, res);
   });
+  app.get('/api/config/', function (req, res) {
+    //output.outResSuccess(catmeta, res);
+    res.json(catmeta);
+  });
   console.log('> created /sbupload request router');
   app.use('/static', express.static(__parentDir + "/storage/tmp/"));
   console.log('> server static file path is created and started from http://{domain}/static');
-
   app.use('/removeallxxx', function (req, res) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
-
   app.use('/first_install', function (req, res) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);

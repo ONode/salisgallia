@@ -1,0 +1,247 @@
+{
+  "cat": [
+    {
+      "key": 0,
+      "cn": "油画",
+      "jp": "油絵",
+      "fr": "peinture à l'huile",
+      "en": "Canvas"
+    },
+    {
+      "key": 1,
+      "cn": "版画",
+      "jp": "印刷",
+      "fr": "imprimer",
+      "en": "Engraving"
+    },
+    {
+      "key": 2,
+      "cn": "水墨",
+      "jp": "インク",
+      "fr": "Encre",
+      "en": "Ink"
+    },
+    {
+      "key": 3,
+      "cn": "国画",
+      "jp": "中国の伝統的な絵画",
+      "fr": "La peinture traditionnelle chinoise",
+      "en": "Chinese Art"
+    },
+    {
+      "key": 4,
+      "cn": "书法",
+      "zh": "書法",
+      "jp": "書道",
+      "fr": "calligraphie",
+      "en": "Calligraphy"
+    },
+    {
+      "key": 5,
+      "cn": "水彩画",
+      "jp": "水彩画",
+      "fr": "aquarelle",
+      "en": "Watercolor"
+    },
+    {
+      "key": 6,
+      "cn": "素描",
+      "en": "Sketch",
+      "jp": "スケッチ",
+      "de": "Skizze",
+      "it": "abbozzo",
+      "kr": "스케치",
+      "fr": "croquis"
+    },
+    {
+      "key": 7,
+      "cn": "兒童画",
+      "en": "Children Painting",
+      "jp": "塗装子どもたち",
+      "de": "Kinder Malerei",
+      "it": "bambini che verniciano",
+      "kr": "그림 아이",
+      "fr": "enfants peinture"
+    },
+    {
+      "key": 8,
+      "cn": "艺术衍生品",
+      "en": "Art Derivatives",
+      "jp": "アートデリバティブ",
+      "de": "Art Derivate",
+      "it": "Derivati Art",
+      "kr": "예술 파생 상품",
+      "fr": "art Dérivés"
+    }
+  ],
+  "topic": [
+    {
+      "key": 0,
+      "cn": "人物",
+      "jp": "文字",
+      "fr": "caractère",
+      "en": "Portrait"
+    },
+    {
+      "key": 1,
+      "cn": "静物",
+      "jp": "静物",
+      "fr": "nature morte",
+      "en": "Still Life"
+    },
+    {
+      "key": 2,
+      "cn": "风景",
+      "jp": "景色",
+      "fr": "paysage",
+      "en": "Western Landscape"
+    },
+    {
+      "key": 3,
+      "cn": "花卉",
+      "jp": "フラワーズ",
+      "fr": "Fleurs",
+      "en": "Western Flowers"
+    },
+    {
+      "key": 4,
+      "cn": "山水",
+      "jp": "景色",
+      "fr": "paysage",
+      "en": "Eastern Landscape"
+    },
+    {
+      "key": 5,
+      "cn": "花鸟",
+      "jp": "フラワーズ",
+      "fr": "Fleurs",
+      "en": "Eastern Flowers"
+    },
+    {
+      "key": 6,
+      "cn": "抽象",
+      "jp": "抽象的な",
+      "fr": "résumé",
+      "en": "Abstract"
+    }
+  ],
+  "shape": [
+    {
+      "key": 0,
+      "cn": "鏡心",
+      "jp": "フレームなしの",
+      "en": "Frameless"
+    },
+    {
+      "key": 1,
+      "cn": "扇面鏡心",
+      "jp": "ファンの心",
+      "en": "Sector"
+    },
+    {
+      "key": 2,
+      "cn": "圓鏡心",
+      "jp": "元ジンの心",
+      "en": "Circle"
+    },
+    {
+      "key": 3,
+      "cn": "掛軸",
+      "jp": "ハンギングシャフト",
+      "en": "Scroll"
+    },
+    {
+      "key": 4,
+      "cn": "連框",
+      "jp": "でも箱",
+      "en": "Framed"
+    },
+    {
+      "key": 5,
+      "cn": "扇面連框",
+      "jp": "でもファンボックス",
+      "en": "Sector Framed"
+    }
+  ],
+  "material": [
+    {
+      "key": 0,
+      "cn": "設色紙本",
+      "jp": "紙の上での色",
+      "fr": "Couleur sur papier",
+      "en": "Colored Paper"
+    },
+    {
+      "key": 1,
+      "cn": "設色絹本",
+      "jp": "絹上の色",
+      "fr": "Couleur sur soie",
+      "en": "Colored Silk"
+    },
+    {
+      "key": 2,
+      "cn": "硬筆紙本",
+      "jp": "紙にペン",
+      "fr": "Pen sur papier",
+      "en": "Colored Paper",
+      "_relation": [
+        4
+      ]
+    },
+    {
+      "key": 3,
+      "cn": "水墨紙本",
+      "jp": "紙の上のインク",
+      "fr": "Encre sur papier",
+      "en": "Ink Paper",
+      "_relation": [
+        3
+      ]
+    },
+    {
+      "key": 4,
+      "cn": "水彩紙本",
+      "jp": "紙に水彩画",
+      "fr": "Aquarelle sur papier",
+      "en": "Colored Paper",
+      "_relation": [
+        4
+      ]
+    },
+    {
+      "key": 5,
+      "cn": "水彩紅箋",
+      "jp": "赤のメモを描きます",
+      "fr": "Dessin mémo rouge",
+      "en": "Colored Red memo"
+    },
+    {
+      "key": 6,
+      "cn": "硃砂紙本",
+      "jp": "辰砂紙",
+      "fr": "Papier cinabre",
+      "en": "Cinnabar Paper"
+    },
+    {
+      "key": 7,
+      "cn": "油畫連框",
+      "jp": "でもボックスを描きます",
+      "fr": "Boîte peinture Même",
+      "en": "Canvas With Frame"
+    },
+    {
+      "key": 8,
+      "cn": "水墨金箋",
+      "jp": "ゴールドインク注釈",
+      "fr": "Or encre Annotations",
+      "en": "Ink Jin Jian"
+    },
+    {
+      "key": 9,
+      "cn": "水墨箋本",
+      "jp": "インクメモ",
+      "fr": "La note d'encre",
+      "en": "Ink Memo"
+    }
+  ]
+}

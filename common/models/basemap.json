@@ -91,6 +91,8 @@
         },
         "material": "number",
         "shape": "number",
+        "cat": "number",
+        "topic": "number",
         "path": "array",
         "tag": "string",
         "city": "string",
