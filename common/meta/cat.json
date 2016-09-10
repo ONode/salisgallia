@@ -288,6 +288,28 @@
       "filter": {
         "query": ""
       }
+    },
+    {
+      "name": {
+        "cn": "水墨",
+        "jp": "インク",
+        "fr": "Encre",
+        "en": "Ink"
+      },
+      "filter": {
+        "filter[cat]": "2"
+      }
+    },
+    {
+      "name": {
+        "cn": "国画",
+        "jp": "中国の伝統的な絵画",
+        "fr": "La peinture traditionnelle chinoise",
+        "en": "Chinese Art"
+      },
+      "filter": {
+        "filter[cat]": "3"
+      }
     }
   ]
 }
