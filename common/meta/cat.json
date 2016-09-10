@@ -243,5 +243,51 @@
       "fr": "La note d'encre",
       "en": "Ink Memo"
     }
+  ],
+  "app_menu": [
+    {
+      "name": {
+        "en": "Trending",
+        "fr": "Tendances",
+        "jp": "トレンド",
+        "cn": "趨勢"
+      },
+      "filter": {
+        "query": ""
+      }
+    },
+    {
+      "name": {
+        "en": "Undiscovered",
+        "fr": "non découvert",
+        "jp": "未発見",
+        "cn": "未被發現"
+      },
+      "filter": {
+        "query": ""
+      }
+    },
+    {
+      "name": {
+        "en": "Explore",
+        "fr": "Explorer",
+        "jp": "探ります",
+        "cn": "探索"
+      },
+      "filter": {
+        "query": ""
+      }
+    },
+    {
+      "name": {
+        "en": "Daily Ink",
+        "fr": "Ink Daily",
+        "jp": "日々水墨",
+        "cn": "每日水墨"
+      },
+      "filter": {
+        "query": ""
+      }
+    }
   ]
 }
