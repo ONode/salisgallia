@@ -2,246 +2,616 @@
   "cat": [
     {
       "key": 0,
-      "cn": "油画",
-      "jp": "油絵",
-      "fr": "peinture à l'huile",
-      "en": "Canvas"
-    },
-    {
-      "key": 1,
-      "cn": "版画",
-      "jp": "印刷",
-      "fr": "imprimer",
-      "en": "Engraving"
+      "label": {
+        "cn": "油画",
+        "jp": "油絵",
+        "fr": "peinture à l'huile",
+        "en": "Canvas"
+      }
     },
     {
       "key": 2,
-      "cn": "水墨",
-      "jp": "インク",
-      "fr": "Encre",
-      "en": "Ink"
+      "label": {
+        "cn": "水墨",
+        "jp": "インク",
+        "fr": "Encre",
+        "en": "Ink"
+      }
     },
     {
       "key": 3,
-      "cn": "国画",
-      "jp": "中国の伝統的な絵画",
-      "fr": "La peinture traditionnelle chinoise",
-      "en": "Chinese Art"
+      "label": {
+        "cn": "国画",
+        "jp": "中国の伝統的な絵画",
+        "fr": "La peinture traditionnelle chinoise",
+        "en": "Chinese Art"
+      }
     },
     {
       "key": 4,
-      "cn": "书法",
-      "zh": "書法",
-      "jp": "書道",
-      "fr": "calligraphie",
-      "en": "Calligraphy"
+      "label": {
+        "cn": "书法",
+        "zh": "書法",
+        "jp": "書道",
+        "fr": "calligraphie",
+        "en": "Calligraphy"
+      }
     },
     {
       "key": 5,
-      "cn": "水彩画",
-      "jp": "水彩画",
-      "fr": "aquarelle",
-      "en": "Watercolor"
-    },
-    {
-      "key": 6,
-      "cn": "素描",
-      "en": "Sketch",
-      "jp": "スケッチ",
-      "de": "Skizze",
-      "it": "abbozzo",
-      "kr": "스케치",
-      "fr": "croquis"
+      "label": {
+        "cn": "水彩画",
+        "jp": "水彩画",
+        "fr": "aquarelle",
+        "en": "Watercolor"
+      }
     },
     {
       "key": 7,
-      "cn": "兒童画",
-      "en": "Children Painting",
-      "jp": "塗装子どもたち",
-      "de": "Kinder Malerei",
-      "it": "bambini che verniciano",
-      "kr": "그림 아이",
-      "fr": "enfants peinture"
+      "label": {
+        "cn": "兒童画",
+        "en": "Children Painting",
+        "jp": "塗装子どもたち",
+        "de": "Kinder Malerei",
+        "it": "bambini che verniciano",
+        "kr": "그림 아이",
+        "fr": "enfants peinture"
+      }
     },
     {
       "key": 8,
-      "cn": "艺术衍生品",
-      "en": "Art Derivatives",
-      "jp": "アートデリバティブ",
-      "de": "Art Derivate",
-      "it": "Derivati Art",
-      "kr": "예술 파생 상품",
-      "fr": "art Dérivés"
+      "label": {
+        "cn": "艺术衍生品",
+        "en": "Art Derivatives",
+        "jp": "アートデリバティブ",
+        "de": "Art Derivate",
+        "it": "Derivati Art",
+        "kr": "예술 파생 상품",
+        "fr": "art Dérivés"
+      }
     }
   ],
   "topic": [
     {
       "key": 0,
-      "cn": "人物",
-      "jp": "文字",
-      "fr": "caractère",
-      "en": "Portrait"
+      "label": {
+        "cn": "人物",
+        "jp": "文字",
+        "fr": "caractère",
+        "en": "Portrait"
+      },
+      "ref": [
+        0,
+        5,
+        2,
+        3,
+        6,
+        1
+      ]
     },
     {
       "key": 1,
-      "cn": "静物",
-      "jp": "静物",
-      "fr": "nature morte",
-      "en": "Still Life"
+      "label": {
+        "cn": "静物",
+        "jp": "静物",
+        "fr": "nature morte",
+        "en": "Still Life"
+      },
+      "ref": [
+        0,
+        5,
+        1,
+        2,
+        3,
+        6
+      ]
     },
     {
       "key": 2,
-      "cn": "风景",
-      "jp": "景色",
-      "fr": "paysage",
-      "en": "Western Landscape"
+      "label": {
+        "cn": "风景",
+        "jp": "景色",
+        "fr": "paysage",
+        "en": "Western Landscape"
+      },
+      "ref": [
+        0,
+        5,
+        1,
+        3,
+        6
+      ]
     },
     {
       "key": 3,
-      "cn": "花卉",
-      "jp": "フラワーズ",
-      "fr": "Fleurs",
-      "en": "Western Flowers"
+      "label": {
+        "cn": "花卉",
+        "jp": "フラワーズ",
+        "fr": "Fleurs",
+        "en": "Western Flowers"
+      },
+      "ref": [
+        0,
+        5,
+        1,
+        2,
+        3
+      ]
     },
     {
       "key": 4,
-      "cn": "山水",
-      "jp": "景色",
-      "fr": "paysage",
-      "en": "Eastern Landscape"
+      "label": {
+        "cn": "山水",
+        "jp": "景色",
+        "fr": "paysage",
+        "en": "Eastern Landscape"
+      },
+      "ref": [
+        2,
+        3,
+        1
+      ]
     },
     {
       "key": 5,
-      "cn": "花鸟",
-      "jp": "フラワーズ",
-      "fr": "Fleurs",
-      "en": "Eastern Flowers"
+      "label": {
+        "cn": "花鸟",
+        "jp": "フラワーズ",
+        "fr": "Fleurs",
+        "en": "Eastern Flowers"
+      },
+      "ref": [
+        3,
+        2,
+        1
+      ]
     },
     {
       "key": 6,
-      "cn": "抽象",
-      "jp": "抽象的な",
-      "fr": "résumé",
-      "en": "Abstract"
+      "label": {
+        "cn": "抽象",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        0,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "key": 8,
+      "label": {
+        "cn": "篆書",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 9,
+      "label": {
+        "cn": "隶書",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 10,
+      "label": {
+        "cn": "草書",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 11,
+      "label": {
+        "cn": "行書",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 12,
+      "label": {
+        "cn": "楷書",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 13,
+      "label": {
+        "cn": "金文",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        4
+      ]
+    },
+    {
+      "key": 14,
+      "label": {
+        "cn": "古典",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        0
+      ]
+    },
+    {
+      "key": 15,
+      "label": {
+        "cn": "當代",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "key": 16,
+      "label": {
+        "cn": "印像",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        5,
+        0
+      ]
+    },
+    {
+      "key": 18,
+      "label": {
+        "cn": "結構",
+        "jp": "結構",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        6
+      ]
+    },
+    {
+      "key": 19,
+      "label": {
+        "cn": "3-6歲組",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        7
+      ]
+    },
+    {
+      "key": 20,
+      "label": {
+        "cn": "7-10歲組",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        7
+      ]
+    },
+    {
+      "key": 21,
+      "label": {
+        "cn": "11-14歲組",
+        "jp": "抽象的な",
+        "fr": "résumé",
+        "en": "Abstract"
+      },
+      "ref": [
+        7
+      ]
+    }
+  ],
+  "skill": [
+    {
+      "key": 0,
+      "label": {
+        "cn": "寫意",
+        "jp": "楽しいです",
+        "fr": "résumé",
+        "en": "Enjoyable"
+      },
+      "ref": [
+        3
+      ]
+    },
+    {
+      "key": 1,
+      "label": {
+        "cn": "工筆",
+        "jp": "細部まで行き届きました",
+        "fr": "résumé",
+        "en": "Meticulous"
+      },
+      "ref": [
+        3
+      ]
+    },
+    {
+      "key": 2,
+      "label": {
+        "cn": "界畫",
+        "jp": "円を描きます",
+        "fr": "résumé",
+        "en": "Interface"
+      },
+      "ref": [
+        3
+      ]
+    },
+    {
+      "key": 3,
+      "label": {
+        "cn": "指畫",
+        "jp": "指",
+        "fr": "résumé",
+        "en": "Finger Painting"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 9,
+      "label": {
+        "cn": "材料粘貼",
+        "jp": "指",
+        "fr": "résumé",
+        "en": "Adhesive Materials"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 4,
+      "label": {
+        "cn": "腊染",
+        "jp": "ろうけつ染め",
+        "fr": "Batik",
+        "en": "Batik"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 5,
+      "label": {
+        "cn": "刺繡",
+        "jp": "刺繍",
+        "fr": "Embroidery",
+        "en": "Embroidery"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 6,
+      "label": {
+        "cn": "漆畫",
+        "jp": "ラッカー塗装",
+        "fr": "Lacquer Painting",
+        "en": "Lacquer Painting"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 7,
+      "label": {
+        "cn": "編織",
+        "jp": "ウィーブ",
+        "fr": "tissage",
+        "en": "Weave"
+      },
+      "ref": [
+        8
+      ]
+    },
+    {
+      "key": 8,
+      "label": {
+        "cn": "珠綉",
+        "jp": "ビーズ",
+        "fr": "perlé",
+        "en": "Beaded"
+      },
+      "ref": [
+        8
+      ]
     }
   ],
   "shape": [
     {
       "key": 0,
-      "cn": "鏡心",
-      "jp": "フレームなしの",
-      "en": "Frameless"
+      "label": {
+        "cn": "鏡心",
+        "jp": "フレームなしの",
+        "en": "Frameless"
+      }
     },
     {
       "key": 1,
-      "cn": "扇面鏡心",
-      "jp": "ファンの心",
-      "en": "Sector"
+      "label": {
+        "cn": "扇面鏡心",
+        "jp": "ファンの心",
+        "en": "Sector"
+      }
     },
     {
       "key": 2,
-      "cn": "圓鏡心",
-      "jp": "元ジンの心",
-      "en": "Circle"
+      "label": {
+        "cn": "圓鏡心",
+        "jp": "元ジンの心",
+        "en": "Circle"
+      }
     },
     {
       "key": 3,
-      "cn": "掛軸",
-      "jp": "ハンギングシャフト",
-      "en": "Scroll"
+      "label": {
+        "cn": "掛軸",
+        "jp": "ハンギングシャフト",
+        "en": "Scroll"
+      }
     },
     {
       "key": 4,
-      "cn": "連框",
-      "jp": "でも箱",
-      "en": "Framed"
+      "label": {
+        "cn": "連框",
+        "jp": "でも箱",
+        "en": "Framed"
+      }
     },
     {
       "key": 5,
-      "cn": "扇面連框",
-      "jp": "でもファンボックス",
-      "en": "Sector Framed"
+      "label": {
+        "cn": "扇面連框",
+        "jp": "でもファンボックス",
+        "en": "Sector Framed"
+      }
     }
   ],
   "material": [
     {
       "key": 0,
-      "cn": "設色紙本",
-      "jp": "紙の上での色",
-      "fr": "Couleur sur papier",
-      "en": "Colored Paper"
+      "label": {
+        "cn": "設色紙本",
+        "jp": "紙の上での色",
+        "fr": "Couleur sur papier",
+        "en": "Colored Paper"
+      }
     },
     {
       "key": 1,
-      "cn": "設色絹本",
-      "jp": "絹上の色",
-      "fr": "Couleur sur soie",
-      "en": "Colored Silk"
+      "label": {
+        "cn": "設色絹本",
+        "jp": "絹上の色",
+        "fr": "Couleur sur soie",
+        "en": "Colored Silk"
+      }
     },
     {
       "key": 2,
-      "cn": "硬筆紙本",
-      "jp": "紙にペン",
-      "fr": "Pen sur papier",
-      "en": "Colored Paper",
+      "label": {
+        "cn": "硬筆紙本",
+        "jp": "紙にペン",
+        "fr": "Pen sur papier",
+        "en": "Colored Paper"
+      },
       "_relation": [
         4
       ]
     },
     {
       "key": 3,
-      "cn": "水墨紙本",
-      "jp": "紙の上のインク",
-      "fr": "Encre sur papier",
-      "en": "Ink Paper",
+      "label": {
+        "cn": "水墨紙本",
+        "jp": "紙の上のインク",
+        "fr": "Encre sur papier",
+        "en": "Ink Paper"
+      },
       "_relation": [
         3
       ]
     },
     {
       "key": 4,
-      "cn": "水彩紙本",
-      "jp": "紙に水彩画",
-      "fr": "Aquarelle sur papier",
-      "en": "Colored Paper",
+      "label": {
+        "cn": "水彩紙本",
+        "jp": "紙に水彩画",
+        "fr": "Aquarelle sur papier",
+        "en": "Colored Paper"
+      },
       "_relation": [
         4
       ]
     },
     {
       "key": 5,
-      "cn": "水彩紅箋",
-      "jp": "赤のメモを描きます",
-      "fr": "Dessin mémo rouge",
-      "en": "Colored Red memo"
+      "label": {
+        "cn": "水彩紅箋",
+        "jp": "赤のメモを描きます",
+        "fr": "Dessin mémo rouge",
+        "en": "Colored Red memo"
+      }
     },
     {
       "key": 6,
-      "cn": "硃砂紙本",
-      "jp": "辰砂紙",
-      "fr": "Papier cinabre",
-      "en": "Cinnabar Paper"
+      "label": {
+        "cn": "硃砂紙本",
+        "jp": "辰砂紙",
+        "fr": "Papier cinabre",
+        "en": "Cinnabar Paper"
+      }
     },
     {
       "key": 7,
-      "cn": "油畫連框",
-      "jp": "でもボックスを描きます",
-      "fr": "Boîte peinture Même",
-      "en": "Canvas With Frame"
+      "label": {
+        "cn": "油畫連框",
+        "jp": "でもボックスを描きます",
+        "fr": "Boîte peinture Même",
+        "en": "Canvas With Frame"
+      }
     },
     {
       "key": 8,
-      "cn": "水墨金箋",
-      "jp": "ゴールドインク注釈",
-      "fr": "Or encre Annotations",
-      "en": "Ink Jin Jian"
+      "label": {
+        "cn": "水墨金箋",
+        "jp": "ゴールドインク注釈",
+        "fr": "Or encre Annotations",
+        "en": "Ink Jin Jian"
+      }
     },
     {
       "key": 9,
-      "cn": "水墨箋本",
-      "jp": "インクメモ",
-      "fr": "La note d'encre",
-      "en": "Ink Memo"
+      "label": {
+        "cn": "水墨箋本",
+        "jp": "インクメモ",
+        "fr": "La note d'encre",
+        "en": "Ink Memo"
+      }
     }
   ],
   "app_menu": [
