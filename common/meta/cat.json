@@ -614,6 +614,46 @@
       }
     }
   ],
+  "head_slide":[
+    {
+      "topic":{
+        "name": {
+          "en": "Autumn Auctions 2016",
+          "fr": "2016年秋季拍賣會",
+          "jp": "2016年秋季拍賣會",
+          "cn": "2016年秋季拍賣會"
+        }
+      },
+      "subline":{
+        "name": {
+          "en": "1-4 OCT｜Grand Hyatt Hong Kong",
+          "fr": "10月1-4日｜香港君悅酒店",
+          "jp": "10月1-4日｜香港君悅酒店",
+          "cn": "10月1-4日｜香港君悅酒店"
+        }
+      },
+      "featured_item_id": "57cec24268ceeb0300e87a5d"
+    },
+    {
+      "topic":{
+        "name": {
+          "en": "Winter Auctions 2016",
+          "fr": "2016年秋季拍賣會",
+          "jp": "2016年秋季拍賣會",
+          "cn": "2016年秋季拍賣會"
+        }
+      },
+      "subline":{
+        "name": {
+          "en": "1-4 NOV｜Grand Hyatt Hong Kong",
+          "fr": "11月1-4日｜香港君悅酒店",
+          "jp": "11月1-4日｜香港君悅酒店",
+          "cn": "11月1-4日｜香港君悅酒店"
+        }
+      },
+      "image_url": "http://cafeptthumb2.phinf.naver.net/20150907_65/u_ta_1441594728485W3eJg_JPEG/01.jpg?type=w740"
+    }
+  ],
   "app_menu": [
     {
       "name": {
