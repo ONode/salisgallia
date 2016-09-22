@@ -614,44 +614,83 @@
       }
     }
   ],
-  "head_slide":[
+  "head_slide": [
     {
-      "topic":{
-  
-          "en": "Autumn Auctions 2016",
-          "fr": "2016年秋季拍賣會",
-          "jp": "2016年秋季拍賣會",
-          "cn": "2016年秋季拍賣會"
-    
+      "topic": {
+        "en": "Autumn Auctions 2016",
+        "fr": "2016年秋季拍賣會",
+        "jp": "2016年秋季拍賣會",
+        "cn": "2016年秋季拍賣會"
       },
-      "subline":{
-
-          "en": "1-4 OCT｜Grand Hyatt Hong Kong",
-          "fr": "10月1-4日｜香港君悅酒店",
-          "jp": "10月1-4日｜香港君悅酒店",
-          "cn": "10月1-4日｜香港君悅酒店"
-  
+      "subline": {
+        "en": "1-4 OCT｜Grand Hyatt Hong Kong",
+        "fr": "10月1-4日｜香港君悅酒店",
+        "jp": "10月1-4日｜香港君悅酒店",
+        "cn": "10月1-4日｜香港君悅酒店"
       },
       "featured_item_id": "57cec24268ceeb0300e87a5d"
     },
     {
-      "topic":{
- 
-          "en": "Winter Auctions 2016",
-          "fr": "2016年秋季拍賣會",
-          "jp": "2016年秋季拍賣會",
-          "cn": "2016年秋季拍賣會"
-      
+      "topic": {
+        "en": "Winter Auctions 2016",
+        "fr": "2016年秋季拍賣會",
+        "jp": "2016年秋季拍賣會",
+        "cn": "2016年秋季拍賣會"
       },
-      "subline":{
-    
-          "en": "1-4 NOV｜Grand Hyatt Hong Kong",
-          "fr": "11月1-4日｜香港君悅酒店",
-          "jp": "11月1-4日｜香港君悅酒店",
-          "cn": "11月1-4日｜香港君悅酒店"
-    
+      "subline": {
+        "en": "1-4 NOV｜Grand Hyatt Hong Kong",
+        "fr": "11月1-4日｜香港君悅酒店",
+        "jp": "11月1-4日｜香港君悅酒店",
+        "cn": "11月1-4日｜香港君悅酒店"
       },
       "image_url": "http://cafeptthumb2.phinf.naver.net/20150907_65/u_ta_1441594728485W3eJg_JPEG/01.jpg?type=w740"
+    }
+  ],
+  "report_error": [
+    {
+      "flag": 10,
+      "error_cause": {
+        "en": "Wrong Category",
+        "fr": "Mauvaise Catégorie",
+        "jp": "間違ったカテゴリ",
+        "cn": "分类错误"
+      }
+    },
+    {
+      "flag": 11,
+      "error_cause": {
+        "en": "Sexual Explicit Content",
+        "fr": "Explicit Content sexuelle",
+        "jp": "性的な明示的なコンテンツ",
+        "cn": "色情露骨内容"
+      }
+    },
+    {
+      "flag": 12,
+      "error_cause": {
+        "en": "Set The Wrong Frame",
+        "fr": "Set The Frame Mauvais",
+        "jp": "間違ったフレームを設定",
+        "cn": "表错框架"
+      }
+    },
+    {
+      "flag": 13,
+      "error_cause": {
+        "en": "Too dark or Too bright Image",
+        "fr": "Trop sombre ou trop lumineux image",
+        "jp": "暗すぎるか、明るすぎる画像",
+        "cn": "太暗或太亮的图像"
+      }
+    },
+    {
+      "flag": 14,
+      "error_cause": {
+        "en": "Other Issues",
+        "fr": "Autres issues",
+        "jp": "その他の問題",
+        "cn": "其他事宜"
+      }
     }
   ],
   "app_menu": [
