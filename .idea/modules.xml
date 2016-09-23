@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/gallaira.iml" filepath="$PROJECT_DIR$/.idea/gallaira.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gallerio-loopback.iml" filepath="$PROJECT_DIR$/.idea/gallerio-loopback.iml" />
     </modules>
   </component>

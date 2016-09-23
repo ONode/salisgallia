@@ -1,0 +1,42 @@
+{
+  "name": "Issue",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "violation_code": {
+      "type": "array",
+      "required": false
+    },
+    "subject_type": {
+      "type": "string",
+      "required": true
+    },
+    "subject_id": {
+      "type": "Date",
+      "required": true
+    },
+    "additional": {
+      "type": "string",
+      "required": false
+    },
+    "create": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "publisherId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}
