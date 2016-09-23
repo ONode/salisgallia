@@ -746,7 +746,7 @@
         "en": "Ink"
       },
       "filter": {
-        "filter[cat]": "2"
+        "filter[where][image_meta][cat]": "2"
       }
     },
     {
@@ -757,7 +757,7 @@
         "en": "Chinese Art"
       },
       "filter": {
-        "filter[cat]": "3"
+        "filter[where][image_meta][cat]": "3"
       }
     }
   ]
