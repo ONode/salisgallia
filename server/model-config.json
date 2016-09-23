@@ -45,6 +45,10 @@
     "dataSource": "rocket_us_east",
     "public": true
   },
+  "Issue": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
   "Reviewer": {
     "dataSource": "rocket_us_east",
     "public": true
