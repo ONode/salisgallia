@@ -4,7 +4,8 @@
     "loopback#compress": {}
   },
   "initial": {
-    "compression": {}
+    "compression": {},
+    "loopback-context#per-request": {}
   },
   "session": {
   },

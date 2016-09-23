@@ -2,28 +2,64 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-module.exports = function(Review) {
-  Review.beforeRemote('create', function(context, user, next) {
-    context.args.data.create = Date.now();
-   // context.args.data.publisherId = context.req.accessToken.userId;
-    next();
+var loopback = require('loopback');
+var _ = require('lodash');
+var db_worker = require("./../util/db.js");
+var s3_worker = require("./../logic/transferS3");
+var output = require("./../util/outputjson");
+const log = "> basemap op";
+var LoopBackContext = require('loopback-context');
+/*MyIssue = loopback.Model.extend('Issue');
+MyIssue.on('myEvent', function() {
+  console.log('meep meep!');
+});
+MyIssue.setup = function() {
+  var MyModel = this;
+  // since setup is called for every extended model
+  // the extended model will also have the event listener
+  MyIssue.on('myEvent', function() {
+    MyModel.printModelName();
+  });
+};*/
+module.exports = function (Issue) {
+  Issue.setup = function() {
+    var MyModel = this;
+    // since setup is called for every extended model
+    // the extended model will also have the event listener
+    MyIssue.on('myEvent', function() {
+      MyModel.printModelName();
+    });
+  };
+
+  Issue.on('myEvent', function() {
+    console.log('meep meep!');
   });
 
-  Review.observe('before save', function(ctx, next) {
-    console.log('> Magazine before save triggered');
-    /*   var model = ctx.instance;
-     var coffeeShopService = Review.app.dataSources.CoffeeShopService;
+  Issue.observe('before save', function (ctx_old, next) {
 
-     coffeeShopService.find(function(err, response, context) {
-     if (err) throw err; //error making request
-     if (response.error) {
-     next('> response error: ' + response.error.stack);
-     }
-     model.coffeeShops = response;
-     console.log('> coffee shops fetched successfully from remote server');
-     //verify via `curl localhost:3000/api/Magazines`
-     next();
-     });*/
+    const ctx = LoopBackContext.getCurrentContext();
+    console.log('> before save LoopBackContext...');
+    console.log(ctx);
+   // console.log('> before save Old Context...');
+  //  console.log(ctx_old);
+    //console.log(LoopBackContext);
+    //LoopBackContext.args.data.create = Date.now();
+    //LoopBackContext.res.render('response', output.dataResponse("done", LoopBackContext.args.data));
+    console.log('> remote save item ticket issue now...');
+    next();
   });
   //https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
 };
+/*
+
+ {
+ "violation_code": [10,203,13],
+ "from_agent_type":"user",
+ "subject_type": "basemap",
+ "subject_id":"57cec24268ceeb0300e87a5d",
+ "additional": "--",
+ "from_agent_id":"579f3377f898303787a52577",
+ }
+
+
+ */

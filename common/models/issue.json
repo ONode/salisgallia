@@ -10,18 +10,30 @@
       "required": false
     },
     "violation_code": {
-      "type": "array",
+      "type": [
+        {
+          "type": "number"
+        }
+      ],
       "required": false
     },
     "subject_type": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "subject_id": {
-      "type": "Date",
-      "required": true
+      "type": "string",
+      "required": false
     },
     "additional": {
+      "type": "string",
+      "required": false
+    },
+    "from_agent_type": {
+      "type": "string",
+      "required": false
+    },
+    "from_agent_id": {
       "type": "string",
       "required": false
     },
@@ -30,13 +42,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "user": {
-      "type": "belongsTo",
-      "model": "user",
-      "foreignKey": "publisherId"
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": []
 }

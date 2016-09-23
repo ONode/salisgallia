@@ -5,7 +5,16 @@ var speakeasy = require('speakeasy');
 var https = require('https');
 var db = require('../../common/util/db.js');
 module.exports = function (user) {
+/*
+  user.validatesPresenceOf('name', 'email')
+  user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
+  user.validatesInclusionOf('gender', {in: ['male', 'female']});
+  user.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
+  user.validatesNumericalityOf('age', {int: true});
+  */
 
+  user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
+  user.validatesUniquenessOf('email', {message: 'email is not unique'});
 
   user.requestCode = function (credentials, fn) {
     this.findOne({where: {email: credentials.email}}, function (err, user) {
