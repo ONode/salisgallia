@@ -628,7 +628,7 @@
         "jp": "10月1-4日｜香港君悅酒店",
         "cn": "10月1-4日｜香港君悅酒店"
       },
-      "featured_item_id": "57cec24268ceeb0300e87a5d"
+      "image_url": "http://cafeptthumb2.phinf.naver.net/20150907_65/u_ta_1441594728485W3eJg_JPEG/01.jpg?type=w740",
     },
     {
       "topic": {
@@ -746,7 +746,7 @@
         "en": "Ink"
       },
       "filter": {
-        "filter[where][image_meta][cat]": "2"
+        "filter[where][image_meta.cat]": "2"
       }
     },
     {
@@ -757,7 +757,7 @@
         "en": "Chinese Art"
       },
       "filter": {
-        "filter[where][image_meta][cat]": "3"
+        "filter[where][image_meta.cat]": "3"
       }
     }
   ]
