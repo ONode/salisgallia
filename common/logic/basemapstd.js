@@ -10,7 +10,6 @@ const
   output = require('.././util/outputjson.js'),
   rmdir = require('.././util/rmdir.js'),
   _ = require('lodash'),
-  mkp = require('mkdirp'),
   async = require('async'),
   fse = require('fs-extra'),
   im = require('imagemagick'),

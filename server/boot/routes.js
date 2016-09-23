@@ -54,5 +54,4 @@ module.exports = function (app) {
     clearall(Basemap_model, req, res);
   });
   console.log('> remove all uploaded tmp files with http://{domain}/removeallxxx');
-
 };
