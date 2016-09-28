@@ -7,6 +7,11 @@ var speakeasy = require('speakeasy'),
   https = require('https'),
   _crypto = require('crypto'),
   db = require('../../common/util/db.js');
+var pwdassign = function (token) {
+  return _crypto.createHmac('md5', salt)
+    .update(token)
+    .digest('hex');
+};
 module.exports = function (user) {
   /*
    user.validatesPresenceOf('name', 'email')
@@ -82,7 +87,7 @@ module.exports = function (user) {
       });
     });
   };
-  user.insertimagemetacall = function (data, id, fn) {
+  user.update_meta_call = function (data, id, fn) {
     if (typeof data === 'function') {
       // fn = include;
       data = undefined;
@@ -107,7 +112,7 @@ module.exports = function (user) {
       fn(null, doc);
     });
   };
-  user.facebooklogincall = function (data, fn) {
+  user.fb_login_call = function (data, fn) {
     if (typeof data === 'function') {
       data = undefined;
     }
@@ -118,8 +123,8 @@ module.exports = function (user) {
     var facebook_token = data["facebook.token"];
     var facebook_expire = data["facebook.expire"];
     console.log("> login =====================");
-    console.log("> ==== facebook id is here");
-    console.log("> ====>> :", facebook_id);
+    console.log("> ==== facebook expire is here");
+    console.log("> ====>> :", facebook_expire);
     console.log("> ==== facebook user email here");
     console.log("> ====>> :", facebook_id);
     console.log("> ==== facebook user token here");
@@ -136,6 +141,7 @@ module.exports = function (user) {
       }
       if (_.isEmpty(r)) {
 
+        console.log("> login =====================");
         user.create({
           "facebook": {
             "userid": facebook_id,
@@ -144,15 +150,12 @@ module.exports = function (user) {
             "expire": facebook_expire
           },
           "email": email,
-          "password": _crypto.createHmac('sha256', salt)
-            .update(facebook_token)
-            .digest('hex')
-
+          "password": pwdassign(facebook_token)
         }, function (err, r) {
           if (_.isError(err)) {
             console.log("technical error from db", err);
           }
-          user.login({email: email, password: facebook_token},
+          user.login({email: email, password: pwdassign(facebook_token)},
             function (err, token) {
               console.log("> login =====================");
               console.log("this user is using facebook to login here", r);
@@ -174,7 +177,7 @@ module.exports = function (user) {
           }
         }
 
-        user.login({email: r.facebook.email, password: r.facebook.token},
+        user.login({email: r.facebook.email, password: pwdassign(r.facebook.token)},
           function (err, token) {
             console.log("> login =====================");
             console.log("this user is login and the token is shown as below", token);
@@ -185,7 +188,7 @@ module.exports = function (user) {
     });
     console.log("update", "execute first faster line here");
   };
-  user.remoteMethod("facebooklogincall", {
+  user.remoteMethod("fb_login_call", {
     description: ["Update facebook login access channel in here.."],
     accepts: [
       {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
@@ -197,7 +200,7 @@ module.exports = function (user) {
   });
 
   user.remoteMethod(
-    "insertimagemetacall",
+    "update_meta_call",
     {
       description: ["Update the data object from the object."],
       accepts: [
@@ -272,3 +275,33 @@ module.exports = function (user) {
 
 
 };
+/*http://stackoverflow.com/questions/14218925/how-can-i-decrypt-a-hmac
+
+ Example on how encryption/decryption:
+const crypto = require("crypto");
+
+// key and iv
+var key = crypto.createHash("sha256").update("OMGCAT!", "ascii").digest();
+var iv = "1234567890123456";
+
+// this is the string we want to encrypt/decrypt
+var secret = "ermagherd";
+
+console.log("Initial: %s", secret);
+
+// create a aes256 cipher based on our password
+var cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+// update the cipher with our secret string
+cipher.update(secret, "ascii");
+// save the encryption as base64-encoded
+var encrypted = cipher.final("base64");
+
+console.log("Encrypted: %s", encrypted);
+
+// create a aes267 decipher based on our password
+var decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+// update the decipher with our encrypted string
+decipher.update(encrypted, "base64");
+
+console.log("Decrypted: %s", decipher.final("ascii"));
+*/
