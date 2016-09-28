@@ -3,7 +3,7 @@
  */
 const
 
-  crypto = require('crypto'),
+  _cryptosim = require('crypto'),
   numCPUs = require('os').cpus.length,
   path = require('path'),
   multer = require('multer'),
@@ -26,7 +26,7 @@ const
 
   logTag = '> file info',
   __parentDir = path.dirname(module.main),
-  upload_hash_file_secret = 'catherineboobsarebig69',
+  saltFile = 'catherineboobsarebig69',
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
@@ -114,7 +114,7 @@ const wrapping_process = function (basemap, req, res, next_step) {
     },
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
-      var hash = crypto.createHmac('sha256', upload_hash_file_secret)
+      var hash = _cryptosim.createHmac('sha256', saltFile)
         .update(O.folder_base_name)
         .digest('hex');
       O.secret_base_map_file = hash + '.jpg';

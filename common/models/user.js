@@ -1,10 +1,12 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
-var speakeasy = require('speakeasy');
-var _ = require('lodash');
-var https = require('https');
-var db = require('../../common/util/db.js');
+var speakeasy = require('speakeasy'),
+  _ = require('lodash'),
+  salt = 'momjjvivikum',
+  https = require('https'),
+  _crypto = require('crypto'),
+  db = require('../../common/util/db.js');
 module.exports = function (user) {
   /*
    user.validatesPresenceOf('name', 'email')
@@ -133,6 +135,7 @@ module.exports = function (user) {
         console.log("technical error from db", err);
       }
       if (_.isEmpty(r)) {
+
         user.create({
           "facebook": {
             "userid": facebook_id,
@@ -141,7 +144,10 @@ module.exports = function (user) {
             "expire": facebook_expire
           },
           "email": email,
-          "password": facebook_token
+          "password": _crypto.createHmac('sha256', salt)
+            .update(facebook_token)
+            .digest('hex')
+
         }, function (err, r) {
           if (_.isError(err)) {
             console.log("technical error from db", err);
