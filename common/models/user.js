@@ -2,16 +2,17 @@
  * Created by zJJ on 7/20/2016.
  */
 var speakeasy = require('speakeasy');
+var _ = require('lodash');
 var https = require('https');
 var db = require('../../common/util/db.js');
 module.exports = function (user) {
-/*
-  user.validatesPresenceOf('name', 'email')
-  user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
-  user.validatesInclusionOf('gender', {in: ['male', 'female']});
-  user.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
-  user.validatesNumericalityOf('age', {int: true});
-  */
+  /*
+   user.validatesPresenceOf('name', 'email')
+   user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
+   user.validatesInclusionOf('gender', {in: ['male', 'female']});
+   user.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
+   user.validatesNumericalityOf('age', {int: true});
+   */
 
   user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
   user.validatesUniquenessOf('email', {message: 'email is not unique'});
@@ -70,7 +71,6 @@ module.exports = function (user) {
       if (code !== credentials.twofactor) {
         return fn(err);
       }
-
       // Everything looks good, so now we can create the access token, which
       // is used for all future API calls to authenticate the user.
       user.createAccessToken(86400, function (err, token) {
@@ -80,8 +80,7 @@ module.exports = function (user) {
       });
     });
   };
-
-  user.insertimagemeta = function (data, id, fn) {
+  user.insertimagemetacall = function (data, id, fn) {
     if (typeof data === 'function') {
       // fn = include;
       data = undefined;
@@ -106,15 +105,98 @@ module.exports = function (user) {
       fn(null, doc);
     });
   };
+  user.facebooklogincall = function (data, fn) {
+    if (typeof data === 'function') {
+      data = undefined;
+    }
+    //console.log("> ==== :", data);
+    var _url_ = data["photo"];
+    var facebook_id = data["facebook.userid"];
+    var email = data["facebook.email"];
+    var facebook_token = data["facebook.token"];
+    var facebook_expire = data["facebook.expire"];
+    console.log("> login =====================");
+    console.log("> ==== facebook id is here");
+    console.log("> ====>> :", facebook_id);
+    console.log("> ==== facebook user email here");
+    console.log("> ====>> :", facebook_id);
+    console.log("> ==== facebook user token here");
+    console.log("> ====>> :", facebook_token);
+    console.log("> ==== facebook url");
+    console.log("> ====>> :", _url_);
+    user.findOne({
+      where: {
+        "facebook.userid": facebook_id
+      }
+    }, function (err, r) {
+      if (_.isError(err)) {
+        console.log("technical error from db", err);
+      }
+      if (_.isEmpty(r)) {
+        user.create({
+          "facebook": {
+            "userid": facebook_id,
+            "email": email,
+            "token": facebook_token,
+            "expire": facebook_expire
+          },
+          "email": email,
+          "password": facebook_token
+        }, function (err, r) {
+          if (_.isError(err)) {
+            console.log("technical error from db", err);
+          }
+          user.login({email: email, password: facebook_token},
+            function (err, token) {
+              console.log("> login =====================");
+              console.log("this user is using facebook to login here", r);
+              console.log("this user is login and the token is shown as below", token);
+              fn(null, r);
+            });
+        });
 
+      } else {
+
+        var user_id = r.id;
+        console.log("> facebook id is here", user_id);
+        if (!_.isEmpty(r.facebook.expire)) {
+          var date = new Date(r.facebook.expire);
+          var now = new Date();
+          if (date.parse() >= now.parse()) {
+            console.log("> login =====================");
+            console.log("this token is expired.");
+          }
+        }
+
+        user.login({email: r.facebook.email, password: r.facebook.token},
+          function (err, token) {
+            console.log("> login =====================");
+            console.log("this user is login and the token is shown as below", token);
+            fn(null, token);
+          });
+
+      }
+    });
+    console.log("update", "execute first faster line here");
+  };
+  user.remoteMethod("facebooklogincall", {
+    description: ["Update facebook login access channel in here.."],
+    accepts: [
+      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/login_facebook"}
+  });
 
   user.remoteMethod(
-    "insertimagemeta",
+    "insertimagemetacall",
     {
-      description: ["Update jumlah ruangan tersedia berdasarkan id dan tanggal"],
+      description: ["Update the data object from the object."],
       accepts: [
-        {arg: "data", type: "object", http: {source: 'body'}, required: true, description: "document in json"},
-        {arg: "id", type: "string", http: {source: 'path'}, required: true, description: "id"}
+        {arg: "data", type: "object", http: {source: "body"}, required: true, description: "document in json"},
+        {arg: "id", type: "string", http: {source: "path"}, required: true, description: "id"}
       ],
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"
@@ -126,47 +208,47 @@ module.exports = function (user) {
 
   /*
    GetRcEscalation.remoteMethod(
-   'getEscalations', {
-   http: { verb: 'get',path:'/getEscalations' },
+   "getEscalations", {
+   http: { verb: "get",path:"/getEscalations" },
    description: "Gets Escalation by the current user",
-   accepts: { arg: 'Id_Number', type: 'number' },
-   return: { arg: 'data', type: ['GetRcEscalation'], root: true }
+   accepts: { arg: "Id_Number", type: "number" },
+   return: { arg: "data", type: ["GetRcEscalation"], root: true }
    });
    */
 
 
-  user.afterRemote('create', function (context, user, next) {
-    console.log('> user.afterRemote triggered');
+  user.afterRemote("create", function (context, user, next) {
+    console.log("> user.afterRemote triggered");
 
     /*var options = {
-     type: 'email',
+     type: "email",
      to: user.email,
-     from: 'noreply@loopback.com',
-     subject: 'Thanks for registering.',
-     template: path.resolve(__dirname, '../../server/views/verify.ejs'),
-     redirect: '/verified',
+     from: "noreply@loopback.com",
+     subject: "Thanks for registering.",
+     template: path.resolve(__dirname, "../../server/views/verify.ejs"),
+     redirect: "/verified",
      user: user
      };
 
      user.verify(options, function(err, response) {
      if (err) return next(err);
 
-     console.log('> verification email sent:', response);
+     console.log("> verification email sent:", response);
 
-     context.res.render('response', {
-     title: 'Signed up successfully',
-     content: 'Please check your email and click on the verification link ' +
-     'before logging in.',
-     redirectTo: '/',
-     redirectToLinkText: 'Log in'
+     context.res.render("response", {
+     title: "Signed up successfully",
+     content: "Please check your email and click on the verification link " +
+     "before logging in.",
+     redirectTo: "/",
+     redirectToLinkText: "Log in"
      });
      });*/
     next();
   });
 
   //send password reset link when requested
-  user.on('resetPasswordRequest', function (info) {
-    var url = 'http://' + config.host + ':' + config.port + '/reset-password';
+  user.on("resetPasswordRequest", function (info) {
+    var url = "http://" + config.host + ":" + config.port + "/reset-password";
     var html = 'Click <a href="' + url + '?access_token=' +
       info.accessToken.id + '">here</a> to reset your password';
 

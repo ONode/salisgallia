@@ -20,6 +20,10 @@
       "type": "number",
       "required": true
     },
+    "enabled": {
+      "type": "Boolean",
+      "required": false
+    },
     "total_zoom_levels": {
       "type": [
         {
@@ -136,6 +140,8 @@
       "foreignKey": "publisherId"
     }
   },
-  "acls": [],
+  "acls": [
+
+  ],
   "methods": []
 }

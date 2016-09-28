@@ -22,14 +22,14 @@ var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
       next(err);
     } else {
       /*console.info(logTag, "======================");
-      console.info(logTag, "update subject", update_object);
-      console.info(logTag, "======================");
-      console.info(logTag, "check queried object", r);
-      console.info(logTag, "======================");*/
+       console.info(logTag, "update subject", update_object);
+       console.info(logTag, "======================");
+       console.info(logTag, "check queried object", r);
+       console.info(logTag, "======================");*/
       try {
         r.updateAttributes(update_object, function (err, r) {
           if (_.isFunction(next)) {
-          //  console.info(logTag, "success r.updateAttributes");
+            //  console.info(logTag, "success r.updateAttributes");
             next(r);
           }
         })

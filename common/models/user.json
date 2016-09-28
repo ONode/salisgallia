@@ -10,6 +10,14 @@
       "generated": true,
       "required": false
     },
+    "facebook": {
+      "type": {
+        "userid": "string",
+        "token": "string",
+        "expire": "Date",
+        "email": "string"
+      }
+    },
     "phone": {
       "type": "string",
       "required": false
@@ -90,7 +98,6 @@
       "property": "loginWithCode"
     }
   ],
-
   "relations": {
     "basemaps": {
       "type": "hasMany",
