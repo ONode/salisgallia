@@ -760,5 +760,35 @@
         "filter[where][image_meta.cat]": "3"
       }
     }
+  ],
+  "login_config": [
+    {
+      "area": "hong kong",
+      "backdrop": {
+        "url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg",
+        "secure_url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg"
+      }
+    },
+    {
+      "area": "china",
+      "backdrop": {
+        "url": "http://www.namoc.org/pictures/zlk/m/20160528jlfg_m.jpg",
+        "secure_url": "http://www.namoc.org/pictures/zlk/m/20160528jlfg_m.jpg"
+      }
+    },
+    {
+      "area": "japan",
+      "backdrop": {
+        "url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg",
+        "secure_url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg"
+      }
+    },
+    {
+      "area": "other",
+      "backdrop": {
+        "url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg",
+        "secure_url": "http://www.namoc.org/pictures/zlk/m/20160903cxb_m.jpg"
+      }
+    }
   ]
 }
