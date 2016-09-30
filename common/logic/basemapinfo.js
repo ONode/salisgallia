@@ -17,8 +17,12 @@ module.exports.start = function (mapModel, result_object, next, nextError) {
 };
 module.exports.progress = function (mapModel, progress, id, next) {
   console.info(logTag, "check id", id);
+  var checker = function (p) {
+    return p == 100;
+  };
   db_worker.updateByIdUpdate(mapModel, id, {
-    "complete": progress
+    "complete": progress,
+    "listing.enabled": checker(progress)
   }, next);
 };
 module.exports.complete = function (mapModel, id, result_object, next) {

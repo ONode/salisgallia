@@ -20,10 +20,6 @@
       "type": "number",
       "required": true
     },
-    "enabled": {
-      "type": "Boolean",
-      "required": false
-    },
     "total_zoom_levels": {
       "type": [
         {
@@ -114,11 +110,13 @@
     },
     "listing": {
       "type": {
-        "meta_ready": "boolean",
+        "enabled": "Boolean",
+        "violations": "array",
+        "meta_ready": "Boolean",
         "date_auction_from": "Date",
         "date_auction_to": "Date",
         "status_sold": "Date",
-        "searchable": "boolean"
+        "searchable": "Boolean"
       }
     },
     "createtime": {
@@ -141,7 +139,6 @@
     }
   },
   "acls": [
-
   ],
   "methods": []
 }

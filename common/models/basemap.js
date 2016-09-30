@@ -19,6 +19,8 @@ module.exports = function (basemap) {
         context.query.where = {}
       }
       context.query.where['complete'] = 100;
+      context.query.where['listing.enabled'] = true;
+      //context.query.where['listing.enabled'] = {$exists: true};
       console.log('Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     }
     next()
