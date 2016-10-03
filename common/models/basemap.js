@@ -30,6 +30,11 @@ module.exports = function (basemap) {
         image_meta: true,
         folder_base_name: true,
         secret_base_map_file: true,
+        price: true,
+        estprice: true,
+        baseprice: true,
+        owner: true,
+        currency: true,
         rename_file: true,
         fast_id: true
       };
