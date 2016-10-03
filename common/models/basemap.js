@@ -21,6 +21,18 @@ module.exports = function (basemap) {
       context.query.where['complete'] = 100;
       context.query.where['listing.enabled'] = true;
       //context.query.where['listing.enabled'] = {$exists: true};
+      //context.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
+      context.query.fields = {
+        id: true,
+        createtime: true,
+        updatetime: true,
+        listing: true,
+        image_meta: true,
+        folder_base_name: true,
+        secret_base_map_file: true,
+        rename_file: true,
+        fast_id: true
+      };
       console.log('Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     }
     next()
