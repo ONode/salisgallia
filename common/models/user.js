@@ -6,7 +6,12 @@ var speakeasy = require('speakeasy'),
   salt = 'momjjvivikum',
   https = require('https'),
   _crypto = require('crypto'),
-  db = require('../../common/util/db.js');
+  loopback = require('loopback'),
+  db = require('../../common/util/db.js'),
+  result_bool = {
+    acknowledged: true
+  }
+  ;
 var pwdassign = function (token) {
   return _crypto.createHmac('md5', salt)
     .update(token)
@@ -23,6 +28,123 @@ module.exports = function (user) {
 
   user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
   user.validatesUniquenessOf('email', {message: 'email is not unique'});
+  user.email_verify_from_code = function (credentials, cb) {
+    if (_.isEmpty(credentials)) {
+      cb(new Error("data not correct 1"), null);
+      return;
+    }
+    if (_.isEmpty(credentials.email) || _.isEmpty(credentials.code) || _.isEmpty(credentials.newpwd)) {
+      cb(new Error("data not correct 2"), null);
+      return;
+    }
+    if (parseInt(credentials.code) < 1) {
+      cb(new Error("Activation code is not correct"), null);
+      return;
+    }
+    user.findOne({
+      where: {
+        "email": credentials.email,
+        "recovery_code": credentials.code
+      }
+    }, function (err, r) {
+      if (_.isError(err)) {
+        cb(err, null);
+        return;
+      }
+
+      if (_.isEmpty(r)) {
+        cb(new Error("incorrect code"), null);
+        return;
+      }
+      console.log("found user: ", r);
+      db.updateByIdUpdate(user, r.id, {
+        "recovery_code": -1,
+        "password": credentials.newpwd
+      }, function (err, ur) {
+        if (_.isError(err)) {
+          cb(err, null);
+          return;
+        }
+        cb(null, result_bool);
+      });
+    });
+  };
+
+
+  user.email_verify = function (credentials, cb) {
+    if (_.isEmpty(credentials)) {
+      cb(new Error("data not correct 1"), null);
+      return;
+    }
+    if (_.isEmpty(credentials.email)) {
+      cb(new Error("data not correct 2"), null);
+      return;
+    }
+
+    var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
+    console.log('Two factor code for ' + credentials.email + ': ' + code);
+    //var renderer = loopback.template(path.resolve(__dirname, '../../common/views/email-template.ejs'));
+    //html_body = renderer(myMessage);
+    var message = "Your account email and verification code are listed below:";
+    message += "\n " + credentials.email;
+    message += "\nEnter this code on the screen to reset your password.";
+    message += "\n " + code;
+    message += "\n=============";
+    message += "\n您的帐户电子邮件和验证码列: ";
+    message += "\n" + credentials.email;
+    message += "\n输入屏幕上的验证码重置您的密码。";
+    message += "\n" + code;
+    message += "\n=============";
+
+    user.findOne({
+      where: {
+        "email": credentials.email
+      }
+    }, function (err, r) {
+      if (_.isError(err)) {
+        cb(err, null);
+        return;
+      }
+
+      if (_.isEmpty(r)) {
+        cb(new Error("incorrect email"), null);
+        return;
+      }
+      /**
+       * step2
+       */
+
+      user.app.models.Email.send({
+          to: credentials.email,
+          from: 'no-reply@zyntario.com',
+          subject: 'Password recovery for missing account.',
+          text: message,
+          html: ''
+        },
+        function (err, mail) {
+          console.log('Email Sent!');
+          console.log(mail);
+          if (_.isError(err)) {
+            cb(err, null);
+            return;
+          }
+          if (mail != null) {
+            db.updateByIdUpdate(user, r.id, {
+              "recovery_code": code
+            }, function (doc) {
+              cb(null, result_bool);
+            });
+          }
+        }
+      );
+      /**
+       * update
+       */
+    });
+
+
+  };
+
 
   user.requestCode = function (credentials, fn) {
     this.findOne({where: {email: credentials.email}}, function (err, user) {
@@ -188,6 +310,28 @@ module.exports = function (user) {
     });
     console.log("update", "execute first faster line here");
   };
+  user.remoteMethod("email_verify_from_code", {
+    description: ["Email verification with the code. "],
+    accepts: [
+      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/reset_code_verify"}
+  });
+
+  user.remoteMethod("email_verify", {
+    description: ["Email verification. "],
+    accepts: [
+      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/reset_login_pass"}
+  });
+
   user.remoteMethod("fb_login_call", {
     description: ["Update facebook login access channel in here.."],
     accepts: [
@@ -224,7 +368,6 @@ module.exports = function (user) {
    return: { arg: "data", type: ["GetRcEscalation"], root: true }
    });
    */
-
 
   user.afterRemote("create", function (context, user, next) {
     console.log("> user.afterRemote triggered");
@@ -272,36 +415,35 @@ module.exports = function (user) {
      });*/
 
   });
-
-
 };
 /*http://stackoverflow.com/questions/14218925/how-can-i-decrypt-a-hmac
 
  Example on how encryption/decryption:
-const crypto = require("crypto");
+ const crypto = require("crypto");
 
-// key and iv
-var key = crypto.createHash("sha256").update("OMGCAT!", "ascii").digest();
-var iv = "1234567890123456";
+ // key and iv
+ var key = crypto.createHash("sha256").update("OMGCAT!", "ascii").digest();
+ var iv = "1234567890123456";
 
-// this is the string we want to encrypt/decrypt
-var secret = "ermagherd";
+ // this is the string we want to encrypt/decrypt
+ var secret = "ermagherd";
 
-console.log("Initial: %s", secret);
+ console.log("Initial: %s", secret);
 
-// create a aes256 cipher based on our password
-var cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
-// update the cipher with our secret string
-cipher.update(secret, "ascii");
-// save the encryption as base64-encoded
-var encrypted = cipher.final("base64");
+ // create a aes256 cipher based on our password
+ var cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+ // update the cipher with our secret string
+ cipher.update(secret, "ascii");
+ // save the encryption as base64-encoded
+ var encrypted = cipher.final("base64");
 
-console.log("Encrypted: %s", encrypted);
+ console.log("Encrypted: %s", encrypted);
 
-// create a aes267 decipher based on our password
-var decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
-// update the decipher with our encrypted string
-decipher.update(encrypted, "base64");
+ // create a aes267 decipher based on our password
+ var decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+ // update the decipher with our encrypted string
+ decipher.update(encrypted, "base64");
 
-console.log("Decrypted: %s", decipher.final("ascii"));
-*/
+ console.log("Decrypted: %s", decipher.final("ascii"));
+
+ */

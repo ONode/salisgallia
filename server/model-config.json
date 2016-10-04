@@ -56,5 +56,8 @@
   "Basemap": {
     "dataSource": "rocket_us_east",
     "public": true
+  },
+  "Email": {
+    "dataSource": "gmail_data_source"
   }
 }

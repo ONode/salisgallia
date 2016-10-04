@@ -82,6 +82,10 @@
       "type": "object",
       "required": false,
       "description": "the path or url to display the head photo"
+    },
+    "recovery_code": {
+      "type": "number",
+      "description": "code from the email verification"
     }
   },
   "acls": [
