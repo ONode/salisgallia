@@ -171,6 +171,7 @@ module.exports = function (loopbackBasemap, req, res) {
       if (req.params.owner != null) {
         //console.info(logTag, "Id adding..");
         result["owner"] = req.params.owner;
+        result["listing.enabled"] = true;
       }
       save_data.complete(loopbackBasemap, _id, result, function () {
         //output.outResSuccess(result, res);

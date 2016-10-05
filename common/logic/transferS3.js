@@ -4,7 +4,6 @@
 
 const
   db_worker = require("./../util/db.js"),
-  info_worker = require("./basemapinfo.js"),
   logTag = "> S3: ",
   loopback = require('loopback')(),
   async = require('async'),
@@ -12,8 +11,6 @@ const
   path = require('path'),
   _ = require('lodash'),
   outputResolve = require("mapslice/lib/util/outputResolve"),
-  fse = require('fs-extra'),
-  save_data = require('./basemapinfo.js'),
   s3 = require('s3'),
   cluster = require('cluster'),
   numCPUs = require('os').cpus.length,
@@ -82,7 +79,8 @@ var worker_transfer = function (instance_model, _id, bns) {
       console.log(logTag, "trigger database update.");
       db_worker.updateByIdUpdate(instance_model, _id, {
         "folder_path": getFolderPathS3(bns.folder_base_name),
-        "complete": 100
+        "complete": 100,
+        "listing.enabled": true
       }, null);
     });
   } else {
