@@ -752,7 +752,7 @@
   "user_roles": [
     {
       "role_id": 100,
-      "error_cause": {
+      "label": {
         "en": "Painter",
         "fr": "Peintre",
         "kr": "화가",
@@ -762,7 +762,7 @@
     },
     {
       "role_id": 101,
-      "error_cause": {
+      "label": {
         "en": "Painting Blogger",
         "fr": "Peinture blogueur",
         "kr": "회화 블로거",
@@ -772,7 +772,7 @@
     },
     {
       "role_id": 102,
-      "error_cause": {
+      "label": {
         "en": "Investor",
         "fr": "Investisseur",
         "kr": "예술가",
@@ -782,7 +782,7 @@
     },
     {
       "role_id": 999,
-      "error_cause": {
+      "label": {
         "en": "Other",
         "fr": "Autre",
         "kr": "다른",
