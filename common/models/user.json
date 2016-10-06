@@ -73,6 +73,16 @@
       "required": false,
       "description": "name of the artist or seller"
     },
+    "role": {
+      "type": "number",
+      "required": false,
+      "description": "to express the user with different point of interest.."
+    },
+    "search_key": {
+      "type": "array",
+      "required": false,
+      "description": "express interest on selective keys"
+    },
     "age": {
       "type": "number",
       "required": false,
