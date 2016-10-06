@@ -5,6 +5,7 @@
       "label": {
         "cn": "油画",
         "jp": "油絵",
+        "kr": "유화",
         "fr": "peinture à l'huile",
         "en": "Canvas"
       }
@@ -14,6 +15,7 @@
       "label": {
         "cn": "水墨",
         "jp": "インク",
+        "kr": "잉크",
         "fr": "Encre",
         "en": "Ink"
       }
@@ -23,8 +25,9 @@
       "label": {
         "cn": "国画",
         "jp": "中国の伝統的な絵画",
+        "kr": "중국의 전통 회화",
         "fr": "La peinture traditionnelle chinoise",
-        "en": "Chinese Art"
+        "en": "Chinese Painting"
       }
     },
     {
@@ -32,6 +35,7 @@
       "label": {
         "cn": "书法",
         "zh": "書法",
+        "kr": "달필",
         "jp": "書道",
         "fr": "calligraphie",
         "en": "Calligraphy"
@@ -42,6 +46,7 @@
       "label": {
         "cn": "水彩画",
         "jp": "水彩画",
+        "kr": "수채화",
         "fr": "aquarelle",
         "en": "Watercolor"
       }
@@ -77,6 +82,7 @@
       "label": {
         "cn": "人物",
         "jp": "文字",
+        "kr": "문자",
         "fr": "caractère",
         "en": "Portrait"
       },
@@ -94,6 +100,7 @@
       "label": {
         "cn": "静物",
         "jp": "静物",
+        "kr": "정물화",
         "fr": "nature morte",
         "en": "Still Life"
       },
@@ -111,6 +118,7 @@
       "label": {
         "cn": "风景",
         "jp": "景色",
+        "kr": "풍경",
         "fr": "paysage",
         "en": "Western Landscape"
       },
@@ -127,6 +135,7 @@
       "label": {
         "cn": "花卉",
         "jp": "フラワーズ",
+        "kr": "꽃",
         "fr": "Fleurs",
         "en": "Western Flowers"
       },
@@ -143,6 +152,7 @@
       "label": {
         "cn": "山水",
         "jp": "景色",
+        "kr": "경치",
         "fr": "paysage",
         "en": "Eastern Landscape"
       },
@@ -157,6 +167,7 @@
       "label": {
         "cn": "花鸟",
         "jp": "フラワーズ",
+        "kr": "꽃",
         "fr": "Fleurs",
         "en": "Eastern Flowers"
       },
@@ -171,6 +182,7 @@
       "label": {
         "cn": "抽象",
         "jp": "抽象的な",
+        "kr": "추상",
         "fr": "résumé",
         "en": "Abstract"
       },
@@ -185,9 +197,10 @@
       "key": 8,
       "label": {
         "cn": "篆書",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "シール",
+        "kr": "실",
+        "fr": "sceau",
+        "en": "Seal script"
       },
       "ref": [
         4
@@ -197,9 +210,10 @@
       "key": 9,
       "label": {
         "cn": "隶書",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "Lishu",
+        "kr": "이수현",
+        "fr": "Lishu",
+        "en": "Official script"
       },
       "ref": [
         4
@@ -209,9 +223,10 @@
       "key": 10,
       "label": {
         "cn": "草書",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "草書体の",
+        "kr": "흘림 글씨",
+        "fr": "cursive",
+        "en": "Cursive"
       },
       "ref": [
         4
@@ -221,9 +236,10 @@
       "key": 11,
       "label": {
         "cn": "行書",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "フェイム",
+        "kr": "명성",
+        "fr": "gloire",
+        "en": "Running script"
       },
       "ref": [
         4
@@ -233,9 +249,10 @@
       "key": 12,
       "label": {
         "cn": "楷書",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "海舟",
+        "kr": "카 이슈",
+        "fr": "Kaishu",
+        "en": "Regular script"
       },
       "ref": [
         4
@@ -245,9 +262,10 @@
       "key": 13,
       "label": {
         "cn": "金文",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "ブロンズ",
+        "kr": "청동",
+        "fr": "bronze",
+        "en": "Inscription"
       },
       "ref": [
         4
@@ -257,9 +275,10 @@
       "key": 14,
       "label": {
         "cn": "古典",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "古典的な",
+        "kr": "고전",
+        "fr": "Classique",
+        "en": "Classical"
       },
       "ref": [
         0
@@ -269,9 +288,10 @@
       "key": 15,
       "label": {
         "cn": "當代",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "現在",
+        "kr": "선물",
+        "fr": "Présent",
+        "en": "Contemporary"
       },
       "ref": [
         0,
@@ -284,6 +304,7 @@
       "label": {
         "cn": "印像",
         "jp": "抽象的な",
+        "kr": "인상",
         "fr": "résumé",
         "en": "Abstract"
       },
@@ -297,8 +318,9 @@
       "label": {
         "cn": "結構",
         "jp": "結構",
-        "fr": "résumé",
-        "en": "Abstract"
+        "kr": "구조",
+        "fr": "structure",
+        "en": "structure"
       },
       "ref": [
         6
@@ -308,9 +330,10 @@
       "key": 19,
       "label": {
         "cn": "3-6歲組",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "3-6歳のグループ",
+        "kr": "3-6 세 그룹",
+        "fr": "3-6 ans",
+        "en": "3-6 age"
       },
       "ref": [
         7
@@ -320,9 +343,10 @@
       "key": 20,
       "label": {
         "cn": "7-10歲組",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "7-10歳のグループ",
+        "kr": "7-10 세 그룹",
+        "fr": "7-10 ans",
+        "en": "7-10 age"
       },
       "ref": [
         7
@@ -332,9 +356,10 @@
       "key": 21,
       "label": {
         "cn": "11-14歲組",
-        "jp": "抽象的な",
-        "fr": "résumé",
-        "en": "Abstract"
+        "jp": "11-14歳のグループ",
+        "kr": "11-14 세 그룹",
+        "fr": "11-14 ans",
+        "en": "11-14 age"
       },
       "ref": [
         7
@@ -347,6 +372,7 @@
       "label": {
         "cn": "寫意",
         "jp": "楽しいです",
+        "kr": "재미있는",
         "fr": "résumé",
         "en": "Enjoyable"
       },
@@ -359,6 +385,7 @@
       "label": {
         "cn": "工筆",
         "jp": "細部まで行き届きました",
+        "kr": "세심한",
         "fr": "résumé",
         "en": "Meticulous"
       },
@@ -372,6 +399,7 @@
         "cn": "界畫",
         "jp": "円を描きます",
         "fr": "résumé",
+        "kr": "원 그리기",
         "en": "Interface"
       },
       "ref": [
@@ -384,6 +412,7 @@
         "cn": "指畫",
         "jp": "指",
         "fr": "résumé",
+        "kr": "손가락",
         "en": "Finger Painting"
       },
       "ref": [
@@ -396,6 +425,7 @@
         "cn": "材料粘貼",
         "jp": "指",
         "fr": "résumé",
+        "kr": "소재 붙여 넣기",
         "en": "Adhesive Materials"
       },
       "ref": [
@@ -408,6 +438,7 @@
         "cn": "腊染",
         "jp": "ろうけつ染め",
         "fr": "Batik",
+        "kr": "납결 염색법",
         "en": "Batik"
       },
       "ref": [
@@ -420,6 +451,7 @@
         "cn": "刺繡",
         "jp": "刺繍",
         "fr": "Embroidery",
+        "kr": "자수",
         "en": "Embroidery"
       },
       "ref": [
@@ -432,6 +464,7 @@
         "cn": "漆畫",
         "jp": "ラッカー塗装",
         "fr": "Lacquer Painting",
+        "kr": "래커 페인팅",
         "en": "Lacquer Painting"
       },
       "ref": [
@@ -444,6 +477,7 @@
         "cn": "編織",
         "jp": "ウィーブ",
         "fr": "tissage",
+        "kr": "짜다",
         "en": "Weave"
       },
       "ref": [
@@ -456,6 +490,7 @@
         "cn": "珠綉",
         "jp": "ビーズ",
         "fr": "perlé",
+        "kr": "파란색",
         "en": "Beaded"
       },
       "ref": [
@@ -469,6 +504,7 @@
       "label": {
         "cn": "鏡心",
         "jp": "フレームなしの",
+        "kr": "심장 미러",
         "en": "Frameless"
       }
     },
@@ -477,6 +513,7 @@
       "label": {
         "cn": "扇面鏡心",
         "jp": "ファンの心",
+        "kr": "팬의 마음",
         "en": "Sector"
       }
     },
@@ -485,6 +522,7 @@
       "label": {
         "cn": "圓鏡心",
         "jp": "元ジンの心",
+        "kr": "위안 징 심장",
         "en": "Circle"
       }
     },
@@ -493,6 +531,7 @@
       "label": {
         "cn": "掛軸",
         "jp": "ハンギングシャフト",
+        "kr": "스크롤",
         "en": "Scroll"
       }
     },
@@ -501,6 +540,7 @@
       "label": {
         "cn": "連框",
         "jp": "でも箱",
+        "kr": "심지어 상자",
         "en": "Framed"
       }
     },
@@ -509,6 +549,7 @@
       "label": {
         "cn": "扇面連框",
         "jp": "でもファンボックス",
+        "kr": "심지어 팬 상자",
         "en": "Sector Framed"
       }
     }
@@ -519,6 +560,7 @@
       "label": {
         "cn": "設色紙本",
         "jp": "紙の上での色",
+        "kr": "용지에 컬러",
         "fr": "Couleur sur papier",
         "en": "Colored Paper"
       }
@@ -528,6 +570,7 @@
       "label": {
         "cn": "設色絹本",
         "jp": "絹上の色",
+        "kr": "실크 색상",
         "fr": "Couleur sur soie",
         "en": "Colored Silk"
       }
@@ -537,6 +580,7 @@
       "label": {
         "cn": "硬筆紙本",
         "jp": "紙にペン",
+        "kr": "종이에 펜",
         "fr": "Pen sur papier",
         "en": "Colored Paper"
       },
@@ -549,6 +593,7 @@
       "label": {
         "cn": "水墨紙本",
         "jp": "紙の上のインク",
+        "kr": "종이에 잉크",
         "fr": "Encre sur papier",
         "en": "Ink Paper"
       },
@@ -561,6 +606,7 @@
       "label": {
         "cn": "水彩紙本",
         "jp": "紙に水彩画",
+        "kr": "종이에 수채화",
         "fr": "Aquarelle sur papier",
         "en": "Colored Paper"
       },
@@ -573,6 +619,7 @@
       "label": {
         "cn": "水彩紅箋",
         "jp": "赤のメモを描きます",
+        "kr": "빨간색 메모 그리기",
         "fr": "Dessin mémo rouge",
         "en": "Colored Red memo"
       }
@@ -582,6 +629,7 @@
       "label": {
         "cn": "硃砂紙本",
         "jp": "辰砂紙",
+        "kr": "주색 종이",
         "fr": "Papier cinabre",
         "en": "Cinnabar Paper"
       }
@@ -591,6 +639,7 @@
       "label": {
         "cn": "油畫連框",
         "jp": "でもボックスを描きます",
+        "kr": "심지어 상자 그림",
         "fr": "Boîte peinture Même",
         "en": "Canvas With Frame"
       }
@@ -600,6 +649,7 @@
       "label": {
         "cn": "水墨金箋",
         "jp": "ゴールドインク注釈",
+        "kr": "골드 잉크 주석",
         "fr": "Or encre Annotations",
         "en": "Ink Jin Jian"
       }
@@ -609,6 +659,7 @@
       "label": {
         "cn": "水墨箋本",
         "jp": "インクメモ",
+        "kr": "잉크 메모",
         "fr": "La note d'encre",
         "en": "Ink Memo"
       }
@@ -653,6 +704,7 @@
         "en": "Wrong Category",
         "fr": "Mauvaise Catégorie",
         "jp": "間違ったカテゴリ",
+        "kr": "잘못된 분류",
         "cn": "分类错误"
       }
     },
@@ -662,6 +714,7 @@
         "en": "Sexual Explicit Content",
         "fr": "Explicit Content sexuelle",
         "jp": "性的な明示的なコンテンツ",
+        "kr": "성적으로 노골적인 내용",
         "cn": "色情露骨内容"
       }
     },
@@ -671,6 +724,7 @@
         "en": "Set The Wrong Frame",
         "fr": "Set The Frame Mauvais",
         "jp": "間違ったフレームを設定",
+        "kr": "표 잘못된 프레임",
         "cn": "表错框架"
       }
     },
@@ -679,6 +733,7 @@
       "error_cause": {
         "en": "Too dark or Too bright Image",
         "fr": "Trop sombre ou trop lumineux image",
+        "kr": "너무 어둡거나 이미지의 너무 밝은",
         "jp": "暗すぎるか、明るすぎる画像",
         "cn": "太暗或太亮的图像"
       }
@@ -688,8 +743,51 @@
       "error_cause": {
         "en": "Other Issues",
         "fr": "Autres issues",
+        "kr": "기타 문제",
         "jp": "その他の問題",
         "cn": "其他事宜"
+      }
+    }
+  ],
+  "user_roles": [
+    {
+      "role_id": 100,
+      "error_cause": {
+        "en": "Painter",
+        "fr": "Peintre",
+        "kr": "화가",
+        "jp": "画家",
+        "cn": "畫家"
+      }
+    },
+    {
+      "role_id": 101,
+      "error_cause": {
+        "en": "Painting Blogger",
+        "fr": "Peinture blogueur",
+        "kr": "회화 블로거",
+        "jp": "絵画ブロガー",
+        "cn": "繪畫博客"
+      }
+    },
+    {
+      "role_id": 102,
+      "error_cause": {
+        "en": "Investor",
+        "fr": "Investisseur",
+        "kr": "예술가",
+        "jp": "投資家",
+        "cn": "投資者"
+      }
+    },
+    {
+      "role_id": 999,
+      "error_cause": {
+        "en": "Other",
+        "fr": "Autre",
+        "kr": "다른",
+        "jp": "別の",
+        "cn": "其他"
       }
     }
   ],
@@ -699,6 +797,7 @@
         "en": "Trending",
         "fr": "Tendances",
         "jp": "トレンド",
+        "kr": "동향",
         "cn": "趨勢"
       },
       "filter": {
@@ -710,6 +809,7 @@
         "en": "Undiscovered",
         "fr": "non découvert",
         "jp": "未発見",
+        "kr": "발견되지 않은",
         "cn": "未被發現"
       },
       "filter": {
@@ -720,6 +820,7 @@
       "name": {
         "en": "Explore",
         "fr": "Explorer",
+        "kr": "탐구",
         "jp": "探ります",
         "cn": "探索"
       },
@@ -731,6 +832,7 @@
       "name": {
         "en": "Daily Ink",
         "fr": "Ink Daily",
+        "kr": "매일 잉크",
         "jp": "日々水墨",
         "cn": "每日水墨"
       },
@@ -741,6 +843,7 @@
     {
       "name": {
         "cn": "水墨",
+        "kr": "잉크",
         "jp": "インク",
         "fr": "Encre",
         "en": "Ink"
