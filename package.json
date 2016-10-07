@@ -17,6 +17,7 @@
     "compression": "https://github.com/expressjs/compression.git",
     "errorhandler": "^1.1.1",
     "loopback": "2.34.1",
+    "strong-arc": "1.8.9",
     "loopback-context": "https://github.com/strongloop/loopback-context.git",
     "loopback-connector-mysql": "^1.4.7",
     "loopback-boot": "https://github.com/strongloop/loopback-boot.git",

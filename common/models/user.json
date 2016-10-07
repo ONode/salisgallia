@@ -78,6 +78,11 @@
       "required": false,
       "description": "to express the user with different point of interest.."
     },
+    "country":{
+      "type": "string",
+      "required": false,
+      "description": "country key to show" 	
+    },
     "search_key": {
       "type": "array",
       "required": false,
