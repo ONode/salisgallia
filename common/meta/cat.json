@@ -505,6 +505,7 @@
         "cn": "鏡心",
         "jp": "フレームなしの",
         "kr": "심장 미러",
+        "fr": "Frameless",
         "en": "Frameless"
       }
     },
@@ -514,6 +515,7 @@
         "cn": "扇面鏡心",
         "jp": "ファンの心",
         "kr": "팬의 마음",
+        "fr": "Fan-coeur",
         "en": "Sector"
       }
     },
@@ -522,8 +524,9 @@
       "label": {
         "cn": "圓鏡心",
         "jp": "元ジンの心",
+        "fr": "Cercle frameless",
         "kr": "위안 징 심장",
-        "en": "Circle"
+        "en": "Circle frameless"
       }
     },
     {
@@ -532,6 +535,7 @@
         "cn": "掛軸",
         "jp": "ハンギングシャフト",
         "kr": "스크롤",
+        "fr": "Faire défiler",
         "en": "Scroll"
       }
     },
@@ -541,6 +545,7 @@
         "cn": "連框",
         "jp": "でも箱",
         "kr": "심지어 상자",
+        "fr": "Encadré",
         "en": "Framed"
       }
     },
@@ -550,6 +555,7 @@
         "cn": "扇面連框",
         "jp": "でもファンボックス",
         "kr": "심지어 팬 상자",
+        "fr": "Secteur Encadrée",
         "en": "Sector Framed"
       }
     }
@@ -856,6 +862,7 @@
       "name": {
         "cn": "国画",
         "jp": "中国の伝統的な絵画",
+        "kr": "중국의 전통 회화",
         "fr": "La peinture traditionnelle chinoise",
         "en": "Chinese Art"
       },
