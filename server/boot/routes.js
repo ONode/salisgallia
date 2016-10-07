@@ -9,8 +9,8 @@ const
   path = require("path"),
   express = require('express'),
   output = require('../../common/util/outputjson.js'),
-  catmeta = require('../../common/meta/cat.json'),
-  timeout = require('req-timeout')
+  timeout = require('req-timeout'),
+  request = require('request')
   ;
 const
   __parentDir = path.dirname(module.main)
@@ -39,8 +39,15 @@ module.exports = function (app) {
     createbasestd(model_instance, req, res);
   });
   app.get('/api/config/', function (req, res) {
-    //output.outResSuccess(catmeta, res);
-    res.json(catmeta);
+    var production = 'https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json';
+    var development = 'https://rawgit.com/GDxU/gallerygo/master/configurations.json';
+    request({url: development, json: true}, function (error, response, configuration_body) {
+      if (_.isError(error)) {
+        res.json({});
+        return;
+      }
+      res.json(configuration_body);
+    });
   });
   console.log('> created /sbupload request router');
   app.use('/static', express.static(__parentDir + "/storage/tmp/"));
