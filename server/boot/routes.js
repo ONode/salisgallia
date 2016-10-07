@@ -7,40 +7,41 @@ const
   createbasestd = require("../../common/logic/basemapstd"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
-  express = require('express'),
-  output = require('../../common/util/outputjson.js'),
-  timeout = require('req-timeout'),
-  request = require('request')
+  _ = require("lodash"),
+  express = require("express"),
+  output = require("../../common/util/outputjson.js"),
+  timeout = require("req-timeout"),
+  request = require("request")
   ;
 const
   __parentDir = path.dirname(module.main)
   ;
 module.exports = function (app) {
   // Install a "/ping" route that returns "pong"
-  app.get('/ping', function (req, res) {
-    res.send('pong');
+  app.get("/ping", function (req, res) {
+    res.send("pong");
   });
-  console.log('> created /ping request router');
-  app.post('/sbupload', function (req, res) {
+  console.log("> created /ping request router");
+  app.post("/sbupload", function (req, res) {
     var model_instance = app.models.Basemap;
     createbasemap(model_instance, req, res);
   });
-  app.post('/sbuploadstd', function (req, res) {
+  app.post("/sbuploadstd", function (req, res) {
     var model_instance = app.models.Basemap;
     createbasestd(model_instance, req, res);
   });
-  app.post('/api/basemapupload/:owner/', function (req, res) {
+  app.post("/api/basemapupload/:owner/", function (req, res) {
     var model_instance = app.models.Basemap;
     //   req.resetTimeout(120000);
     createbasemap(model_instance, req, res);
   });
-  app.post('/api/basemapnonstd/:owner/', function (req, res) {
+  app.post("/api/basemapnonstd/:owner/", function (req, res) {
     var model_instance = app.models.Basemap;
     createbasestd(model_instance, req, res);
   });
-  app.get('/api/config/', function (req, res) {
-    var production = 'https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json';
-    var development = 'https://rawgit.com/GDxU/gallerygo/master/configurations.json';
+  app.get("/api/config/", function (req, res) {
+    var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
+    var development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";
     request({url: development, json: true}, function (error, response, configuration_body) {
       if (_.isError(error)) {
         res.json({});
@@ -49,16 +50,16 @@ module.exports = function (app) {
       res.json(configuration_body);
     });
   });
-  console.log('> created /sbupload request router');
-  app.use('/static', express.static(__parentDir + "/storage/tmp/"));
-  console.log('> server static file path is created and started from http://{domain}/static');
-  app.use('/removeallxxx', function (req, res) {
+  console.log("> created /sbupload request router");
+  app.use("/static", express.static(__parentDir + "/storage/tmp/"));
+  console.log("> server static file path is created and started from http://{domain}/static");
+  app.use("/removeallxxx", function (req, res) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
-  app.use('/first_install', function (req, res) {
+  app.use("/first_install", function (req, res) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
-  console.log('> remove all uploaded tmp files with http://{domain}/removeallxxx');
+  console.log("> remove all uploaded tmp files with http://{domain}/removeallxxx");
 };
