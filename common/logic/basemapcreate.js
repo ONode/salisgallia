@@ -340,7 +340,6 @@ module.exports.uploadRegular = function (app, req, res) {
     var _id = result.carry_id;
 
     if (req.params.owner != null) {
-      //console.info(logTag, "Id adding..");
       result["owner"] = req.params.owner;
       result["listing.enabled"] = true;
     } else {
