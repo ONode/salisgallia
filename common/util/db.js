@@ -1,15 +1,59 @@
 /**
  * Created by zJJ on 7/21/2016.
  */
-const logTag = "> db worker";
+const logTag = "> db.js";
 const _ = require('lodash');
 var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, next) {
+  console.log(logTag, "==========================================");
+  console.log(logTag, "==> Update By Id And Increase Start Here =");
+  console.log(logTag, "==========================================");
   persistentModel.findById(_id_, function (err, r) {
-    var update = {};
-    update[field_name_inc_1] = r[field_name_inc_1] + 1;
-    r.updateAttribute(update, function (err, r) {
+
+    if (_.isError(err)) {
+      console.log(logTag, "findById has error ..... ", err);
+      return;
+    }
+
+    var val = 0;
+    if (_.isNaN(parseInt(r[field_name_inc_1]))) {
+      val = 1;
+    } else {
+      val = parseInt(r[field_name_inc_1]) + 1;
+    }
+    r.updateAttribute(field_name_inc_1, val, function (err, r) {
+      // console.log(logTag, "updateAttribute result in here.....");
+      if (_.isError(err)) {
+        console.log(logTag, "updateAttribute has error ..... ", err);
+        return;
+      }
       if (_.isFunction(next)) {
-        delete update;
+        next();
+      }
+    })
+  });
+};
+var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, next) {
+  console.log(logTag, "==========================================");
+  console.log(logTag, "==> Update By Id And Reduce Start Here =");
+  console.log(logTag, "==========================================");
+  persistentModel.findById(_id_, function (err, r) {
+    var val = 0;
+    if (_.isNaN(parseInt(r[field_name_inc_1]))) {
+      val = 0;
+    } else {
+      val = parseInt(r[field_name_inc_1]) - 1;
+      if (val < 0) {
+        val = 0;
+      }
+    }
+    r.updateAttribute(field_name_inc_1, val, function (err, r) {
+
+      if (_.isError(err)) {
+        console.log(logTag, "updateAttribute has error ..... ", err);
+        return;
+      }
+
+      if (_.isFunction(next)) {
         next();
       }
     })
@@ -51,6 +95,7 @@ var removeAll = function (persistentModel, where, callback) {
   persistentModel.destroyAll(where, callback);
 };
 module.exports.updateByIdAndIncrease = updateByIdAndIncrease;
+module.exports.updateByIdAndReduce = updateByIdAndReduce;
 module.exports.updateByIdUpdate = updateByIdUpdate;
 module.exports.removeAll = removeAll;
 module.exports.getInstanceById = getInstanceById;

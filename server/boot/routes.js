@@ -3,13 +3,11 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 const
-  createbasemap = require("../../common/logic/basemapcreate"),
-  createbasestd = require("../../common/logic/basemapstd"),
+  imageUploader = require("../../common/logic/basemapcreate"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   _ = require("lodash"),
   express = require("express"),
-  output = require("../../common/util/outputjson.js"),
   timeout = require("req-timeout"),
   request = require("request")
   ;
@@ -22,22 +20,14 @@ module.exports = function (app) {
     res.send("pong");
   });
   console.log("> created /ping request router");
-  app.post("/sbupload", function (req, res) {
-    var model_instance = app.models.Basemap;
-    createbasemap(model_instance, req, res);
-  });
-  app.post("/sbuploadstd", function (req, res) {
-    var model_instance = app.models.Basemap;
-    createbasestd(model_instance, req, res);
-  });
   app.post("/api/basemapupload/:owner/", function (req, res) {
-    var model_instance = app.models.Basemap;
-    //   req.resetTimeout(120000);
-    createbasemap(model_instance, req, res);
+    //req.resetTimeout(120000);
+    //console.log(res);
+    imageUploader.uploadTiling(app, req, res);
   });
   app.post("/api/basemapnonstd/:owner/", function (req, res) {
-    var model_instance = app.models.Basemap;
-    createbasestd(model_instance, req, res);
+   // console.log(res);
+    imageUploader.uploadRegular(app, req, res);
   });
   app.get("/api/config/", function (req, res) {
     var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";

@@ -78,10 +78,10 @@
       "required": false,
       "description": "to express the user with different point of interest.."
     },
-    "country":{
+    "country": {
       "type": "string",
       "required": false,
-      "description": "country key to show" 	
+      "description": "country key to show"
     },
     "search_key": {
       "type": "array",
@@ -98,11 +98,23 @@
       "required": false,
       "description": "the path or url to display the head photo"
     },
+    "uploads": {
+      "type": "number",
+      "required": false,
+      "description": "total uploaded items"
+    },
     "recovery_code": {
       "type": "number",
       "description": "code from the email verification"
     }
   },
+  "hidden": [
+    "recovery_code",
+    "facebook",
+    "mac",
+    "bitcoin",
+    "ltecoin"
+  ],
   "acls": [
     {
       "principalType": "ROLE",

@@ -1,12 +1,34 @@
 /**
  * Created by zJJ on 7/19/2016.
  */
-var loopback = require('loopback');
 var _ = require('lodash');
 var db_worker = require("./../util/db.js");
-var s3_worker = require("./../logic/transferS3");
-const log = "> basemap op";
+var s3thread = require("./../logic/transferS3");
+const logTag = "> basemap.js model";
 module.exports = function (basemap) {
+
+  /* var reduceUploads = function (user_uuid, cb) {
+   var UserItem = basemap.models.user;
+   UserItem.findOne({
+   where: {
+   "id": user_uuid
+   }
+   }, function (err, item) {
+
+   if (_.isError(err)) {
+   cb(err);
+   return;
+   }
+
+   db.updateByIdUpdate(UserItem, user_uuid, {
+   "uploads": item.uploads - 1
+   }, function (doc) {
+   return cb(doc);
+   });
+   });
+   };*/
+
+
   /**
    * throwing in an extra request on value in the filter object
    */
@@ -38,35 +60,38 @@ module.exports = function (basemap) {
         rename_file: true,
         fast_id: true
       };
-      console.log('Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
+      console.log(logTag, 'Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     }
     next()
   });
+
   basemap.observe('before delete', function (ctx, next) {
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
       ctx.where);
 
-    var _basemap_id = ctx.where['id'];
-    db_worker.getInstanceById(ctx.Model, _basemap_id,
+    var basemapId = ctx.where['id'];
+    db_worker.getInstanceById(basemap, basemapId,
       function (data) {
-        console.log('remove item', data);
+        console.log(logTag, 'remove item', data);
         if (data != null) {
-          console.log('=================== continue');
+          console.log(logTag, '=================== start removing the files from S3 folder');
           var base_path = data.folder_base_name;
-          console.log('remove base_path', base_path);
-          s3_worker.S3RemoveItemFolder(base_path);
-          console.log('=================== end');
+          db_worker.updateByIdAndReduce(basemap.app.models.user, data.owner, "uploads", function () {
+            console.log(logTag, 'S3RemoveItemFolder');
+            s3thread.S3RemoveItemFolder(base_path);
+          });
+          console.log(logTag, '=================== end');
         }
         next();
       }, function (err) {
-        console.log('remove item', err);
+        console.log(logTag, 'remove item', err);
         next();
       });
   });
 
   basemap.observe('after delete', function (context, next) {
-    console.log('remove item', 'done');
+    console.log(logTag, 'remove item', 'done');
     next();
   });
   /*  remotes.after('*.find', function (ctx, next) {

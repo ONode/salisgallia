@@ -2,7 +2,8 @@
  * Created by zJJ on 7/20/2016.
  */
 var db_worker = require("./../util/db.js");
-const logTag = '> save info';
+const _ = require('lodash');
+const logTag = '> basemapinfo.js';
 module.exports.start = function (mapModel, result_object, next, nextError) {
   var saveClip = new mapModel(result_object);
   saveClip.save(function (err, doc) {
@@ -25,8 +26,36 @@ module.exports.progress = function (mapModel, progress, id, next) {
     "listing.enabled": checker(progress)
   }, next);
 };
-module.exports.complete = function (mapModel, id, result_object, next) {
-  db_worker.updateByIdUpdate(mapModel, id, result_object, next);
+/*
+ lb_basemap.findOne({where:{id:map_id}}, function (err, inst) {
+
+ });
+ lb_basemap.updateAttributes()*/
+module.exports.localUploadProgressComplete = function (lb_basemap, lb_user, map_id, result_object, next) {
+
+  console.log(logTag, "localUploadProgressComplete continue ..... ");
+
+
+  db_worker.updateByIdAndIncrease(lb_user, result_object["owner"], "uploads",
+    function () {
+
+      console.log(logTag, "operation continue ..... ");
+      db_worker.updateByIdUpdate(lb_basemap, map_id, result_object, next);
+    },
+
+    function (err) {
+
+      console.log(logTag, "occurred error", err);
+      if (_.isError(err)) {
+        next(err);
+      } else {
+        next();
+      }
+
+
+
+
+    });
 };
 module.exports.complete_once_off = function (mapModel, result_object, next) {
   var saveClip = new mapModel(result_object);

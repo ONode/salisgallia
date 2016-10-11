@@ -3,15 +3,15 @@
  */
 var speakeasy = require('speakeasy'),
   _ = require('lodash'),
-  salt = 'momjjvivikum',
+  salt = 'moc43viv8ipum',
   https = require('https'),
   _crypto = require('crypto'),
   loopback = require('loopback'),
   db = require('../../common/util/db.js'),
   result_bool = {
     acknowledged: true
-  }
-  ;
+  };
+
 var pwdassign = function (token) {
   return _crypto.createHmac('md5', salt)
     .update(token)
@@ -70,6 +70,20 @@ module.exports = function (user) {
     });
   };
 
+  user.most_popular = function (cb) {
+    user.find({
+      where: {
+        order: 'uploads DESC',
+        limit: 12
+      }
+    }, function (err, list) {
+      if (_.isError(err)) {
+        cb(err, null);
+        return;
+      }
+      cb(null, list);
+    });
+  };
 
   user.email_verify = function (credentials, cb) {
     if (_.isEmpty(credentials)) {
@@ -342,7 +356,17 @@ module.exports = function (user) {
     },
     http: {verb: "post", path: "/login_facebook"}
   });
-
+  user.remoteMethod(
+    "most_popular", {
+      description: ["List out the filter of popular artist in the community."],
+      accepts: [],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      isStatic: true, /* this is to need id systematically */
+      http: {verb: "get", path: "/most_popular"}
+    }
+  );
   user.remoteMethod(
     "update_meta_call",
     {
