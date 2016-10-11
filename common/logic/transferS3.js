@@ -17,12 +17,13 @@ const
   AWS = require('aws-sdk')
   ;
 
-
 const
+  test_s3_keyid = "",
+  test_s3_accesskey = "",
   file_format = "/{z}/t_{y}_{x}.jpg",
   access = {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || ""
+    accessKeyId: process.env.S3_ACCESS_KEY_ID || test_s3_keyid,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || test_s3_accesskey
   },
   bucket_active = "dobsh22",
   bucket_inactive = "xboxdoc",

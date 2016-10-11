@@ -9,7 +9,7 @@ const
   ;
 
 const
-  logTag = '> remove files info',
+  logTag = '> remove',
   __parentDir = path.dirname(module.main),
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/"

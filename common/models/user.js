@@ -26,7 +26,6 @@ module.exports = function (user) {
    user.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
    user.validatesNumericalityOf('age', {int: true});
    */
-
   user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
   user.validatesUniquenessOf('email', {message: 'email is not unique'});
   user.email_verify_from_code = function (credentials, cb) {

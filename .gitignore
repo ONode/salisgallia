@@ -45,3 +45,4 @@ node_modules
 \storage\tmp\storage_f\**\*.jpg
 \storage\tmp\tmpsgi\**
 storage
+localkey.txt
