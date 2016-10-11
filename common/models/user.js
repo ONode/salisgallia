@@ -8,6 +8,7 @@ var speakeasy = require('speakeasy'),
   _crypto = require('crypto'),
   loopback = require('loopback'),
   db = require('../../common/util/db.js'),
+  logTag = '> user.js',
   result_bool = {
     acknowledged: true
   };
@@ -72,15 +73,15 @@ module.exports = function (user) {
 
   user.most_popular = function (cb) {
     user.find({
-      where: {
-        order: 'uploads DESC',
-        limit: 12
-      }
+      where: {},
+      order: 'uploads DESC',
+      limit: 12
     }, function (err, list) {
       if (_.isError(err)) {
         cb(err, null);
         return;
       }
+      console.log(logTag, list);
       cb(null, list);
     });
   };
