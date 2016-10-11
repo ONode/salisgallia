@@ -169,23 +169,7 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
   };
   var mapSlicer = null;
   var uploadStarter = setupUploader(O, function (data) {
-    mapSlicer = defineSlicer({
-      file: base_folder + data.folder_base_name + "/" + data.secret_base_map_file,
-      //file: base_folder + base_name + '/' +O. secret_base_map_file,
-      // (required) Huge image to slice
-      output: base_folder + data.folder_base_name + "/{z}/t_{y}_{x}.jpg"
-      // Output file pattern
-    }, basemap, function (err) {
-      console.log(logTag, "==========================================");
-      console.log(logTag, "==> mapSlicer error  =");
-      console.log(logTag, "==========================================");
-      console.log(err);
-      console.log(logTag, "==========================================");
-    }, function (end) {
 
-      console.log(logTag, "==> mapSlicer progress complete  =");
-      return next_step(O);
-    });
   }, function (err) {
     console.log(logTag, "==========================================");
     console.log(logTag, "==> uploadStarter error  =");
@@ -245,10 +229,32 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
         basemapInfo.start(basemap, O, function (id) {
           O.carry_id = id;
           // output.outResSuccess(O, res);
+
+          mapSlicer = defineSlicer({
+              file: base_folder + O.folder_base_name + "/" + O.secret_base_map_file,
+              //file: base_folder + base_name + '/' +O. secret_base_map_file,
+              // (required) Huge image to slice
+              output: base_folder + O.folder_base_name + "/{z}/t_{y}_{x}.jpg"
+              // Output file pattern
+            },
+            O,
+            basemap,
+            function (err) {
+              console.log(logTag, "==========================================");
+              console.log(logTag, "==> mapSlicer error  =");
+              console.log(logTag, "==========================================");
+              console.log(err);
+              console.log(logTag, "==========================================");
+            },
+            function (endPack) {
+              console.log(logTag, "==> mapSlicer progress complete  =");
+              return next_step(endPack);
+            });
+
           mapSlicer.start();
-         // return next_step(O);
+
         }, function (err) {
-          // output.outResErro(err.message, res);
+
           return next_step(err);
         });
       }
