@@ -89,7 +89,7 @@ var worker_transfer = function (instance_model, _id, bns) {
     console.log(logTag, bns);
   }
 };
-var worker_transfer_simple = function (instance_model, _id, bns) {
+var worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns, next) {
   console.log(logTag, "simple transfer process: ", bns);
   if (_.isEmpty(access.accessKeyId) || _.isEmpty(access.secretAccessKey)) {
     console.log(logTag, "S3 process access is not found. Process stop here");
@@ -103,10 +103,21 @@ var worker_transfer_simple = function (instance_model, _id, bns) {
     triggerS3(obfiles, 0, function () {
       //When all the S3 files are uploaded.
       console.log(logTag, "trigger database update.");
-      db_worker.updateByIdUpdate(instance_model, _id, {
+      db_worker.updateByIdUpdate(instance_model, basemap_ID, {
         "folder_path": getFolderPathS3(bns.folder_base_name),
+        "listing.enabled": true,
         "complete": 100
-      }, null);
+      }, function (doc) {
+
+        if (_.isError(doc)) {
+          return;
+        }
+
+        db_worker.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", null);
+        if (_.isFunction(next)) {
+          return next();
+        }
+      });
     });
   }
 };

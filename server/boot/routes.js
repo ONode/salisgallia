@@ -3,7 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 const
-  imageUploader = require("../../common/logic/basemapcreate"),
+  makerMap = require("../../common/logic/mapMakerV2.js"),
   clearall = require("../../common/logic/clearallfolders"),
   path = require("path"),
   _ = require("lodash"),
@@ -20,15 +20,16 @@ module.exports = function (app) {
     res.send("pong");
   });
   console.log("> created /ping request router");
+
   app.post("/api/basemapupload/:owner/", function (req, res) {
-    //req.resetTimeout(120000);
-    //console.log(res);
-    imageUploader.uploadTiling(app, req, res);
+    makerMap.uploadTiling(app, req, res);
   });
   app.post("/api/basemapnonstd/:owner/", function (req, res) {
-   // console.log(res);
-    imageUploader.uploadRegular(app, req, res);
+    makerMap.uploadRegular(app, req, res);
   });
+
+
+
   app.get("/api/config/", function (req, res) {
     var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
     var development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";

@@ -13,7 +13,7 @@ const
   _ = require('lodash'),
   async = require('async'),
   fse = require('fs-extra'),
-  im = require('imagemagick'),
+  _moduleIm = require('imagemagick'),
   s3thread = require('./transferS3.js'),
   basemapInfo = require('./basemapinfo.js')
 
@@ -73,16 +73,17 @@ const basic_config = {
   zoomMin: 1
 };
 
-var defineSlicer = function (_config, dataStructure, lb_map, errCallback, endCallback) {
-  var mapSlicer = mapSliceArc(_.extend(_config, basic_config));
+var defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endCallback) {
+  var mapSlicer = mapSliceArc(_.extend(configNew, basic_config));
   mapSlicer.on("start", function (files, options) {
     console.info("Starting to process " + files + " files.");
   });
 
   mapSlicer.on("error", function (err) {
+    if (_.isFunction(errCallback)) {
+      return errCallback(err);
+    }
     console.error(err);
-    //is_done = true;
-    errCallback(err);
   });
 
   mapSlicer.on("progress", function (progress, total, current, file) {
@@ -96,7 +97,9 @@ var defineSlicer = function (_config, dataStructure, lb_map, errCallback, endCal
   });
 
   mapSlicer.on("end", function () {
-    return endCallback(dataStructure);
+    if (_.isFunction(endCallback)) {
+      return endCallback(dataStructure);
+    }
   });
 
   mapSlicer.on("levels", function (levels_found) {
@@ -154,9 +157,7 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
 };
 
 const wrap_process_tilingmap = function (basemap, req, res, next_step) {
-
 //http://www.scantips.com/basics1d.html
-  var is_done = false;
   console.log(logTag, "cpu: " + numCPUs);
   var O = {
     carry_id: "",
@@ -168,21 +169,13 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
     folder_path: ""
   };
   var mapSlicer = null;
-  var uploadStarter = setupUploader(O, function (data) {
-
-  }, function (err) {
+  var uploadStarter = setupUploader(O, null, function (err) {
     console.log(logTag, "==========================================");
     console.log(logTag, "==> uploadStarter error  =");
     console.log(logTag, "==========================================");
     return next_step(err);
   });
 
-  // console.log(req);
-  // var tmp_path = req.files["art"].path;
-  // var isArtDefined = !_.isNull(req.files["art"]);
-  // var isArtDefined = !_.isNull(req.body["art"]);
-  // console.log(req.files);
-  // if (req.files && isArtDefined) {
 
   uploadStarter(req, res, function (err) {
     if (err) {
@@ -212,7 +205,7 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
       dstPath: b
     };
     //rmdir(upload_helper_folder);
-    im.resize(options, function (err) {
+    _moduleIm.resize(options, function (err) {
       if (err) {
         var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
@@ -226,7 +219,7 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
           console.log("warning there is no owner id for this basemap..");
           console.log("====================================");
         }
-        basemapInfo.start(basemap, O, function (id) {
+        basemapInfo.startNewMapData(basemap, O, function (id) {
           O.carry_id = id;
           // output.outResSuccess(O, res);
 
@@ -306,7 +299,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
       srcPath: a,
       dstPath: b
     };
-    im.resize(options, function (err) {
+    _moduleIm.resize(options, function (err) {
       if (_.isError(err)) {
         var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
@@ -319,7 +312,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
         console.log("warning there is no owner id for this basemap..");
         console.log("====================================");
       }
-      basemapInfo.start(basemap, O, function (id) {
+      basemapInfo.startNewMapData(basemap, O, function (id) {
         O.carry_id = id;
         next_step(O);
       }, function (err) {
