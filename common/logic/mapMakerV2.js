@@ -264,8 +264,8 @@ var v2 = function (app, req, res) {
       }
 
       pre.basemapInfo.localUploadProgressComplete(
-        process.getModels.lb_basemap,
-        process.getModels.lb_user,
+         process.getModels().lb_basemap,
+         process.getModels().lb_user,
         item_id,
         result,
 
@@ -278,7 +278,7 @@ var v2 = function (app, req, res) {
           console.log(logTag, "all local images are transfering to S3 cloud now.");
 
           pre.s3thread.transferSyncBaseMapS3(
-            process.getModels.lb_basemap,
+             process.getModels().lb_basemap,
             item_id,
             result);
         });
@@ -314,9 +314,13 @@ var v1 = function (app, req, res) {
 
     pre.s3thread.transferSimpleSingleSmallMapS3(
       process.getModels().lb_basemap,
-      process.getModels.lb_user,
+      process.getModels().lb_user,
       item_id,
       result);
+
+    console.info(logTag, "============================================");
+    console.info(logTag, "header out put -------------------->", result);
+    console.info(logTag, "============================================");
 
     return pre.output.outResSuccess(result, res);
 

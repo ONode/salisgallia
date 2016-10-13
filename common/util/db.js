@@ -4,6 +4,13 @@
 const logTag = "> db.js";
 const _ = require('lodash');
 var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, next) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdAndIncrease, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
   console.log(logTag, "==========================================");
   console.log(logTag, "==> Update By Id And Increase Start Here =");
   console.log(logTag, "==========================================");
@@ -33,6 +40,13 @@ var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, n
   });
 };
 var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, next) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdAndReduce, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
   console.log(logTag, "==========================================");
   console.log(logTag, "==> Update By Id And Reduce Start Here =");
   console.log(logTag, "==========================================");
@@ -60,6 +74,13 @@ var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, nex
   });
 };
 var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdUpdate, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
   persistentModel.findById(_id_, function (err, r) {
     if (_.isError(err) || r == null) {
       console.info(logTag, "error incurred or the query object is not found", err);
