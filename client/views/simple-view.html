@@ -4,8 +4,8 @@
       <div class="flex_item">
         <div class="song_info">
           <div class="cont">
-            <h1 class="song" id="song_name">{{action}}</h1>
-            <p class="singer" id="goSinger">{{action}}</p>
+            <h1 class="song" id="song_name">{{ThisArticle.meta.article_name_native}}</h1>
+            <p class="singer" id="goSinger">{{ThisArticle.size}}</p>
             <p class="singer hifi none">
                 <span class="con">
                   <span>GalleryGo!提供本曲</span>
@@ -19,7 +19,7 @@
       <div class="album_cover">
         <div class="cover_container">
           <img id="album_pic"
-               src="http://imgcache.wechat.com/music/joox/photo/mid_album_265/f/0/9560f018ad1fcef0.jpg"
+               src="{{ThisArticle.preview}}"
                style="visibility: visible;"/>
         </div>
       </div>
@@ -41,7 +41,7 @@
   </div>
 
   <div class="bg" id="album_pic2"
-       style="background-image:url(http://imgcache.wechat.com/music/joox/photo/mid_album_265/f/0/9560f018ad1fcef0.jpg);"></div>
+       style="background-image:url({{ThisArticle.preview}});"></div>
 
   <div class="bg_mask"></div>
 

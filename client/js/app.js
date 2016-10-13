@@ -9,18 +9,26 @@ angular
     function ($stateProvider, $urlRouterProvider) {
 
       $stateProvider
-        .state('preview-artwork', {
-          url: '/preview-article/{id}/{mode}/{lang}',
+
+        .state('Preview', {
+          url: '/preview/:id/:mode/:lang',
           templateUrl: 'views/simple-view.html',
-          controller: 'SingleArtWorkPreview'
+          controller: 'PreviewController'
         })
+
+
       ;
 
-      $urlRouterProvider.otherwise('preview-artwork');
+      // url: '/Preview/:id/:mode/:lang',
+    //  console.log("=config done===");
+      //$urlRouterProvider.otherwise('Preview');
+
+
     }])
   .run(['$rootScope', '$state', function ($rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function (event, next) {
       // redirect to login page if not logged in
+      //console.log("====== state change start =======");
       if (next.authenticate && !$rootScope.currentUser) {
         event.preventDefault(); //prevent current page from loading
         $state.go('forbidden');
