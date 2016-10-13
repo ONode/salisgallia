@@ -22,8 +22,8 @@
     </div>
   </div>
 
-  <div class="openGox" id="openGallery" ng-touchstart="LocationApp.link()">
-    <div>開啟Gallery Go!<span class="open-icon"></span></div>
+  <div class="openGox" id="openGallery" ng-click="LocationApp.link()">
+    <div>開啟Gallery Go!<span class="open-icon" ng-class="{'rotatingloop':LocationApp.rotating}"></span></div>
   </div>
 
   <div class="download" id="btnsJoox">

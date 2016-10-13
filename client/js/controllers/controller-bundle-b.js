@@ -15,8 +15,11 @@ angular.module('app')
 
         $scope.LocationApp = {
           link: function () {
+            // var el = angular.element(document.querySelector('#openGallery .open-icon'));
+            this.rotating = !this.rotating;
             console.log("here is now up...");
-          }
+          },
+          rotating: false
         }
         ;
         var StudentDataOp = {};
