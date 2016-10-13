@@ -13,6 +13,12 @@ angular.module('app')
         var default_path1 = "http://dobsh22.s3.amazonaws.com/basemap/";
         var default_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/";
 
+        $scope.LocationApp = {
+          link: function () {
+            console.log("here is now up...");
+          }
+        }
+        ;
         var StudentDataOp = {};
         StudentDataOp.getMetaDict = function () {
           var deferred = $q.defer();
@@ -20,7 +26,6 @@ angular.module('app')
             method: 'GET',
             url: conp3 + conp1
           }).then(function (response_good) {
-
             deferred.resolve(response_good.data);
           }, function (response_fail) {
 
@@ -53,7 +58,7 @@ angular.module('app')
             var base = result.folder_base_name;
             var shape = parseInt(result.image_meta.shape), _size;
             if (shape == 5 || shape == 2 || shape == 1) {
-              _size = result.image_meta.dimension.r + " cm "+ "半";
+              _size = result.image_meta.dimension.r + " cm " + "半";
             } else {
               _size = result.image_meta.dimension.x + " x " + result.image_meta.dimension.y + " cm";
             }

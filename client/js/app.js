@@ -4,26 +4,21 @@
 // License text available at https://opensource.org/licenses/MIT
 
 angular
-  .module('app', ['ui.router', 'lbServices'])
+  .module('app', ['ui.router', 'lbServices', 'ng.deviceDetector', 'ngTouch'])
   .config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
-
       $stateProvider
-
         .state('Preview', {
           url: '/preview/:id/:mode/:lang',
           templateUrl: 'views/simple-view.html',
           controller: 'PreviewController'
         })
 
-
       ;
 
       // url: '/Preview/:id/:mode/:lang',
-    //  console.log("=config done===");
+      //  console.log("=config done===");
       //$urlRouterProvider.otherwise('Preview');
-
-
     }])
   .run(['$rootScope', '$state', function ($rootScope, $state) {
     $rootScope.$on('$stateChangeStart', function (event, next) {

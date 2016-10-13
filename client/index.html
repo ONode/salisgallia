@@ -3,39 +3,39 @@
 <head>
   <meta charset="utf-8">
   <title>Go Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/songplay.css" rel="stylesheet">
 </head>
 <body>
 <div id="root">
-
-  <!-- <header>
-     <h2 ng-show="currentUser">Hello {{currentUser.email}}</h2>
-     <nav>
-       <ul>
-         <li ng-show="currentUser">
-           <a ui-sref="add-review" ui-sref-active="active">Add My Artwork</a>
-         </li>
-         <li ng-hide="currentUser">
-           <a ui-sref="login" ui-sref-active="active">View Better</a>
-         </li>
-         <li ng-show="currentUser">
-           <a ui-sref="logout" ui-sref-active="active">Sell My</a>
-         </li>
-       </ul>
-     </nav>
-   </header>-->
   <main ui-view></main>
-
-
+  <!-- <header>
+      <h2 ng-show="currentUser">Hello {{currentUser.email}}</h2>
+      <nav>
+        <ul>
+          <li ng-show="currentUser">
+            <a ui-sref="add-review" ui-sref-active="active">Add My Artwork</a>
+          </li>
+          <li ng-hide="currentUser">
+            <a ui-sref="login" ui-sref-active="active">View Better</a>
+          </li>
+          <li ng-show="currentUser">
+            <a ui-sref="logout" ui-sref-active="active">Sell My</a>
+          </li>
+        </ul>
+      </nav>
+    </header>-->
 </div>
 <script src="bower_components/angular/angular.min.js"></script>
 <script src="bower_components/angular-resource/angular-resource.min.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
 <script src="bower_components/lodash/dist/lodash.min.js"></script>
+<script src="bower_components/ng-device-detector/ng-device-detector.min.js"></script>
+<script src="bower_components/re-tree/re-tree.min.js"></script>
+<script src="bower_components/angular-touch/angular-touch.min.js"></script>
 <script src="js/app.js"></script>
 <script src="js/services/lb-services.min.js"></script>
 <script src="js/controllers/auth.js"></script>
-<!--<script src="js/controllers/controller-bundle.js"></script>-->
 <script src="js/controllers/controller-bundle-b.js"></script>
 <script src="js/services/auth.js"></script>
 </body>

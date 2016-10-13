@@ -1,21 +1,8 @@
 <div class="wrap" id="main_box">
   <div class="box">
     <div class="flex_box">
-      <div class="flex_item">
-        <div class="song_info">
-          <div class="cont">
-            <h1 class="song" id="song_name">{{ThisArticle.meta.article_name_native}}</h1>
-            <p class="singer" id="goSinger">{{ThisArticle.size}}</p>
-            <p class="singer hifi none">
-                <span class="con">
-                  <span>GalleryGo!提供本曲</span>
-                  <span class="hicon"></span>
-                  <span class="word">音质</span>
-                </span>
-            </p>
-          </div>
-        </div>
-      </div>
+
+
       <div class="album_cover">
         <div class="cover_container">
           <img id="album_pic"
@@ -23,14 +10,19 @@
                style="visibility: visible;"/>
         </div>
       </div>
-      <div class="flex_item" id="lyric_box">
-        <div class="lyric" id="lyric">
+
+      <div class="song_info">
+        <div class="cont">
+          <h1 class="song" id="song_name">{{ThisArticle.meta.article_name_native}}</h1>
+          <p class="singer" id="goSinger">{{ThisArticle.size}}</p>
         </div>
       </div>
+
+
     </div>
   </div>
 
-  <div class="openJoox" id="openJoox">
+  <div class="openGox" id="openGallery" ng-touchstart="LocationApp.link()">
     <div>開啟Gallery Go!<span class="open-icon"></span></div>
   </div>
 
@@ -53,11 +45,10 @@
     </div>
 
     <div class="btn-line">
-      <button class="btn" id="box-open">已安裝Gallery Go!，現在打開</button>
-      <button class="btn" id="box-install">前往下載Gallery Go!</button>
+      <button class="btn" device-detector id="device-android">已安裝Gallery Go!，現在打開</button>
+      <button class="btn" device-detector id="browser-chrome">前往下載Gallery Go!</button>
     </div>
   </div>
-
 
 
 </div>
