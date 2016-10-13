@@ -240,7 +240,7 @@ var v2 = function (app, req, res) {
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
   } else {
-
+    console.info(logTag, "There are existing pip working...   --->", process);
   }
 
   process.setupTiling(
@@ -296,7 +296,7 @@ var v1 = function (app, req, res) {
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
   } else {
-
+    console.info(logTag, "There are existing pip working...   --->", process);
   }
 
   process.setupPlain(function (result) {
