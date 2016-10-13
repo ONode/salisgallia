@@ -22,7 +22,7 @@ const
 const
   logTag = "> mapMakerPre.js",
   __parentDir = path.dirname(module.main),
-  saltFile = "catherineboobsarebig69",
+  saltFile = "cath52i43#$#^ebs*^%$ig69",
   upload_file_field = "art",
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
@@ -32,16 +32,16 @@ const
   ;
 
 
-var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined, callback_err) {
+var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, callback_err) {
   var _storage = uploaderMU.diskStorage({
     destination: function (req, file, cb) {
       console.log(logTag, '==================================');
       console.log(logTag, 'check folder structure and define upload folder structures');
       console.log(logTag, '==================================');
 
-      dataStructure.folder_base_name = 'basemap-' + Date.now();
-      dataStructure.folder_path = public_folder_path + dataStructure.folder_base_name + "/";
-      var folder_tmp = base_folder + dataStructure.folder_base_name;
+      _data_pre.folder_base_name = 'basemap-' + Date.now();
+      _data_pre.folder_path = public_folder_path + _data_pre.folder_base_name + "/";
+      var folder_tmp = base_folder + _data_pre.folder_base_name;
       fse.mkdirs(folder_tmp, function (err) {
         if (_.isError(err)) {
           return callback_err(err);
@@ -59,17 +59,17 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
       var hash = tool_crypt.createHmac('sha256', saltFile)
-        .update(dataStructure.folder_base_name)
+        .update(_data_pre.folder_base_name)
         .digest('hex');
 
-      dataStructure.secret_base_map_file = hash.substring(0, 18) + '.jpg';
-      dataStructure.rename_file = dataStructure.folder_base_name + '.jpg';
+      _data_pre.secret_base_map_file = hash.substring(0, 18) + '.jpg';
+      _data_pre.rename_file = _data_pre.folder_base_name + '.jpg';
 
       if (_.isFunction(extraOperationFromAfterNameDefined)) {
-        extraOperationFromAfterNameDefined(dataStructure);
+        extraOperationFromAfterNameDefined(_data_pre);
       }
 
-      cb(null, dataStructure.secret_base_map_file);
+      cb(null, _data_pre.secret_base_map_file);
     }
   });
 

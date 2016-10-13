@@ -130,8 +130,8 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
     pre.imageMagic.resize(this.setupBasePathForResize(), function (err) {
 
       if (pre._.isError(err)) {
-        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
-        console.log(logTag, notworking);
+        var kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        console.log(logTag, kk);
         return next_step(err);
       }
 
@@ -228,7 +228,7 @@ makeMaker.prototype.setupPlain = function (next_step) {
   }.bind(this));
 
 };
-var process = null;
+
 /**
  * tiles map setup plan
  * @param app - application
@@ -236,6 +236,7 @@ var process = null;
  * @param res - response
  */
 var v2 = function (app, req, res) {
+  var process = null;
 
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
@@ -292,6 +293,7 @@ var v2 = function (app, req, res) {
  * @param res - response
  */
 var v1 = function (app, req, res) {
+  var process = null;
 
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
@@ -323,9 +325,6 @@ var v1 = function (app, req, res) {
     console.info(logTag, "============================================");
 
     return pre.output.outResSuccess(result, res);
-
-
-    // return pre.output.outResSuccess(result, res);
   });
 };
 
