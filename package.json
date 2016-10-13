@@ -27,6 +27,7 @@
     "loopback-connector-redis": "https://github.com/strongloop/loopback-connector-redis.git",
     "loopback-datasource-juggler": "^2.46.1",
     "loopback-filters": "https://github.com/strongloop/loopback-filters.git",
+    "loopback-sdk-angular": "1.10.1",
     "strong-wait-till-listening": "https://github.com/strongloop/strong-wait-till-listening.git",
     "gulp-async-func-runner": "https://github.com/Cellarise/gulp-async-func-runner.git",
     "speakeasy": "https://github.com/speakeasyjs/speakeasy.git",

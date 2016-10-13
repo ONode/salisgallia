@@ -5,6 +5,7 @@
 
 angular
   .module('app')
+
   .controller('AuthLoginController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
     $scope.user = {
@@ -19,6 +20,7 @@ angular
         });
     };
   }])
+
   .controller('AuthLogoutController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
     AuthService.logout()
@@ -26,6 +28,7 @@ angular
         $state.go('all-reviews');
       });
   }])
+
   .controller('SignUpController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
     $scope.user = {
@@ -40,6 +43,7 @@ angular
         });
     };
   }])
+
   .controller('SingleArtWorkPreview', ['$scope', 'AuthService', '$state',
     function($scope, AuthService, $state) {
       $scope.user = {
