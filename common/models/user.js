@@ -1,33 +1,59 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
-var speakeasy = require('speakeasy'),
-  _ = require('lodash'),
-  salt = 'moc43viv8ipum',
-  https = require('https'),
-  _crypto = require('crypto'),
-  loopback = require('loopback'),
-  db = require('../../common/util/db.js'),
-  logTag = '> user.js',
+var speakeasy = require("speakeasy"),
+  _ = require("lodash"),
+  salt = "moc43viv8ipum",
+  https = require("https"),
+  _crypto = require("crypto"),
+  loopback = require("loopback"),
+  promise = require("promise"),
+  db = require("../../common/util/db.js"),
+  logTag = "> user.js",
   result_bool = {
     acknowledged: true
   };
 
 var pwdassign = function (token) {
-  return _crypto.createHmac('md5', salt)
+  return _crypto.createHmac("md5", salt)
     .update(token)
-    .digest('hex');
+    .digest("hex");
+};
+
+var check_date_expired = function (expire_time) {
+  if (!_.isEmpty(expire_time)) {
+    var date = new Date(expire_time);
+    var now = new Date();
+    if (date.parse() >= now.parse()) {
+      console.log("> login =====================");
+      console.log("This token is expired.");
+      return true;
+    } else {
+      return false;
+    }
+  } else
+    return false;
 };
 module.exports = function (user) {
+  var change_password = function (user_id, new_password, callback_normal) {
+    db.updateByIdUpdate(user, user_id, {
+      "recovery_code": -1,
+      "password": new_password
+    }, function (err, ur) {
+      callback_normal(err);
+    });
+  };
+
+
   /*
-   user.validatesPresenceOf('name', 'email')
-   user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
-   user.validatesInclusionOf('gender', {in: ['male', 'female']});
-   user.validatesExclusionOf('domain', {in: ['www', 'billing', 'admin']});
-   user.validatesNumericalityOf('age', {int: true});
+   user.validatesPresenceOf("name", "email")
+   user.validatesLengthOf("password", {min: 5, message: {min: "Password is too short"}});
+   user.validatesInclusionOf("gender", {in: ["male", "female"]});
+   user.validatesExclusionOf("domain", {in: ["www", "billing", "admin"]});
+   user.validatesNumericalityOf("age", {int: true});
    */
-  user.validatesLengthOf('password', {min: 5, message: {min: 'Password is too short'}});
-  user.validatesUniquenessOf('email', {message: 'email is not unique'});
+  user.validatesLengthOf("password", {min: 5, message: {min: "Password is too short"}});
+  user.validatesUniquenessOf("email", {message: "email is not unique"});
   user.email_verify_from_code = function (credentials, cb) {
     if (_.isEmpty(credentials)) {
       cb(new Error("data not correct 1"), null);
@@ -57,10 +83,7 @@ module.exports = function (user) {
         return;
       }
       console.log("found user: ", r);
-      db.updateByIdUpdate(user, r.id, {
-        "recovery_code": -1,
-        "password": credentials.newpwd
-      }, function (err, ur) {
+      change_password(r.id, credentials.newpwd, function (err) {
         if (_.isError(err)) {
           cb(err, null);
           return;
@@ -70,10 +93,11 @@ module.exports = function (user) {
     });
   };
 
+
   user.most_popular = function (cb) {
     user.find({
       where: {},
-      order: 'uploads DESC',
+      order: "uploads DESC",
       limit: 12
     }, function (err, list) {
       if (_.isError(err)) {
@@ -95,9 +119,9 @@ module.exports = function (user) {
       return;
     }
 
-    var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
-    console.log('Two factor code for ' + credentials.email + ': ' + code);
-    //var renderer = loopback.template(path.resolve(__dirname, '../../common/views/email-template.ejs'));
+    var code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
+    console.log("Two factor code for " + credentials.email + ": " + code);
+    //var renderer = loopback.template(path.resolve(__dirname, "../../common/views/email-template.ejs"));
     //html_body = renderer(myMessage);
     var message = "Your account email and verification code are listed below:";
     message += "\n " + credentials.email;
@@ -130,13 +154,13 @@ module.exports = function (user) {
 
       user.app.models.Email.send({
           to: credentials.email,
-          from: 'no-reply@zyntario.com',
-          subject: 'Password recovery for missing account.',
+          from: "no-reply@zyntario.com",
+          subject: "Password recovery for missing account.",
           text: message,
-          html: ''
+          html: ""
         },
         function (err, mail) {
-          console.log('Email Sent!');
+          console.log("Email Sent!");
           console.log(mail);
           if (_.isError(err)) {
             cb(err, null);
@@ -164,36 +188,36 @@ module.exports = function (user) {
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       user.hasPassword(credentials.password, function (err, isMatch) {
         if (isMatch) {
-          // Note that you'll want to change the secret to something a lot more secure!
-          var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
-          console.log('Two factor code for ' + credentials.email + ': ' + code);
+          // Note that you"ll want to change the secret to something a lot more secure!
+          var code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
+          console.log("Two factor code for " + credentials.email + ": " + code);
 
           // [TODO] hook into your favorite SMS API and send your user their code!
 
           https.get(
-            'https://rest.nexmo.com' +
-            '/sms/json?api_key=[YOUR_KEY]&amp;api_secret=[YOUR_SECRET]' +
-            '&amp;from=[YOUR_NUMBER]&amp;to=[USER_MOBILE_#]' +
-            '&amp;text=Your+verification+code+is+' + code,
+            "https://rest.nexmo.com" +
+            "/sms/json?api_key=[YOUR_KEY]&amp;api_secret=[YOUR_SECRET]" +
+            "&amp;from=[YOUR_NUMBER]&amp;to=[USER_MOBILE_#]" +
+            "&amp;text=Your+verification+code+is+" + code,
             function () {
-              res.on('data', function (data) {
+              res.on("data", function (data) {
                 // all done! handle the data as you need to
                 fn(null, data);
               });
             }
-          ).on('error', function () {
+          ).on("error", function () {
             // handle errors somewhow
-            console.log('Error in here from using nexmo');
-            var err = new Error('Sorry, nexmo is having issue from making the sms request!');
+            console.log("Error in here from using nexmo");
+            var err = new Error("Sorry, nexmo is having issue from making the sms request!");
             err.statusCode = 401;
-            err.code = 'LOGIN_FAILED';
+            err.code = "LOGIN_FAILED";
             return fn(err);
           });
 
         } else {
-          var err = new Error('Sorry, but that email and password do not match!');
+          var err = new Error("Sorry, but that email and password do not match!");
           err.statusCode = 401;
-          err.code = 'LOGIN_FAILED';
+          err.code = "LOGIN_FAILED";
           return fn(err);
         }
       });
@@ -202,15 +226,15 @@ module.exports = function (user) {
 
   // Set up remote methods from model config schema json.
   user.loginWithCode = function (credentials, fn) {
-    var err = new Error('Sorry, but that verification code does not work!');
+    var err = new Error("Sorry, but that verification code does not work!");
     err.statusCode = 401;
-    err.code = 'LOGIN_FAILED';
+    err.code = "LOGIN_FAILED";
 
     console.log("update", "loginWithCode");
 
     this.findOne({where: {email: credentials.email}}, function (err, user) {
-      // And don't forget to match this secret to the one in requestCode()
-      var code = speakeasy.totp({secret: 'APP_SECRET' + credentials.email});
+      // And don"t forget to match this secret to the one in requestCode()
+      var code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
       if (code !== credentials.twofactor) {
         return fn(err);
       }
@@ -224,20 +248,20 @@ module.exports = function (user) {
     });
   };
   user.update_meta_call = function (data, id, fn) {
-    if (typeof data === 'function') {
+    if (typeof data === "function") {
       // fn = include;
       data = undefined;
     }
     //   console.log("update", "line1");
     /* var ctx = loopback.getCurrentContext();
-     var accessToken = ctx.get('accessToken');
+     var accessToken = ctx.get("accessToken");
      var userid = accessToken.userId;*/
     //  var ojec = JSON.parse(data);
     //  console.log("update ojec", ojec);
     //console.log("update data", data);
-    var err = new Error('Sorry, but that verification code does not work!');
+    var err = new Error("Sorry, but that verification code does not work!");
     err.statusCode = 401;
-    err.code = 'LOGIN_FAILED';
+    err.code = "LOGIN_FAILED";
     //  console.log("update", "line3");
     db.updateByIdUpdate(user, id, {
       "photo": data
@@ -249,7 +273,7 @@ module.exports = function (user) {
     });
   };
   user.fb_login_call = function (data, fn) {
-    if (typeof data === 'function') {
+    if (typeof data === "function") {
       data = undefined;
     }
     //console.log("> ==== :", data);
@@ -258,14 +282,16 @@ module.exports = function (user) {
     var email = data["facebook.email"];
     var facebook_token = data["facebook.token"];
     var facebook_expire = data["facebook.expire"];
-    console.log("> login =====================");
+    console.log("> ====================================");
+    console.log("> Facebook login =====================");
+    console.log("> ====================================");
     console.log("> ==== facebook expire is here");
     console.log("> ====>> :", facebook_expire);
     console.log("> ==== facebook user email here");
     console.log("> ====>> :", facebook_id);
     console.log("> ==== facebook user token here");
     console.log("> ====>> :", facebook_token);
-    console.log("> ==== facebook url");
+    console.log("> ==== facebook url for photo");
     console.log("> ====>> :", _url_);
     user.findOne({
       where: {
@@ -274,10 +300,12 @@ module.exports = function (user) {
     }, function (err, r) {
       if (_.isError(err)) {
         console.log("technical error from db", err);
+        return;
       }
       if (_.isEmpty(r)) {
-
-        console.log("> login =====================");
+        console.log("> ==============================================");
+        console.log("> Create new login account =====================");
+        console.log("> ==============================================");
         user.create({
           "facebook": {
             "userid": facebook_id,
@@ -293,9 +321,13 @@ module.exports = function (user) {
           }
           user.login({email: email, password: pwdassign(facebook_token)},
             function (err, token) {
-              console.log("> login =====================");
-              console.log("this user is using facebook to login here", r);
-              console.log("this user is login and the token is shown as below", token);
+              console.log("> ==============================================");
+              console.log("> ===========   Login Success    ===============");
+              console.log("> ==============================================");
+              console.log("The new user object is defined in here", r);
+              console.log("You have just created a new account and log on to this account now and the token object is [", token, "]");
+              console.log("> ==============================================");
+
               fn(null, r);
             });
         });
@@ -303,22 +335,80 @@ module.exports = function (user) {
       } else {
 
         var user_id = r.id;
-        console.log("> facebook id is here", user_id);
-        if (!_.isEmpty(r.facebook.expire)) {
-          var date = new Date(r.facebook.expire);
-          var now = new Date();
-          if (date.parse() >= now.parse()) {
-            console.log("> login =====================");
-            console.log("this token is expired.");
-          }
+
+        console.log("> ============================================================================");
+        console.log("> found existing user id from using the facebook user ID =====================");
+        console.log("> The converted user Id from facebook = [", user_id, "]");
+        console.log("> ============================================================================");
+
+        if (_.isEmpty(user_id)) {
+          console.log("> Login error because the converted user id is not found. ");
+          return fn(new Error("Login error because the converted user id is not found"), null);
         }
 
-        user.login({email: r.facebook.email, password: pwdassign(r.facebook.token)},
-          function (err, token) {
-            console.log("> login =====================");
-            console.log("this user is login and the token is shown as below", token);
-            fn(null, token);
+        if (_.isEmpty(r.facebook)) {
+          console.log("> facebook object is not found. ");
+          return fn(new Error("Facebook object is not found"), null);
+        }
+
+        var __facebook = r.facebook;
+        var __email = r.facebook.email;
+        var __pwd = pwdassign(r.facebook.token);
+        var __pwd_from_request = pwdassign(facebook_token);
+
+        console.log("> =======================================================");
+        console.log("> Review facebook object before login =======", r.facebook);
+        console.log("> Review facebook email =======", __email);
+        console.log("> Review facebook password =======", __pwd);
+        console.log("> =======================================================");
+        var bool_expired = check_date_expired(__facebook.expire);
+        if (__facebook.token != facebook_token) {
+          console.log("> =======================================================");
+          console.log("> Found differ from the previous token now need to change a new password");
+          console.log("> =======================================================");
+          change_password(user_id, __pwd_from_request, function (err) {
+            if (_.isError(err)) {
+              console.log("> =======================================================");
+              console.log("> Error from changing password", err);
+              console.log("> =======================================================");
+              return;
+            }
+
+            user.login({email: __email, password: __pwd_from_request},
+              function (err, token) {
+
+                if (_.isError(err)) {
+                  console.log("technical error from login process", err);
+                  return fn(err, null);
+                }
+
+                console.log("> ==================================================");
+                console.log("> After login ======================================");
+                console.log("> ==================================================");
+                console.log("You have just logon and the user token = [", token, "]");
+                console.log("> ==================================================");
+                fn(null, token);
+              });
+
           });
+        } else {
+
+          user.login({email: __email, password: __pwd},
+            function (err, token) {
+
+              if (_.isError(err)) {
+                console.log("technical error from login process", err);
+                return fn(err, null);
+              }
+
+              console.log("> ==================================================");
+              console.log("> After login ======================================");
+              console.log("> ==================================================");
+              console.log("You have just logon and the user token = [", token, "]");
+              console.log("> ==================================================");
+              fn(null, token);
+            });
+        }
 
       }
     });

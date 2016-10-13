@@ -47,6 +47,8 @@
     "lodash": "4.16.1",
     "request": "^2.74.0",
     "fs-extra": "^0.30.0",
+    "colors-palette": "0.0.4",
+    "promise": "7.1.1",
     "gulp": "^3.9.1"
   },
   "devDependencies": {

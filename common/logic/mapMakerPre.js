@@ -14,6 +14,7 @@ const
   fse = require('fs-extra'),
   _moduleIm = require('imagemagick'),
   s3thread = require('./transferS3.js'),
+  colorPaletteGenerator = require('colors-palette'),
   basemapInfo = require('./basemapinfo.js')
 
   ;
@@ -63,13 +64,14 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
 
       dataStructure.secret_base_map_file = hash.substring(0, 18) + '.jpg';
       dataStructure.rename_file = dataStructure.folder_base_name + '.jpg';
+
       if (_.isFunction(extraOperationFromAfterNameDefined)) {
         extraOperationFromAfterNameDefined(dataStructure);
       }
+
       cb(null, dataStructure.secret_base_map_file);
     }
   });
-
 
 
   return uploaderMU({
@@ -97,6 +99,15 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
   }).single(upload_file_field);
 };
 
+/*
+colorPaletteGenerator("/path/to/img", 8, function(err, colors){
+  if(err){
+    console.error(err);
+    return false;
+  }
+  console.log(colors);
+});
+*/
 module.exports = {
   logTag: logTag,
   __parentDir: path.dirname(module.main),
@@ -133,6 +144,7 @@ module.exports = {
   imageMagic: _moduleIm,
   s3thread: s3thread,
   basemapInfo: basemapInfo,
-  setupUploader: setupUploader
+  setupUploader: setupUploader,
+  colorPalGen: colorPaletteGenerator
 
 };
