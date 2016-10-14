@@ -40,7 +40,7 @@
     "pug": "2.0.0-beta6",
     "multer-s3": "^2.3.2",
     "mapslice": "^1.2.0",
-    "multer": "^1.1.0",
+    "multer": "^1.2.0",
     "gulp-rimraf": "^0.2.0",
     "serve-favicon": "^2.0.1",
     "gm": "^1.22.0",

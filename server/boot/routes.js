@@ -28,7 +28,9 @@ module.exports = function (app) {
     makerMap.uploadRegular(app, req, res);
   });
 
-
+  app.post("/api/basemap_std_test_upload/", function (req, res) {
+    makerMap.uploadRegularTest(app, req, res);
+  });
 
   app.get("/api/config/", function (req, res) {
     var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";

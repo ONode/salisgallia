@@ -200,7 +200,6 @@ makeMaker.prototype.setupPlain = function (next_step) {
     console.log("================================================");
     return next_step(new Error("owner id not present"));
   }
-
   uploadStarter(this.req, this.res, function (err) {
     if (pre._.isError(err)) {
       console.log(logTag, "error from upload", +err.message);
@@ -226,7 +225,6 @@ makeMaker.prototype.setupPlain = function (next_step) {
 
     }.bind(this));
   }.bind(this));
-
 };
 
 /**
@@ -265,8 +263,8 @@ var v2 = function (app, req, res) {
       }
 
       pre.basemapInfo.localUploadProgressComplete(
-         process.getModels().lb_basemap,
-         process.getModels().lb_user,
+        process.getModels().lb_basemap,
+        process.getModels().lb_user,
         item_id,
         result,
 
@@ -279,7 +277,7 @@ var v2 = function (app, req, res) {
           console.log(logTag, "all local images are transfering to S3 cloud now.");
 
           pre.s3thread.transferSyncBaseMapS3(
-             process.getModels().lb_basemap,
+            process.getModels().lb_basemap,
             item_id,
             result);
         });
@@ -327,6 +325,9 @@ var v1 = function (app, req, res) {
     return pre.output.outResSuccess(result, res);
   });
 };
+var v3 = function (app, req, res) {
 
+};
 module.exports.uploadRegular = v1;
 module.exports.uploadTiling = v2;
+module.exports.uploadRegularTest = v3;
