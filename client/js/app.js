@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 angular
-  .module('app', ['ui.router', 'lbServices', 'ng.deviceDetector', 'ngTouch'])
+  .module('app', ['ui.router', 'lbServices', 'ng.deviceDetector', 'ngTouch', 'ngAnimate'])
   .config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
       $stateProvider

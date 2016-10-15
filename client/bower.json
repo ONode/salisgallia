@@ -1,0 +1,40 @@
+{
+  "name": "Gallo",
+  "version": "1.5.0",
+  "homepage": "https://github.com/romansanchez/Calaca",
+  "authors": [
+    "Roman Sanchez http://romansanchez.me"
+  ],
+  "description": "fpeo",
+  "main": "index.html",
+  "keywords": [
+    "elasticsearch",
+    "search"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.8",
+    "angular-animate": "1.5.8",
+    "angular-aria": "1.5.8",
+    "angular-sanitize": "1.5.8",
+    "angular-resource": "1.5.8",
+    "angular-touch": "1.5.8",
+    "angular-ui-router": "0.3.1",
+    "angular-material": "1.1.0",
+    "ng-device-detector": "3.0.1",
+    "elasticsearch": "12.0.0-rc5",
+    "bootstrap": "3.3.7",
+    "lodash": "4.16.4",
+    "re-tree": "0.0.2",
+    "moment": "2.14.1",
+    "moment-timezone": "0.4.1"
+  },
+  "private": true
+}

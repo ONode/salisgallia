@@ -13,16 +13,25 @@ angular.module('app')
         var default_path1 = "http://dobsh22.s3.amazonaws.com/basemap/";
         var default_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/";
 
-        $scope.LocationApp = {
-          link: function () {
-            // var el = angular.element(document.querySelector('#openGallery .open-icon'));
-            this.rotating = !this.rotating;
-            console.log("here is now up...");
-          },
-          rotating: false
-        }
-        ;
+        setInterval(function () {
+          jQuery('.star-1').fadeOut(150).delay(2000).fadeIn(300).fadeOut(150).delay(1254);
+          jQuery('.star-2').fadeOut(300).fadeIn(120).fadeOut(120).delay(1920);
+          jQuery('.star-3').fadeOut(150).delay(1200).fadeIn(300).fadeOut(150).delay(800);
+          jQuery('.star-4').fadeOut(700).fadeIn(300).fadeOut(160).delay(1350);
+        }, 1);
+
+
+        var _itemId = $stateParams.id;
+        var _mode = $stateParams.mode;
+        var _lang = $stateParams.lang;
         var StudentDataOp = {};
+
+        console.log("=============================");
+        console.log("id", _itemId);
+        console.log("_mode", _mode);
+        console.log("_lang", _lang);
+        console.log("=============================");
+
         StudentDataOp.getMetaDict = function () {
           var deferred = $q.defer();
           $http({
@@ -36,18 +45,48 @@ angular.module('app')
 
           return deferred.promise;
         };
+        var locale_convert = function (tag) {
+          var final_lang = tag;
+          if (tag == "ja") {
+            final_lang = "jp";
+          }
+          if (tag == "zh") {
+            final_lang = "cn";
+          }
+          if (tag == "it") {
+            final_lang = "en";
+          }
+          if (tag == "ko") {
+            final_lang = "kr";
+          }
+          return final_lang;
+        };
+        var _get_name_tag = function (intput_label) {
+          if (_lang == null || _lang == "") {
+            return intput_label.cn;
+          } else {
+            var lang_t = locale_convert(_lang);
+            if (intput_label.hasOwnProperty(lang_t)) {
+              return intput_label[lang_t];
+            } else {
+              return intput_label.cn;
+            }
+          }
+        };
+        $scope.LocationApp = {
+          link: function () {
+            // var el = angular.element(document.querySelector('#openGallery .open-icon'));
+            this.rotating = !this.rotating;
+            console.log("here is now up...");
+          },
+          rotating: false,
+          ondetect: function (e) {
+            console.log(e);
+          }
+        }
+        ;
 
-
-        var _itemId = $stateParams.id;
-        var _mode = $stateParams.mode;
-        var _lang = $stateParams.lang;
-        console.log("=============================");
-        console.log("id", _itemId);
-        console.log("_mode", _mode);
-        console.log("_lang", _lang);
-        console.log("=============================");
         StudentDataOp.getMetaDict().then(function (data_config) {
-
           _basemap.findOne(
             {
               filter: {
@@ -68,17 +107,15 @@ angular.module('app')
 
             for (var i = 0; i < data_config.shape.length; i++) {
               if (data_config.shape[i].key == shape) {
-                _size = data_config.shape[i].label.cn + " " + _size;
+                _size = _get_name_tag(data_config.shape[i].label) + " " + _size;
               }
             }
 
-            var package = {
+            $scope.ThisArticle = {
               meta: result.image_meta,
               size: _size,
               preview: default_path1 + base + "/" + base + ".jpg"
             };
-
-            $scope.ThisArticle = package;
 
           });
 
