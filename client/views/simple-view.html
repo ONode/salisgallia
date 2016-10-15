@@ -28,14 +28,14 @@
     </div>
   </div>
 
-  <div device-detector class="openGox" id="openGallery" ng-click="LocationApp.link()">
-    <div>開啟Gallery Go!<span class="open-icon" ng-class="{'rotatingloop':LocationApp.rotating}"></span></div>
+  <div device-detector class="openGox" id="openGallery" ng-click="OnClickFn.installapp()">
+    <div>開啟Gallery Go!<span class="open-icon" ng-class="{'rotatingloop':OnClickFn.rotating}"></span></div>
   </div>
 
   <div class="download" id="btnsJoox">
     <div class="icon"></div>
     <div class="word"></div>
-    <div id="open" class="install" device-detector>下載</div>
+    <div id="open" class="install" device-detector ng-click="OnClickFn.installapp()">下載</div>
   </div>
 
   <div class="bg" id="album_pic2"

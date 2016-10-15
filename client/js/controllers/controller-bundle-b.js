@@ -5,7 +5,9 @@ angular.module('app')
   .controller('PreviewController',
     ['$scope', '$stateParams', '$q', '$http', 'Basemap',
       function ($scope, $stateParams, $q, $http, _basemap) {
-
+        var googleplayurl = 'https://play.google.com/store/apps/details?id=com.zyntauri.gogallery&hl=zh-TW';
+        var china_apk_url = 'https://play.google.com/store/apps/details?id=com.zyntauri.gogallery&hl=zh-TW';
+        var detectionuser = 'https://api.userinfo.io/userinfos';
         var conp1 = 'gallerygo/master/configurations.json';
         var conp2 = 'rawgit';
         var conp3 = 'https://cdn.' + conp2 + '.com/GDxU/';
@@ -24,15 +26,22 @@ angular.module('app')
         var _itemId = $stateParams.id;
         var _mode = $stateParams.mode;
         var _lang = $stateParams.lang;
-        var StudentDataOp = {};
-
-        console.log("=============================");
-        console.log("id", _itemId);
-        console.log("_mode", _mode);
-        console.log("_lang", _lang);
-        console.log("=============================");
-
-        StudentDataOp.getMetaDict = function () {
+        var Servica = {};
+        /*  console.log("=============================");
+         console.log("id", _itemId);
+         console.log("_mode", _mode);
+         console.log("_lang", _lang);
+         console.log("=============================");*/
+        Servica.getGeo = function () {
+          var deferred = $q.defer();
+          $http({method: 'GET', url: detectionuser}).then(function (response) {
+            deferred.resolve(response.data);
+          }, function (respf) {
+            console.log("error", respf);
+          });
+          return deferred.promise;
+        };
+        Servica.getMetaDict = function () {
           var deferred = $q.defer();
           $http({
             method: 'GET',
@@ -40,9 +49,8 @@ angular.module('app')
           }).then(function (response_good) {
             deferred.resolve(response_good.data);
           }, function (response_fail) {
-
+            deferred.reject(response_fail);
           });
-
           return deferred.promise;
         };
         var locale_convert = function (tag) {
@@ -73,11 +81,22 @@ angular.module('app')
             }
           }
         };
-        $scope.LocationApp = {
-          link: function () {
+        $scope.OnClickFn = {
+          installapp: function () {
             // var el = angular.element(document.querySelector('#openGallery .open-icon'));
             this.rotating = !this.rotating;
-            console.log("here is now up...");
+            Servica.getGeo().then(function (json) {
+              console.log(json);
+              if (json.country.code == "CN") {
+                //  console.log("you are in China");
+                window.location.href = china_apk_url;
+              } else {
+                //  console.log("you are not in", json.country.name);
+                window.location.href = googleplayurl;
+              }
+            }, function (fail) {
+              alert("error to detect", fail);
+            });
           },
           rotating: false,
           ondetect: function (e) {
@@ -86,7 +105,7 @@ angular.module('app')
         }
         ;
 
-        StudentDataOp.getMetaDict().then(function (data_config) {
+        Servica.getMetaDict().then(function (data_config) {
           _basemap.findOne(
             {
               filter: {
