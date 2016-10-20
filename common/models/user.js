@@ -85,6 +85,9 @@ module.exports = function (user) {
       console.log("found user: ", r);
       change_password(r.id, credentials.newpwd, function (err) {
         if (_.isError(err)) {
+          console.log("> =======================================================");
+          console.log("> Error from changing password with normal login", err);
+          console.log("> =======================================================");
           cb(err, null);
           return;
         }
