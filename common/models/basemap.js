@@ -40,6 +40,7 @@ module.exports = function (basemap) {
       if (!context.query.where) {
         context.query.where = {}
       }
+      context.query.sort = "createtime DESC";
       context.query.where['complete'] = 100;
       context.query.where['listing.enabled'] = true;
       //context.query.where['listing.enabled'] = {$exists: true};
