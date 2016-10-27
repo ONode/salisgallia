@@ -98,23 +98,20 @@ module.exports = function (basemap) {
 
   basemap.get_lucky_list = function (_count, cb) {
     var count_final = _count > 20 ? 20 : _count;
-    console.log("> get sample list");
+
     var where_cond = {
-      "listing.enabled": true,
-      "listing.searchable": true
+      "listing.enabled": true
     };
 
     basemap.count(where_cond, function (err, number) {
       if (_.isError(err)) {
         return cb(err);
       }
+      console.log("> get sample list with total items: ", number);
       var __skip = parseInt(Math.random() * (number - _count));
 
       basemap.find({
-        where: {
-          "listing.enabled": true,
-          "listing.searchable": true
-        },
+        where: where_cond,
         sort: "createtime DESC",
         limit: count_final,
         skip: __skip
