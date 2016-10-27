@@ -95,6 +95,56 @@ module.exports = function (basemap) {
     console.log(logTag, 'remove item', 'done');
     next();
   });
+
+  basemap.get_lucky_list = function (_count, cb) {
+    var count_final = _count > 20 ? 20 : _count;
+    console.log("> get sample list");
+    var where_cond = {
+      "listing.enabled": true,
+      "listing.searchable": true
+    };
+
+    basemap.count(where_cond, function (err, number) {
+      if (_.isError(err)) {
+        return cb(err);
+      }
+      var __skip = parseInt(Math.random() * (number - _count));
+
+      basemap.find({
+        where: {
+          "listing.enabled": true,
+          "listing.searchable": true
+        },
+        sort: "createtime DESC",
+        limit: count_final,
+        skip: __skip
+      }, function (err, results) {
+        if (_.isError(err)) {
+          return cb(err);
+        }
+        cb(null, results);
+      });
+    });
+
+  };
+
+
+  basemap.remoteMethod("get_lucky_list", {
+    description: ["Cron job to the list locally.."],
+    accepts: [{
+      arg: "count",
+      type: "number",
+      http: {source: "path"},
+      required: true,
+      description: "the count number of the ramdom list"
+    }],
+    returns: {
+      arg: "luckylist", type: "array", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/getlucky/:count"}
+  });
+
+
   /*  remotes.after('*.find', function (ctx, next) {
    var filter;
    if (ctx.args && ctx.args.filter) {
