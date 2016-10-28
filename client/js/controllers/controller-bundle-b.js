@@ -6,7 +6,7 @@ angular.module('app')
     ['$scope', '$stateParams', '$q', '$http', 'Basemap',
       function ($scope, $stateParams, $q, $http, _basemap) {
         var googleplayurl = 'https://play.google.com/store/apps/details?id=com.zyntauri.gogallery&hl=zh-TW';
-        var china_apk_url = 'https://play.google.com/store/apps/details?id=com.zyntauri.gogallery&hl=zh-TW';
+        var china_apk_url = '';
         var detectionuser = 'https://api.userinfo.io/userinfos';
         var conp1 = 'gallerygo/master/configurations.json';
         var conp2 = 'rawgit';
@@ -22,6 +22,10 @@ angular.module('app')
           jQuery('.star-4').fadeOut(700).fadeIn(300).fadeOut(160).delay(1350);
         }, 1);
 
+        if (installation != undefined) {
+          china_apk_url = installation.android;
+          // console.log("china_url confirmed ", china_apk_url);
+        }
 
         var _itemId = $stateParams.id;
         var _mode = $stateParams.mode;

@@ -2,7 +2,6 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
 angular
   .module('app', ['ui.router', 'lbServices', 'ng.deviceDetector', 'ngTouch', 'ngAnimate'])
   .config(['$stateProvider', '$urlRouterProvider',
@@ -12,9 +11,7 @@ angular
           url: '/preview/:id/:mode/:lang',
           templateUrl: 'views/simple-view.html',
           controller: 'PreviewController'
-        })
-
-      ;
+        });
 
       // url: '/Preview/:id/:mode/:lang',
       //  console.log("=config done===");
