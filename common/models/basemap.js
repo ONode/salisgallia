@@ -30,11 +30,11 @@ module.exports = function (basemap) {
 
 
   /**
-   * throwing in an extra request on value in the filter object
+   * Throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (context, next) {
     /**
-     * the query specific for getting the complete listing
+     * The query specific for getting the complete listing
      */
     if (_.isEqual(context.query['ready'], 'on')) {
       if (!context.query.where) {
@@ -98,7 +98,6 @@ module.exports = function (basemap) {
 
   basemap.get_lucky_list = function (_count, cb) {
     var count_final = _count > 20 ? 20 : _count;
-
     var where_cond = {
       "listing.enabled": true
     };
@@ -122,8 +121,40 @@ module.exports = function (basemap) {
         cb(null, results);
       });
     });
+  };
+
+  basemap.get_by_owner = function (owner, cb) {
+    var where_cond = {
+      "owner": owner
+    };
+    basemap.find({
+      where: where_cond,
+      order: "createtime DESC",
+      limit: 1000,
+      skip: 0
+    }, function (err, results) {
+      if (_.isError(err)) {
+        return cb(err);
+      }
+      cb(null, results);
+    });
 
   };
+
+  basemap.remoteMethod("get_by_owner", {
+    description: ["Cron job to the list locally.."],
+    accepts: [{
+      arg: "owner",
+      type: "string",
+      http: {source: "path"},
+      required: true,
+      description: "list the items by the owner"
+    }],
+    returns: {
+      arg: "luckylist", type: "array", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/get_by_owner/:owner"}
+  });
 
 
   basemap.remoteMethod("get_lucky_list", {
@@ -133,7 +164,7 @@ module.exports = function (basemap) {
       type: "number",
       http: {source: "path"},
       required: true,
-      description: "the count number of the ramdom list"
+      description: "the count number of the random list"
     }],
     returns: {
       arg: "luckylist", type: "array", root: true, description: "Return value"
