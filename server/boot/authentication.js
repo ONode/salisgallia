@@ -7,7 +7,6 @@ module.exports = function enableAuthentication(server) {
   // enable authentication
   // server.enableAuth();
   var Role = server.models.Role;
-
   Role.registerResolver('teamMember', function (role, context, cb) {
     function reject() {
       process.nextTick(function () {
