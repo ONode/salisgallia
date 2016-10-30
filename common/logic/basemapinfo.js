@@ -50,9 +50,7 @@ module.exports.progress = function (mapModel, progress, id, next) {
  });
  lb_basemap.updateAttributes()*/
 module.exports.localUploadProgressComplete = function (lb_basemap, lb_user, map_id, result_object, next) {
-
   console.log(logTag, "localUploadProgressComplete continue ..... ");
-
   db_worker.updateByIdAndIncrease(lb_user, result_object["owner"], "uploads",
     function () {
       console.log(logTag, "operation continue ..... ");

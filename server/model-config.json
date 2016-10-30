@@ -37,10 +37,6 @@
     "dataSource": "rocket_us_east",
     "public": false
   },
-  "CoffeeShop": {
-    "dataSource": "rocket_us_east",
-    "public": true
-  },
   "Review": {
     "dataSource": "rocket_us_east",
     "public": true

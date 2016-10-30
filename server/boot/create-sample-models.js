@@ -38,7 +38,7 @@ module.exports = function(app) {
   }
 
   // create coffee shops
-  function createCoffeeShops(cb) {
+ /* function createCoffeeShops(cb) {
     rocket.automigrate('CoffeeShop', function(err) {
       if (err) return cb(err);
 
@@ -48,7 +48,7 @@ module.exports = function(app) {
         {name: 'Caffe Artigiano', city: 'Vancouver'}
       ], cb);
     });
-  }
+  }*/
 
   // create reviews
   function createReviews(reviewers, coffeeShops, cb) {

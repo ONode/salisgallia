@@ -17,11 +17,6 @@
   },
   "validations": [],
   "relations": {
-    "coffeeShop": {
-      "type": "belongsTo",
-      "model": "CoffeeShop",
-      "foreignKey": ""
-    },
     "reviewer": {
       "type": "belongsTo",
       "model": "Reviewer",

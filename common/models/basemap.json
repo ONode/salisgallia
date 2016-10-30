@@ -11,8 +11,7 @@
     },
     "fast_id": {
       "type": "number",
-      "generated": true,
-      "id": true,
+      "generated": false,
       "required": false,
       "doc": "This is the secondary ID used to identify a basemap"
     },
@@ -44,6 +43,10 @@
       ],
       "required": false
     },
+    "owner": {
+      "type": "string",
+      "required": false
+    },
     "folder_base_name": {
       "type": "string",
       "required": true
@@ -73,9 +76,6 @@
       "default": "HKD",
       "type": "string",
       "required": true
-    },
-    "owner": {
-      "type": "string"
     },
     "image_type": {
       "type": "string"
@@ -135,7 +135,7 @@
     "user": {
       "type": "belongsTo",
       "model": "user",
-      "foreignKey": "publisherId"
+      "foreignKey": "owner"
     }
   },
   "acls": [

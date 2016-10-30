@@ -16,7 +16,6 @@ const
   s3thread = require('./transferS3.js'),
   colorPaletteGenerator = require('colors-palette'),
   basemapInfo = require('./basemapinfo.js')
-
   ;
 
 const

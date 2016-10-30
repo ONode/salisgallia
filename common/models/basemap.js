@@ -3,32 +3,15 @@
  */
 var _ = require('lodash');
 var db_worker = require("./../util/db.js");
+var async = require('async');
 var s3thread = require("./../logic/transferS3");
+var fixId = require("./../logic/db_patch");
 const logTag = "> basemap.js model";
+
+var result_bool = {
+  acknowledged: true
+};
 module.exports = function (basemap) {
-
-  /* var reduceUploads = function (user_uuid, cb) {
-   var UserItem = basemap.models.user;
-   UserItem.findOne({
-   where: {
-   "id": user_uuid
-   }
-   }, function (err, item) {
-
-   if (_.isError(err)) {
-   cb(err);
-   return;
-   }
-
-   db.updateByIdUpdate(UserItem, user_uuid, {
-   "uploads": item.uploads - 1
-   }, function (doc) {
-   return cb(doc);
-   });
-   });
-   };*/
-
-
   /**
    * Throwing in an extra request on value in the filter object
    */
@@ -45,8 +28,10 @@ module.exports = function (basemap) {
       context.query.where['listing.enabled'] = true;
       //context.query.where['listing.enabled'] = {$exists: true};
       //context.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
+
       context.query.fields = {
         id: true,
+        owner: true,
         createtime: true,
         updatetime: true,
         listing: true,
@@ -56,21 +41,52 @@ module.exports = function (basemap) {
         price: true,
         estprice: true,
         baseprice: true,
-        owner: true,
         currency: true,
-        rename_file: true,
-        fast_id: true
+        rename_file: true
       };
+
+
       console.log(logTag, 'Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
+    } else {
+      context.query.order = "createtime DESC";
     }
+
+
+    console.log(logTag, "=> logtag in the context", context.query);
     next()
+  });
+  /*  remotes.before('*.find', function (ctx, next) {
+   console.log(log, "===============");
+   var _filter = {};
+   if (ctx.args && ctx.args.filter) {
+   console.log(log, ctx.args.filter);
+   _filter = ctx.args.filter;
+   ctx.args.filter.include = ["folder_base_name", "secret_base_map_file"];
+   }
+   console.log(log, " before query the ids", _filter);
+   next();
+   });*/
+  basemap.observe('before save', function updateTimestamp(ctx, next) {
+    if (ctx.instance) {
+      ctx.instance.updatetime = new Date();
+      if (ctx.instance.owner != undefined) {
+        var toString = new String(ctx.instance.owner);
+        ctx.instance.owner = fixId.toObject(toString);
+      }
+    } else {
+      if (ctx.instance.owner != undefined) {
+        var data = new String(ctx.instance.owner);
+        ctx.data.owner = fixId.toObject(toString);
+      }
+      ctx.data.updatetime = new Date();
+    }
+    next();
   });
 
   basemap.observe('before delete', function (ctx, next) {
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
       ctx.where);
-
     var basemapId = ctx.where['id'];
     db_worker.getInstanceById(basemap, basemapId,
       function (data) {
@@ -123,10 +139,18 @@ module.exports = function (basemap) {
     });
   };
 
-  basemap.get_by_owner = function (owner, cb) {
+  basemap.get_by_owner = function (_the_owner, cb) {
     var where_cond = {
-      "owner": owner
+      "owner": {
+        "exists": true
+      }
     };
+    var where_cond2 = {
+      "currency": "HKD"
+    };
+    //57e4c5255410d603006997ff
+
+    console.log(logTag, " where to owner.. ", where_cond);
     basemap.find({
       where: where_cond,
       order: "createtime DESC",
@@ -136,9 +160,15 @@ module.exports = function (basemap) {
       if (_.isError(err)) {
         return cb(err);
       }
+      basemap.count(where_cond, function (err, number) {
+        console.log(logTag, " how many does it count? ", number);
+      });
       cb(null, results);
     });
 
+
+    //fixId.fixIddb(basemap, "owner");
+    cb(null, result_bool);
   };
 
   basemap.remoteMethod("get_by_owner", {
@@ -173,16 +203,18 @@ module.exports = function (basemap) {
   });
 
 
-  /*  remotes.after('*.find', function (ctx, next) {
+  /*
+
+   remotes.after('*.find', function (ctx, next) {
    var filter;
    if (ctx.args && ctx.args.filter) {
    console.log('> filter object', ctx.args.filter);
    filter = ctx.args.filter.where;
    console.log('> ctx.res. basemap', filter);
    }
-   });*/
+   });
 
-  /*
+
    if (!ctx.res._headerSent) {
    // console.log('> ctx.res._headerSentt', ctx.res._headerSent);
    this.count(filter, function (err, count) {
@@ -192,9 +224,9 @@ module.exports = function (basemap) {
    });
    } else {
    next();
-   }*/
+   }
 
-  /*
+
    CoffeeShop.status = function(cb) {
    var currentDate = new Date();
    var currentHour = currentDate.getHours();
@@ -216,6 +248,8 @@ module.exports = function (basemap) {
    returns: {arg: 'status', type: 'string'}
    }
    );
+
+
    */
 
 };
