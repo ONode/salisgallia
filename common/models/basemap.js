@@ -68,17 +68,25 @@ module.exports = function (basemap) {
    });*/
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
-      ctx.instance.updatetime = new Date();
+
+
       if (!_.isUndefined(ctx.instance.owner)) {
         var toString = new String(ctx.instance.owner);
         ctx.instance.owner = fixId.toObject(toString);
       }
+      ctx.instance.updatetime = new Date();
+
+
     } else {
+
+
       if (!_.isUndefined(ctx.data.owner)) {
         var toString = new String(ctx.data.owner);
         ctx.data.owner = fixId.toObject(toString);
       }
       ctx.data.updatetime = new Date();
+
+
     }
     next();
   });
