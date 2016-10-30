@@ -75,7 +75,7 @@ module.exports = function (basemap) {
       }
     } else {
       if (!_.isUndefined(ctx.data.owner)) {
-        var data = new String(ctx.instance.owner);
+        var toString = new String(ctx.data.owner);
         ctx.data.owner = fixId.toObject(toString);
       }
       ctx.data.updatetime = new Date();
