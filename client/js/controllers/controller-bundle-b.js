@@ -23,7 +23,7 @@ angular.module('app')
         }, 1);
 
         if (installation != undefined) {
-          china_apk_url = installation.android;
+          china_apk_url = installation.chinaandroid;
           // console.log("china_url confirmed ", china_apk_url);
         }
 
