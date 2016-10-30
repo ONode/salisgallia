@@ -69,12 +69,12 @@ module.exports = function (basemap) {
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
       ctx.instance.updatetime = new Date();
-      if (ctx.instance.owner != undefined) {
+      if (!_.isUndefined(ctx.instance.owner)) {
         var toString = new String(ctx.instance.owner);
         ctx.instance.owner = fixId.toObject(toString);
       }
     } else {
-      if (ctx.instance.owner != undefined) {
+      if (!_.isUndefined(ctx.data.owner)) {
         var data = new String(ctx.instance.owner);
         ctx.data.owner = fixId.toObject(toString);
       }
