@@ -5,9 +5,9 @@ var _ = require('lodash');
 var db_worker = require("./../util/db.js");
 var async = require('async');
 var s3thread = require("./../logic/transferS3");
+var s3clean = require("./../logic/s3cleaner");
 var fixId = require("./../logic/db_patch");
 const logTag = "> basemap.js model";
-
 var result_bool = {
   acknowledged: true
 };
@@ -45,17 +45,17 @@ module.exports = function (basemap) {
         rename_file: true
       };
 
-
-      console.log(logTag, 'Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
+      // console.log(logTag, 'Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     } else {
       context.query.order = "createtime DESC";
     }
 
-
-    console.log(logTag, "=> logtag in the context", context.query);
+    //console.log(logTag, "=> logtag in the context", context.query);
     next()
   });
-  /*  remotes.before('*.find', function (ctx, next) {
+  /*
+
+   remotes.before('*.find', function (ctx, next) {
    console.log(log, "===============");
    var _filter = {};
    if (ctx.args && ctx.args.filter) {
@@ -65,27 +65,26 @@ module.exports = function (basemap) {
    }
    console.log(log, " before query the ids", _filter);
    next();
-   });*/
+   });
+
+   */
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
-
 
       if (!_.isUndefined(ctx.instance.owner)) {
         var toString = new String(ctx.instance.owner);
         ctx.instance.owner = fixId.toObject(toString);
       }
+
       ctx.instance.updatetime = new Date();
 
-
     } else {
-
 
       if (!_.isUndefined(ctx.data.owner)) {
         var toString = new String(ctx.data.owner);
         ctx.data.owner = fixId.toObject(toString);
       }
       ctx.data.updatetime = new Date();
-
 
     }
     next();
@@ -100,13 +99,16 @@ module.exports = function (basemap) {
       function (data) {
         console.log(logTag, 'remove item', data);
         if (data != null) {
-          console.log(logTag, '=================== start removing the files from S3 folder');
+          console.log(logTag, '>========== START removing the files from S3 folder');
           var base_path = data.folder_base_name;
-          db_worker.updateByIdAndReduce(basemap.app.models.user, data.owner, "uploads", function () {
-            console.log(logTag, 'S3RemoveItemFolder');
-            s3thread.S3RemoveItemFolder(base_path);
-          });
-          console.log(logTag, '=================== end');
+          db_worker.updateByIdAndReduce(
+            basemap.app.models.user, data.owner,
+            "uploads",
+            function () {
+              s3clean.remove_file_from_dest(base_path, function () {
+                console.log(logTag, '>========== END removing the files from S3 folder');
+              });
+            });
         }
         next();
       }, function (err) {
@@ -147,7 +149,12 @@ module.exports = function (basemap) {
     });
   };
 
-  basemap.get_by_owner = function (_the_owner, cb) {
+  basemap.get_empty_check = function (cb) {
+    s3clean.checkExisting(basemap);
+    cb(null, result_bool);
+  };
+
+  basemap.get_by_owner_v2 = function (_the_owner, cb) {
     var where_cond = {
       "owner": {
         "exists": true
@@ -157,8 +164,7 @@ module.exports = function (basemap) {
       "currency": "HKD"
     };
     //57e4c5255410d603006997ff
-
-    console.log(logTag, " where to owner.. ", where_cond);
+    //console.log(logTag, ">>Where to owner.. ", where_cond);
     basemap.find({
       where: where_cond,
       order: "createtime DESC",
@@ -169,17 +175,25 @@ module.exports = function (basemap) {
         return cb(err);
       }
       basemap.count(where_cond, function (err, number) {
-        console.log(logTag, " how many does it count? ", number);
+        console.log(logTag, ">> How many does it count? ", number);
       });
       cb(null, results);
     });
-
-
     //fixId.fixIddb(basemap, "owner");
     cb(null, result_bool);
   };
 
-  basemap.remoteMethod("get_by_owner", {
+  basemap.remoteMethod("get_empty_check", {
+    description: ["Cron get empty removals ..."],
+    accepts: [],
+    returns: {
+      arg: "ret", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/check_removals/"}
+  });
+
+
+  basemap.remoteMethod("get_by_owner_v2", {
     description: ["Cron job to the list locally.."],
     accepts: [{
       arg: "owner",

@@ -5,6 +5,10 @@
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var app = module.exports = loopback();
+if (process.env.S3_ACCESS_KEY_ID == undefined) {
+  console.log('Now search for .ENV file');
+  require('dotenv').config();
+}
 //app.use(loopback.token({model: app.models.accessToken}));
 app.start = function () {
   // start the web server

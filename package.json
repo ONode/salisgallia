@@ -36,6 +36,8 @@
     "imagemagick": "https://github.com/rsms/node-imagemagick.git",
     "aws-sdk": "https://github.com/aws/aws-sdk-js.git",
     "s3": "https://github.com/andrewrk/node-s3-client.git",
+    "s3fs": "2.5.0",
+    "dotenv": "2.0.0",
     "body-parser": "^1.15.2",
     "express": "4.14.0",
     "req-timeout": "~1.0.2",

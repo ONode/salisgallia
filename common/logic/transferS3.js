@@ -25,9 +25,9 @@ const
     accessKeyId: process.env.S3_ACCESS_KEY_ID || test_s3_keyid,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || test_s3_accesskey
   },
-  bucket_active = "dobsh22",
-  bucket_inactive = "xboxdoc",
-  remote_base_path = "http://dobsh22.s3.amazonaws.com/basemap/",
+  bucket_active = "s3.heskeyo.com",
+  fileName = "basemap",
+  remote_base_path = "http://" + bucket_active + ".s3.amazonaws.com/" + fileName + "/",
   remote_base_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/"
   ;
 var getLocalPath = function (the_rest) {
@@ -183,36 +183,10 @@ var set_aws_worker = function (path_key) {
     });
   };
 };
-var worker_remove = function (path) {
-
-  const client = new AWS.S3(access);
-  var params = {
-    Bucket: bucket_active,
-    Key: getRemotePath(path)
-  };
-
-  client.listObjects(params, function (err, data) {
-    if (err) return console.log(err);
-    //params = {Bucket: bucket_active};
-    params.Delete = {};
-    params.Delete.Objects = [];
-    data.Contents.forEach(function (content) {
-      params.Delete.Objects.push({Key: content.Key});
-      console.log(logTag, content.Key);
-    });
-    client.deleteObjects(params, function (err, data) {
-      if (err) return console.log(err);
-      return console.log(data.Deleted.length);
-    });
-
-  });
-
+module.exports = {
+  transferSimpleSingleSmallMapS3: worker_transfer_simple,
+  transferSyncBaseMapS3: worker_transfer
 };
-
-
-module.exports.transferSimpleSingleSmallMapS3 = worker_transfer_simple;
-module.exports.transferSyncBaseMapS3 = worker_transfer;
-module.exports.S3RemoveItemFolder = worker_remove;
 /*
  var S = require("string"),
  path = require("path");
