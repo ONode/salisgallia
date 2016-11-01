@@ -41,7 +41,7 @@ var worker_transfer = function (instance_model, _id, bns) {
       obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
     }
 
-    console.log(logTag, "CPU found:" + numCPUs);
+    console.log(logTag, "CPU found:" + pre.numCPUs);
     triggerS3(obfiles, 0, function () {
       //When all the S3 files are uploaded.
       console.log(logTag, "trigger database update.");
@@ -66,11 +66,9 @@ var worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns,
     //When all the S3 files are uploaded.
     console.log(logTag, "trigger database update.");
     pre.db.updateByIdUpdate(instance_model, basemap_ID, update_meta_on_complete, function (doc) {
-
       if (pre.l.isError(doc)) {
         return;
       }
-
       pre.db.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", null);
       if (pre.l.isFunction(next)) {
         return next();

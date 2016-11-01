@@ -1,7 +1,6 @@
 const
   test_s3_keyid = "",
   test_s3_accesskey = "",
-  file_format = "/{z}/t_{y}_{x}.jpg",
   logTag = "> pre s3 --> ",
   access = {
     apiVersion: '2006-03-01',
@@ -11,12 +10,13 @@ const
   bucket_active = "s3.heskeyo.com",
   fileName = "basemap",
   remote_base_path = "http://" + bucket_active + ".s3.amazonaws.com/" + fileName + "/",
-  remote_base_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/",
   tool = {
-    extract_base_id: /basemap-\d+/g
+    extract_base_id: /basemap-\d+/g,
+    map_path_key: "/{z}/t_{y}_{x}.jpg"
   }
   ;
 var _ = require('lodash');
+var depthResolver = require('mapslice/lib/util/outputResolve');
 var s3_fs = require('s3fs');
 var s3_aws = require('aws-sdk');
 var s3_client_engine = require('s3');
@@ -182,8 +182,17 @@ var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
 };
 
 module.exports = {
-
-  format: file_format,
+  resolve_format: function (z, y, x) {
+    return depthResolver(tool.map_path_key, z, y, x);
+  },
+  check_access_keys_filled: function () {
+    if (_.isEmpty(access.accessKeyId) || _.isEmpty(access.secretAccessKey)) {
+      console.log(logTag, "cannot proceed further because api is missing.");
+      return false;
+    } else {
+      return true;
+    }
+  },
   access: access,
   bucket_name: bucket_active,
   filename: fileName,
