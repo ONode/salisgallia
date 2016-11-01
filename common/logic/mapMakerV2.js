@@ -1,4 +1,5 @@
-const pre = require("./mapMakerPre.js");
+const pre = require("./preMap");
+const resizeModule = require("./resize_queue");
 const logTag = "> mapMakerV2";
 var makeMaker = function (app, req, res) {
   /**
@@ -13,6 +14,7 @@ var makeMaker = function (app, req, res) {
     secret_base_map_file: "",
     rename_file: "",
     folder_path: "",
+    mid_size: "",
     owner: req.params.owner == null ? "" : req.params.owner
   };
 
@@ -27,22 +29,6 @@ makeMaker.prototype.getModels = function () {
     lb_basemap: this.model_base_map,
     lb_user: this.model_user
   }
-};
-makeMaker.prototype.setupBasePathForResize = function () {
-  var a = pre.base_folder + this.O.folder_base_name + "/" + this.O.secret_base_map_file;
-  var b = pre.base_folder + this.O.folder_base_name + "/" + this.O.rename_file;
-  console.log("====================================");
-  console.log("=======create resize input==========");
-  console.log("====================================");
-  console.log(logTag, a);
-  console.log(logTag, b);
-  console.log("====================================");
-  return {
-    width: 1000,
-    height: 400,
-    srcPath: a,
-    dstPath: b
-  };
 };
 
 makeMaker.prototype.defineSlicerConfig = function () {
@@ -127,16 +113,30 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
       return next_step(err);
     }
 
-    pre.imageMagic.resize(this.setupBasePathForResize(), function (err) {
-
+    var resizeOp = new resizeModule.core();
+    resizeOp.setSrcPath(pre.base_folder + this.O.folder_base_name + "/" + this.O.secret_base_map_file);
+    resizeOp.enableAutoRotateOnRootImage();
+    resizeOp.appendOperation({
+      width: 256,
+      dstPath: pre.base_folder + this.O.folder_base_name + "/" + this.O.rename_file
+    });
+    resizeOp.appendOperation({
+      width: 1000,
+      dstPath: pre.base_folder + this.O.folder_base_name + "/" + this.O.mid_size
+    });
+    resizeOp.execute(function (err) {
       if (pre._.isError(err)) {
         var kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, kk);
         return next_step(err);
       }
 
+      /**
+       * start the operation for mapslicing
+       */
+      pre.basemapInfo.startNewMapData(this.model_base_map, this.O,
 
-      pre.basemapInfo.startNewMapData(this.model_base_map, this.O, function (new_map_ID) {
+        function (new_map_ID) {
           this.O.id = new_map_ID;
           var mapSlicer = this.define_slicer(
             function (err) {
@@ -164,6 +164,11 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
           return next_step(err);
         });
 
+      /**
+       * end map slicing
+       */
+
+
     }.bind(this));
   }.bind(this));
   //end start upload
@@ -171,16 +176,20 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
 
 makeMaker.prototype.updateThisO = function (data) {
   console.log(logTag, "==========================================");
-  console.log(logTag, "========> preview upload update metadata =");
-  console.log(logTag, "==============> extracted from the uploader process", data);
+  console.log(logTag, "===> preview upload update metadata ======");
+  console.log(logTag, "===> extracted from the uploader process", data);
 
   if (!pre._.isEmpty(data)) {
-    this.O.folder_base_name = data.folder_base_name;
+    /**
+     * This is only for the processing folder path
+     */
     this.O.folder_path = data.folder_path;
+    this.O.folder_base_name = data.folder_base_name;
     this.O.secret_base_map_file = data.secret_base_map_file;
     this.O.rename_file = data.rename_file;
+    this.O.mid_size = data.mid_size;
   }
-  console.log(logTag, "==========================================");
+  console.log(logTag, "============================");
 };
 
 makeMaker.prototype.setupPlain = function (next_step) {
@@ -202,19 +211,34 @@ makeMaker.prototype.setupPlain = function (next_step) {
   }
   uploadStarter(this.req, this.res, function (err) {
     if (pre._.isError(err)) {
-      console.log(logTag, "error from upload", +err.message);
+      console.log(logTag, "error from upload", err.message);
       //output.outResErro(err.message, res);
       return next_step(err);
     }
 
-    pre.imageMagic.resize(this.setupBasePathForResize(), function (err) {
+    var resizeOp = new resizeModule.core();
+    resizeOp.setSrcPath(pre.base_folder + this.O.folder_base_name + "/" + this.O.secret_base_map_file);
+    resizeOp.enableAutoRotateOnRootImage();
+    resizeOp.appendOperation({
+      width: 256,
+      dstPath: pre.base_folder + this.O.folder_base_name + "/" + this.O.rename_file
+    });
+    resizeOp.appendOperation({
+      width: 1000,
+      dstPath: pre.base_folder + this.O.folder_base_name + "/" + this.O.mid_size
+    });
+    resizeOp.execute(function (err) {
       if (pre._.isError(err)) {
-        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
-        console.log(logTag, notworking);
+        var kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        console.log(logTag, kk);
         return next_step(err);
       }
 
-      pre.basemapInfo.startNewMapData(this.model_base_map, this.O, function (id) {
+      pre.basemapInfo.startNewMapData(
+        this.model_base_map,
+        this.O,
+
+        function (id) {
           this.O.id = id;
           next_step(this.O);
         }.bind(this),
@@ -224,6 +248,8 @@ makeMaker.prototype.setupPlain = function (next_step) {
         });
 
     }.bind(this));
+
+
   }.bind(this));
 };
 

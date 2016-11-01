@@ -59,6 +59,10 @@
       "type": "string",
       "required": true
     },
+    "mid_size": {
+      "type": "string",
+      "required": true
+    },
     "price": {
       "default": 0,
       "type": "number",

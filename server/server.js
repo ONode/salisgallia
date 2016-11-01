@@ -2,6 +2,10 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+
+
+'use strict';
+
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var app = module.exports = loopback();
@@ -22,8 +26,6 @@ app.start = function () {
     }
   });
 };
-//app.use(require(".././common/routerisland/express_status"));
-//app.use(require(".././common/routerisland/common_upload_slice"));
 /*
  Using the technique shown above, the application will still run all the boot scripts in /server/boot in alphabetical order (unless you move or delete them) after your custom-ordered boot scripts specified in bootScripts.
  */
@@ -34,7 +36,7 @@ app.buildError = function (err) {
   delete err.statusCode;
   return err;
 };
-
+//app.use(require('compression'));
 app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}));
 /*var bootOptions = {
  "appRootDir": __dirname,
@@ -45,9 +47,22 @@ app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}
  };*/
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
+/*
 
 boot(app, __dirname, function (err) {
   if (err) throw err;
+  // start the server if `$ node server.js`
+  if (require.main === module)
+    app.start();
+});
+*/
+
+
+// Bootstrap the application, configure models, datasources and middleware.
+// Sub-apps like REST API are mounted via boot scripts.
+boot(app, __dirname, function(err) {
+  if (err) throw err;
+
   // start the server if `$ node server.js`
   if (require.main === module)
     app.start();

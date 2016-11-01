@@ -5,7 +5,7 @@
 var loopback = require('loopback');
 var _ = require('lodash');
 var db_worker = require("./../util/db.js");
-var s3_worker = require("./../logic/transferS3");
+var s3_worker = require("./../logic/s3upload");
 var output = require("./../util/outputjson");
 const log = "> basemap op";
 var LoopBackContext = require('loopback-context');
