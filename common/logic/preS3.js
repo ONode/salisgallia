@@ -124,7 +124,7 @@ var rmrecursively_v1 = function (bucket_name, folder_path, callback) {
 var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
   console.log(logTag, "v2 Start operation for bucket name:: ", bucket_name, folder_path);
   //const client_base = new s3_aws.S3(access);
-  var s3client = s3_client_engine.createClient(base_aws_s3_client);
+  var s3client = s3_client_engine.createClient({s3Client: base_aws_s3_client});
 
   var params_remove = {
     Bucket: bucket_name,
@@ -191,6 +191,7 @@ module.exports = {
       console.log(logTag, "cannot proceed further because api is missing.");
       return false;
     } else {
+      console.log(logTag, access);
       return true;
     }
   },
@@ -209,7 +210,10 @@ module.exports = {
   fs: require('fs'),
   path: path,
   l: _,
-  s3_node_client: s3_client_engine.createClient(base_aws_s3_client),
+  s3_node_client: s3_client_engine,
+  s3_base_engine: function () {
+    return new s3_aws.S3(access);
+  },
   cluster: require('cluster'),
   numCPUs: require('os').cpus.length,
   aws: s3_aws,

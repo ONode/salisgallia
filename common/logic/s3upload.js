@@ -94,30 +94,40 @@ var triggerS3 = function (tasks, processors, next) {
 
 
 var set_aws_worker = function (path_key) {
-  const config = {
-    localFile: pre.fnGetLocalPath(path_key),
-    s3Params: {
-      Bucket: pre.bucket_name,
-      Key: pre.fnGetRemotePath(path_key),
-      ContentType: 'image/jpeg',
-      ACL: 'public-read'
-    }
-  };
-
-  const uploadr = pre.s3_node_client.uploadFile(config);
+  const client = pre.s3_node_client.createClient({s3Client: pre.s3_base_engine()});
   // Upload the file to S3
   return function worker(callback_aysnc) {
+    var dta = {
+      localFile: pre.fnGetLocalPath(path_key),
+      s3Params: {
+        Bucket: pre.bucket_name,
+        Key: pre.fnGetRemotePath(path_key),
+        ContentType: 'image/jpeg',
+        ACL: 'public-read'
+      }
+    };
+
+    console.log(logTag, "=======================>start AWS upload");
+   // console.log(logTag, client);
+    console.log(logTag, dta);
+    console.log(logTag, "=======================>end AWS upload");
+
+    const uploadr = client.uploadFile(dta);
     uploadr.on('error', function (err) {
-      console.error("unable to upload:", err.stack);
+      console.error("Unable to upload:", err);
       return callback_aysnc(err);
     });
+
     uploadr.on('progress', function () {
       //console.log(logTag, uploadr.progressMd5Amount, uploadr.progressAmount, uploadr.progressTotal);
     });
+
     uploadr.on('end', function () {
       console.log(logTag, "done uploading: " + path_key);
-      callback_aysnc();
+      return callback_aysnc();
     });
+
+
   };
 };
 module.exports = {
