@@ -209,7 +209,7 @@ module.exports = {
   fs: require('fs'),
   path: path,
   l: _,
-  s3_node_client: s3_client_engine,
+  s3_node_client: s3_client_engine.createClient(base_aws_s3_client),
   cluster: require('cluster'),
   numCPUs: require('os').cpus.length,
   aws: s3_aws,
