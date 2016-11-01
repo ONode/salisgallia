@@ -16,6 +16,7 @@ const
   }
   ;
 var _ = require('lodash');
+var path = require('path');
 var depthResolver = require('mapslice/lib/util/outputResolve');
 var s3_fs = require('s3fs');
 var s3_aws = require('aws-sdk');
@@ -25,8 +26,8 @@ var s3ls = function (options) {
   var bucket = options.bucket;
   //var s3 = new s3_aws.S3(access);
   return {
-    ls: function ls(path, callback) {
-      var prefix = _.trimStart(_.trimEnd(path, '/') + '/', '/');
+    ls: function ls(_fpath, callback) {
+      var prefix = _.trimStart(_.trimEnd(_fpath, '/') + '/', '/');
       var result = {files: [], folders: []};
 
       function s3ListCallback(error, data) {
@@ -61,7 +62,7 @@ var s3ls = function (options) {
 };
 var s3lpkeys = function (options) {
   return {
-    lp: function ls(path, callback) {
+    lp: function ls(_fpath, callback) {
       var result = {files: []};
       var one_sub_layer = [];
       var it = 0;
@@ -89,7 +90,7 @@ var s3lpkeys = function (options) {
         }
       }
 
-      s3ls(options).ls(path, s3ListFilesCallback);
+      s3ls(options).ls(_fpath, s3ListFilesCallback);
     }
   };
 };
@@ -100,8 +101,8 @@ var getRemotePath = function (the_rest) {
   return "basemap/" + the_rest;
 };
 
-var getFolderPathS3 = function (path) {
-  var f = remote_base_path + path;
+var getFolderPathS3 = function (_fpath) {
+  var f = remote_base_path + _fpath;
   console.log(logTag, "check path", f);
   return f;
 };
@@ -206,7 +207,7 @@ module.exports = {
   loopback: require('loopback')(),
   async: require('async'),
   fs: require('fs'),
-  path: require('path'),
+  path: path,
   l: _,
   s3_node_client: s3_client_engine,
   cluster: require('cluster'),
