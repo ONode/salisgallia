@@ -80,12 +80,12 @@ var worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns,
 var triggerS3 = function (tasks, processors, next) {
   console.log(logTag, "S3 process start");
   if (processors > 0) {
-    async.parallelLimit(tasks, processors, function (err, results) {
+    pre.async.parallelLimit(tasks, processors, function (err, results) {
       console.log(logTag, "S3 process done");
       next();
     });
   } else {
-    async.parallel(tasks, function (err, results) {
+    pre.async.parallel(tasks, function (err, results) {
       console.log(logTag, "S3 process done");
       next();
     });
