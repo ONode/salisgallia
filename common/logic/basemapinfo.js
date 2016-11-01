@@ -2,12 +2,42 @@
  * Created by zJJ on 7/20/2016.
  */
 var db_worker = require("./../util/db.js");
+//var ObjectID = require("loopback-connector-mongodb/lib/mongodb").ObjectID;
+var ObjectID = require('mongodb').ObjectID;
 const _ = require('lodash');
 const logTag = '> basemapinfo.js';
+
+
+/*!
+ * Convert the id to be a BSON ObjectID if it is compatible
+ * @param {*} id The id value
+ * @returns {ObjectID}
+ */
+function ObjectID(id) {
+  if (id instanceof ObjectID) {
+    return id;
+  }
+  if (typeof id !== 'string') {
+    return id;
+  }
+  try {
+    // MongoDB's ObjectID constructor accepts number, 12-byte string or 24-byte
+    // hex string. For LoopBack, we only allow 24-byte hex string, but 12-byte
+    // string such as 'line-by-line' should be kept as string
+    if (/^[0-9a-fA-F]{24}$/.test(id)) {
+      return new ObjectID(id);
+    } else {
+      return id;
+    }
+  } catch (e) {
+    return id;
+  }
+}
+
 module.exports.startNewMapData = function (mapModel, result_object, next, nextError) {
-  var saveClip = new mapModel(result_object);
+  var svClip = new mapModel(result_object);
   console.log(logTag, "-------------> before save this", result_object);
-  saveClip.save(function (err, doc) {
+  svClip.save(function (err, doc) {
     if (err) {
       console.log(logTag, "base map error", err);
       return nextError(err);
@@ -17,6 +47,7 @@ module.exports.startNewMapData = function (mapModel, result_object, next, nextEr
     }
   });
 };
+
 /**
  *
  * @param mapModel - the presistent model
@@ -70,8 +101,8 @@ module.exports.localUploadProgressComplete = function (lb_basemap, lb_user, map_
     });
 };
 module.exports.complete_once_off = function (mapModel, result_object, next) {
-  var saveClip = new mapModel(result_object);
-  saveClip.save(function (err) {
+  var svClip = new mapModel(result_object);
+  svClip.save(function (err) {
     if (err) {
       console.log(logTag, "base map error", err);
     } else {

@@ -1,6 +1,6 @@
 {
   "name": "galleria-loopback-a72",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "main": "server/server.js",
   "scripts": {
     "pretest": "jshint .",
@@ -33,7 +33,7 @@
     "strong-wait-till-listening": "https://github.com/strongloop/strong-wait-till-listening.git",
     "gulp-async-func-runner": "https://github.com/Cellarise/gulp-async-func-runner.git",
     "speakeasy": "https://github.com/speakeasyjs/speakeasy.git",
-    "imagemagick": "https://github.com/rsms/node-imagemagick.git",
+    "zyn-imagemagick": "https://github.com/ONode/node-imagemagick",
     "aws-sdk": "https://github.com/aws/aws-sdk-js.git",
     "s3": "https://github.com/andrewrk/node-s3-client.git",
     "s3fs": "2.5.0",
@@ -47,7 +47,6 @@
     "multer": "^1.2.0",
     "gulp-rimraf": "^0.2.0",
     "serve-favicon": "^2.0.1",
-    "gm": "^1.22.0",
     "mkdirp-promise": "~3.0.1",
     "lodash": "4.16.1",
     "request": "^2.74.0",

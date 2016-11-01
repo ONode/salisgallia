@@ -1,7 +1,7 @@
 /**
  * Created by hesk on 16年10月31日.
  */
-const pre = require("./pres3");
+const pre = require("./preS3");
 var get_folder_names = function (list_raw_paths) {
   var list = [];
   pre.l.forEach(list_raw_paths, function (path) {

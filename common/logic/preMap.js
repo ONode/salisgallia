@@ -12,14 +12,14 @@ const
   _ = require('lodash'),
   async = require('async'),
   fse = require('fs-extra'),
-  _moduleIm = require('imagemagick'),
-  s3thread = require('./transferS3.js'),
+  _moduleIm = require('zyn-imagemagick'),
+  s3thread = require('./s3upload.js'),
   colorPaletteGenerator = require('colors-palette'),
   basemapInfo = require('./basemapinfo.js')
   ;
 
 const
-  logTag = "> mapMakerPre.js",
+  logTag = "> preMap.js",
   __parentDir = path.dirname(module.main),
   saltFile = "cath52i43#$#^ebs*^%$ig69",
   upload_file_field = "art",
@@ -32,15 +32,16 @@ const
 
 
 var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, callback_err) {
+  var _baseFolderName = "";
   var _storage = uploaderMU.diskStorage({
     destination: function (req, file, cb) {
       console.log(logTag, '==================================');
       console.log(logTag, 'check folder structure and define upload folder structures');
       console.log(logTag, '==================================');
 
-      _data_pre.folder_base_name = 'basemap-' + Date.now();
-      _data_pre.folder_path = public_folder_path + _data_pre.folder_base_name + "/";
-      var folder_tmp = base_folder + _data_pre.folder_base_name;
+      _baseFolderName = 'basemap-' + Date.now();
+      _data_pre.folder_path = public_folder_path + _baseFolderName + "/";
+      var folder_tmp = base_folder + _baseFolderName;
       fse.mkdirs(folder_tmp, function (err) {
         if (_.isError(err)) {
           return callback_err(err);
@@ -58,11 +59,13 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
       var hash = tool_crypt.createHmac('sha256', saltFile)
-        .update(_data_pre.folder_base_name)
+        .update(_baseFolderName)
         .digest('hex');
 
       _data_pre.secret_base_map_file = hash.substring(0, 18) + '.jpg';
-      _data_pre.rename_file = _data_pre.folder_base_name + '.jpg';
+      _data_pre.rename_file = _baseFolderName + '.jpg';
+      _data_pre.mid_size = _baseFolderName + '_mid.jpg';
+      _data_pre.folder_base_name = _baseFolderName;
 
       if (_.isFunction(extraOperationFromAfterNameDefined)) {
         extraOperationFromAfterNameDefined(_data_pre);
@@ -99,14 +102,14 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
 };
 
 /*
-colorPaletteGenerator("/path/to/img", 8, function(err, colors){
-  if(err){
-    console.error(err);
-    return false;
-  }
-  console.log(colors);
-});
-*/
+ colorPaletteGenerator("/path/to/img", 8, function(err, colors){
+ if(err){
+ console.error(err);
+ return false;
+ }
+ console.log(colors);
+ });
+ */
 module.exports = {
   logTag: logTag,
   __parentDir: path.dirname(module.main),

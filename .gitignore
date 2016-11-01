@@ -46,3 +46,4 @@ node_modules
 \storage\tmp\tmpsgi\**
 storage
 localkey.txt
+.env

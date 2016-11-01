@@ -4,7 +4,7 @@
 var _ = require('lodash');
 var db_worker = require("./../util/db.js");
 var async = require('async');
-var s3thread = require("./../logic/transferS3");
+var s3thread = require("./../logic/s3upload");
 var s3clean = require("./../logic/s3cleaner");
 var fixId = require("./../logic/db_patch");
 const logTag = "> basemap.js model";
@@ -71,19 +71,19 @@ module.exports = function (basemap) {
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     if (ctx.instance) {
 
-      if (!_.isUndefined(ctx.instance.owner)) {
-        var toString = new String(ctx.instance.owner);
-        ctx.instance.owner = fixId.toObject(toString);
-      }
+      /*  if (!_.isUndefined(ctx.instance.owner)) {
+       var toString = new String(ctx.instance.owner);
+       ctx.instance.owner = fixId.toObject(toString);
+       }*/
 
       ctx.instance.updatetime = new Date();
 
     } else {
 
-      if (!_.isUndefined(ctx.data.owner)) {
-        var toString = new String(ctx.data.owner);
-        ctx.data.owner = fixId.toObject(toString);
-      }
+      /* if (!_.isUndefined(ctx.data.owner)) {
+       var toString = new String(ctx.data.owner);
+       ctx.data.owner = fixId.toObject(toString);
+       }*/
       ctx.data.updatetime = new Date();
 
     }
@@ -127,7 +127,6 @@ module.exports = function (basemap) {
     var where_cond = {
       "listing.enabled": true
     };
-
     basemap.count(where_cond, function (err, number) {
       if (_.isError(err)) {
         return cb(err);
@@ -182,6 +181,34 @@ module.exports = function (basemap) {
     //fixId.fixIddb(basemap, "owner");
     cb(null, result_bool);
   };
+  /**
+   * fixed the empty mid_size map
+   * @param cb
+   */
+  basemap.get_custom_job = function (cb) {
+    db_worker.customJobLoopOverModel(basemap, function (err, done) {
+      console.log(logTag, 'done and done for model migration', 'one');
+    }).setModelMigrateLogic(function (item, next) {
+      if (_.isUndefined(item.mid_size)) {
+        var file_name = item.rename_file;
+        item.updateAttribute("mid_size", file_name, function (err, r) {
+          console.log(logTag, 'done update on the entry', r.id);
+          next();
+        });
+      } else {
+        next();
+      }
+    });
+    cb(null, result_bool);
+  };
+  basemap.remoteMethod("get_custom_job", {
+    description: ["Cron get empty removals ..."],
+    accepts: [],
+    returns: {
+      arg: "ret", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/get_custom_job/"}
+  });
 
   basemap.remoteMethod("get_empty_check", {
     description: ["Cron get empty removals ..."],

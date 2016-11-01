@@ -14,7 +14,7 @@ const
   async = require('async'),
   fse = require('fs-extra'),
   _moduleIm = require('imagemagick'),
-  s3thread = require('./transferS3.js'),
+  s3thread = require('./s3upload.js'),
   basemapInfo = require('./basemapinfo.js')
 
   ;
