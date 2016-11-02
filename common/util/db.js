@@ -22,11 +22,13 @@ var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name
     }
 
     var val = 0;
-
-    if (_.isNaN(parseInt(_doc_user[field_name_inc_1]))) {
-      val = 1;
+    console.log(logTag, "got item for value increase [", field_name_inc_1, " : ", _doc_user[field_name_inc_1], " ]");
+    var read = _doc_user[field_name_inc_1];
+    if (_.isNumber(read)) {
+      val = read + 1;
     } else {
-      val = parseInt(_doc_user[field_name_inc_1]) + 1;
+      console.log(logTag, "this field is not a number..  [", field_name_inc_1);
+      val = 1;
     }
 
     console.log(logTag, "instruction to update a single attribute -[ ", field_name_inc_1, val, " ]");

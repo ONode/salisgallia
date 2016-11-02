@@ -24,27 +24,27 @@ var worker_transfer = function (instance_model, _id, bns) {
   if (!pre.check_access_keys_filled()) {
     return;
   }
-  var obfiles = [];
+  var ob_file_list = [];
   if (pre.l.isArray(bns.total_zoom_levels)) {
     if (bns.total_zoom_levels.length > 0) {
 
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
+      ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
+      ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
+      ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
 
       pre.l.forEach(bns.total_zoom_levels, function (instance) {
         var _level = instance.level;
         console.log(logTag, "level found: " + _level);
         pre.l.forEach(instance.tiles, function (tile) {
           var file_path = pre.resolve_format(_level, tile.y, tile.x);
-          obfiles.push(set_aws_worker(bns.folder_base_name + file_path));
+          ob_file_list.push(set_aws_worker(bns.folder_base_name + file_path));
           console.log(logTag, "file added: " + file_path);
         });
       });
     }
 
     console.log(logTag, "CPU found:" + pre.numCPUs);
-    triggerS3(obfiles, 0, function () {
+    triggerS3(ob_file_list, 0, function () {
       //When all the S3 files are uploaded.
       console.log(logTag, "trigger database update.");
       pre.db.updateByIdUpdate(instance_model, _id, update_meta_on_complete, null);
@@ -59,12 +59,12 @@ var worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns,
   if (!pre.check_access_keys_filled()) {
     return;
   }
-  var obfiles = [];
-  obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
-  obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
-  obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
+  var ob_file_list = [];
+  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
+  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
+  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
   console.log(logTag, "CPU found:" + pre.numCPUs);
-  triggerS3(obfiles, 0, function () {
+  triggerS3(ob_file_list, 0, function () {
     //When all the S3 files are uploaded.
     console.log(logTag, "trigger database update.");
     pre.db.updateByIdUpdate(instance_model, basemap_ID, update_meta_on_complete, function (doc) {
