@@ -89,15 +89,12 @@ module.exports.localUploadProgressComplete = function (lb_basemap, lb_user, map_
     },
 
     function (err) {
-
       console.log(logTag, "occurred error", err);
       if (_.isError(err)) {
         next(err);
       } else {
         next();
       }
-
-
     });
 };
 module.exports.complete_once_off = function (mapModel, result_object, next) {

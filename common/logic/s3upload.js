@@ -27,18 +27,20 @@ var worker_transfer = function (instance_model, _id, bns) {
   var obfiles = [];
   if (pre.l.isArray(bns.total_zoom_levels)) {
     if (bns.total_zoom_levels.length > 0) {
+
+      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
+      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
+      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
+
       pre.l.forEach(bns.total_zoom_levels, function (instance) {
         var _level = instance.level;
         console.log(logTag, "level found: " + _level);
         pre.l.forEach(instance.tiles, function (tile) {
-          var filepath = pre.resolve_format(_level, tile.y, tile.x);
-          obfiles.push(set_aws_worker(bns.folder_base_name + filepath));
-          console.log(logTag, "file added: " + filepath);
+          var file_path = pre.resolve_format(_level, tile.y, tile.x);
+          obfiles.push(set_aws_worker(bns.folder_base_name + file_path));
+          console.log(logTag, "file added: " + file_path);
         });
       });
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
-      obfiles.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
     }
 
     console.log(logTag, "CPU found:" + pre.numCPUs);
@@ -96,7 +98,7 @@ var triggerS3 = function (tasks, processors, next) {
 var set_aws_worker = function (path_key) {
   const client = pre.s3_node_client.createClient({s3Client: pre.s3_base_engine()});
   // Upload the file to S3
-  return function worker(callback_aysnc) {
+  return function worker(aync_next_loop) {
     var dta = {
       localFile: pre.fnGetLocalPath(path_key),
       s3Params: {
@@ -115,7 +117,7 @@ var set_aws_worker = function (path_key) {
     const uploadr = client.uploadFile(dta);
     uploadr.on('error', function (err) {
       console.error("Unable to upload:", err);
-      return callback_aysnc(err);
+      return aync_next_loop(err);
     });
 
     uploadr.on('progress', function () {
@@ -124,9 +126,9 @@ var set_aws_worker = function (path_key) {
 
     uploadr.on('end', function () {
       console.log(logTag, "done uploading: " + path_key);
-      return callback_aysnc();
+      console.log(logTag, "==============>end upload file");
+      return aync_next_loop();
     });
-
 
   };
 };

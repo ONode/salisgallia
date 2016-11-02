@@ -4,7 +4,7 @@
 const logTag = "> db.js";
 const _ = require('lodash');
 const ay = require('async');
-var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, next) {
+var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name_inc_1, next) {
 
   if (persistentModel == null) {
     console.log(logTag, "updateByIdAndIncrease, persistentModel is undefined ..... ");
@@ -15,21 +15,23 @@ var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, n
   console.log(logTag, "==========================================");
   console.log(logTag, "==> Update By Id And Increase Start Here =");
   console.log(logTag, "==========================================");
-  persistentModel.findOne({where: {id: _id_}}, function (err, _doc_user) {
-
+  persistentModel.findOne({where: {id: query_item_id}}, function (err, _doc_user) {
     if (_.isError(err)) {
       console.log(logTag, "findById has error ..... ", err);
       return;
     }
 
     var val = 0;
+
     if (_.isNaN(parseInt(_doc_user[field_name_inc_1]))) {
       val = 1;
     } else {
       val = parseInt(_doc_user[field_name_inc_1]) + 1;
     }
+
+    console.log(logTag, "instruction to update a single attribute -[ ", field_name_inc_1, val, " ]");
+
     _doc_user.updateAttribute(field_name_inc_1, val, function (err, r) {
-      // console.log(logTag, "updateAttribute result in here.....");
       if (_.isError(err)) {
         console.log(logTag, "updateAttribute has error ..... ", err);
         return;
@@ -49,7 +51,7 @@ var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, nex
   }
 
   console.log(logTag, "==========================================");
-  console.log(logTag, "==> Update By Id And Reduce Start Here =");
+  console.log(logTag, "==> Update By Id And Reduce Start Here ===");
   console.log(logTag, "==========================================");
   persistentModel.findOne({where: {id: _id_}}, function (err, oneDoc) {
     var val = 0;

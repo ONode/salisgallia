@@ -302,10 +302,7 @@ var v2 = function (app, req, res) {
           console.log(logTag, "save and update complete status");
           console.log(logTag, "all local images are transfering to S3 cloud now.");
 
-          pre.s3thread.transferSyncBaseMapS3(
-            process.getModels().lb_basemap,
-            item_id,
-            result);
+          pre.s3thread.transferSyncBaseMapS3(process.getModels().lb_basemap, item_id, result);
         });
 
     });
@@ -338,11 +335,7 @@ var v1 = function (app, req, res) {
     console.info(logTag, "Finished processing slices. start saving to DB.");
     console.info(logTag, "Process before -------------------->", result);
 
-    pre.s3thread.transferSimpleSingleSmallMapS3(
-      process.getModels().lb_basemap,
-      process.getModels().lb_user,
-      item_id,
-      result);
+    pre.s3thread.transferSimpleSingleSmallMapS3(process.getModels().lb_basemap, process.getModels().lb_user, item_id, result);
 
     console.info(logTag, "============================================");
     console.info(logTag, "header out put -------------------->", result);
