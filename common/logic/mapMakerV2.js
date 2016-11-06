@@ -56,13 +56,13 @@ makeMaker.prototype.define_slicer = function (errCallback, endCallback) {
 
   mapSlicer.on("progress", function (progress, total, current, file) {
     var percentNum = Math.round(progress * 100);
-    var percent = percentNum + "%";
-    //console.info("Progress: " + percent);
+    var percentActual = Math.round( progress / total * 50);
     console.info(logTag, "dataStructure.carry_id: ", this.O.id);
     if (this.O.id != null) {
 
       pre.basemapInfo.progress(
-        this.model_base_map, percentNum / 2,
+        this.model_base_map,
+        percentActual,
         this.O.id,
         null);
     }

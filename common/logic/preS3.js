@@ -49,14 +49,14 @@ var s3ls = function (options) {
         }
       }
 
-
       base_aws_s3_client.listObjectsV2({
         Bucket: bucket,
         MaxKeys: 2147483647, // Maximum allowed by S3 API
         Delimiter: '/',
         Prefix: prefix,
         StartAfter: prefix // removes the folder name from the file listing
-      }, s3ListCallback)
+      }, s3ListCallback);
+
     }
   };
 };
