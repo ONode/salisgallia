@@ -242,12 +242,12 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
 
 module.exports.transferSimpleSingleSmallMapS3 = function (instance_model, lb_user, basemap_ID, bns) {
   var q = new uploadQueneManager();
-  q.setModelConfig(instance_model, _id);
+  q.setModelConfig(instance_model, basemap_ID);
   q.simple_transfer_call(lb_user, bns, null);
 };
-module.exports.transferSyncBaseMapS3 = function (instance_model, _id, bns) {
+module.exports.transferSyncBaseMapS3 = function (instance_model, basemap_ID, bns) {
   var q = new uploadQueneManager();
-  q.setModelConfig(instance_model, _id);
+  q.setModelConfig(instance_model, basemap_ID);
   q.large_transfer_call(bns);
 };
 
