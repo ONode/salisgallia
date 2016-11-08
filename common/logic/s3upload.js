@@ -52,6 +52,9 @@ uploadQueneManager.prototype.onUpdateProgress = function () {
     this.model_instance_id,
     null
   );
+  console.log(logTag, "uploading progress: " + mode2progress);
+  // console.log(logTag, "==============>end upload file");
+
 };
 uploadQueneManager.prototype.setModelConfig = function (instance_model, basemap_id) {
   this.instance_model = instance_model;
@@ -144,8 +147,7 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
     });
 
     newUp.on('end', function () {
-      console.log(logTag, "done uploading: " + path_key);
-      console.log(logTag, "==============>end upload file");
+
       this.onUpdateProgress();
       return aync_next_loop();
     }.bind(this));
