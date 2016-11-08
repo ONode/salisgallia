@@ -94,7 +94,9 @@ var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
   persistentModel.findOne({where: {id: _id_}}, function (err, oneDoc) {
     if (_.isError(err) || oneDoc == null) {
       console.info(logTag, "error incurred or the query object is not found", err);
-      next(err);
+      if (_.isFunction(next)) {
+        next(err);
+      }
     } else {
       try {
         oneDoc.updateAttributes(update_object, function (err, r) {
@@ -114,7 +116,9 @@ var getInstanceById = function (persistentModel, _id, next, errnext) {
     if (_.isError(next)) {
       return errnext(err);
     }
-    next(oneDoc);
+    if (_.isFunction(next)) {
+      next(oneDoc);
+    }
   });
 };
 var removeAll = function (persistentModel, where, callback) {
@@ -141,7 +145,9 @@ module.exports.customJobLoopOverModel = function (model_obj, next_up) {
         },
         function (err, nu) {
           if (docList.length < page) {
-            next_up();
+            if (_.isFunction(next_up)) {
+              next_up();
+            }
           } else {
             _offset += page;
             uploop();

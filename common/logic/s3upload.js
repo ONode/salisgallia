@@ -50,9 +50,11 @@ uploadQueneManager.prototype.onUpdateProgress = function () {
     this.instance_model,
     mode2progress,
     this.model_instance_id,
-    null
+    function (done) {
+      console.log(logTag, "===progress===========>updated.");
+    }
   );
-  console.log(logTag, "uploading progress: " + mode2progress);
+  console.log(logTag, "uploading progress: ", this.total_items, this.current_item, mode2progress);
   // console.log(logTag, "==============>end upload file");
 
 };
