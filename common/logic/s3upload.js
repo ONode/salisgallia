@@ -127,7 +127,7 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
         ACL: 'public-read'
       }
     };
-    
+
     console.log(logTag, "=======================>start AWS upload");
     // console.log(logTag, client);
     console.log(logTag, dta);

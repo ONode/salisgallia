@@ -69,7 +69,7 @@ module.exports.progress = function (mapModel, progress, id, next) {
   var checker_report = function (p) {
     return {
       "complete": p,
-      "listing.enabled": p == 100
+      "listing.enabled": Math.ceil(p) == 100
     };
   };
 
