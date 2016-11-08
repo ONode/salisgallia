@@ -13,7 +13,7 @@ const
   async = require('async'),
   fse = require('fs-extra'),
   _moduleIm = require('zyn-imagemagick'),
-  s3thread = require('./s3upload.js'),
+  uploaderS32 = require('./s3upload'),
   colorPaletteGenerator = require('colors-palette'),
   basemapInfo = require('./basemapinfo.js')
   ;
@@ -144,7 +144,7 @@ module.exports = {
   async: async,
   fse: fse,
   imageMagic: _moduleIm,
-  s3thread: s3thread,
+  s3thread: uploaderS32,
   basemapInfo: basemapInfo,
   setupUploader: setupUploader,
   colorPalGen: colorPaletteGenerator
