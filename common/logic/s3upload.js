@@ -43,20 +43,16 @@ var uploadQueneManager = function () {
   this.aws_work_queue = [];
   this.client = pre.s3_node_client.createClient({s3Client: pre.s3_base_engine()});
 };
-uploadQueneManager.prototype.onUpdateProgress = function () {
+uploadQueneManager.prototype.onUpdateProgress = function (afterprogressupdated) {
   this.current_item++;
   var mode2progress = this.current_item / this.total_items * 50 + 50;
   preMap.basemapInfo.progress(
     this.instance_model,
     mode2progress,
     this.model_instance_id,
-    function (done) {
-      console.log(logTag, "===progress===========>updated.");
-    }
+    afterprogressupdated
   );
   console.log(logTag, "uploading progress: ", this.total_items, this.current_item, mode2progress);
-  // console.log(logTag, "==============>end upload file");
-
 };
 uploadQueneManager.prototype.setModelConfig = function (instance_model, basemap_id) {
   this.instance_model = instance_model;
@@ -122,7 +118,6 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
 uploadQueneManager.prototype.transfer_in_action = function (path_key) {
 
   return function worker(aync_next_loop) {
-
     var dta = {
       localFile: pre.fnGetLocalPath(path_key),
       s3Params: {
@@ -132,26 +127,23 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
         ACL: 'public-read'
       }
     };
-
+    
     console.log(logTag, "=======================>start AWS upload");
     // console.log(logTag, client);
     console.log(logTag, dta);
     console.log(logTag, "=======================>end AWS upload");
-
     const newUp = this.client.uploadFile(dta);
     newUp.on('error', function (err) {
       console.error("Unable to upload:", err);
       return aync_next_loop(err);
     });
-
     newUp.on('progress', function () {
       //console.log(logTag, newUp.progressMd5Amount, newUp.progressAmount, newUp.progressTotal);
     });
-
     newUp.on('end', function () {
-
-      this.onUpdateProgress();
-      return aync_next_loop();
+      this.onUpdateProgress(function () {
+        return aync_next_loop();
+      });
     }.bind(this));
   }.bind(this);
 };
