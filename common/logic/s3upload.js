@@ -41,7 +41,7 @@ var uploadQueneManager = function () {
   this.instance_model = null;
   this.model_instance_id = null;
   this.aws_work_queue = [];
-  this.client = pre.s3_node_client.createClient({s3Client: pre.s3_base_engine()});
+  this.client = pre.newS3Client();
 };
 uploadQueneManager.prototype.onUpdateProgress = function (afterprogressupdated) {
   this.current_item++;
@@ -108,7 +108,9 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
       if (pre.l.isError(doc)) {
         return;
       }
-      pre.db.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", null);
+      pre.db.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", function (done) {
+
+      });
       if (pre.l.isFunction(next)) {
         return next();
       }

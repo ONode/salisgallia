@@ -55,5 +55,9 @@
   },
   "Email": {
     "dataSource": "gmail_data_source"
+  },
+  "container": {
+    "dataSource": "storage",
+    "public": true
   }
 }

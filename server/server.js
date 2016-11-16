@@ -2,15 +2,12 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-
-
 'use strict';
-
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 var app = module.exports = loopback();
 if (process.env.S3_ACCESS_KEY_ID == undefined) {
-  console.log('Now search for .ENV file');
+  console.log('Now search for .env file');
   require('dotenv').config();
 }
 //app.use(loopback.token({model: app.models.accessToken}));

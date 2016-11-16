@@ -1,11 +1,19 @@
 const
   test_s3_keyid = "",
   test_s3_accesskey = "",
+  test_cloudinary_name = "",
+  test_cloudinary_apikey = "",
+  test_cloudinary_secret = "",
   logTag = "> pre s3 --> ",
   access = {
     apiVersion: '2006-03-01',
     accessKeyId: process.env.S3_ACCESS_KEY_ID || test_s3_keyid,
     secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || test_s3_accesskey
+  },
+  access_cloudinary = {
+    cloud_name: process.env.CLOUDINARY_CLOUDNAME || test_cloudinary_name,
+    api_key: process.env.CLOUDINARY_APIKEY || test_cloudinary_apikey,
+    api_secret: process.env.CLOUDINARY_SECRET || test_cloudinary_secret
   },
   bucket_active = "s3.heskeyo.com",
   fileName = "basemap",
@@ -93,6 +101,12 @@ var s3lpkeys = function (options) {
       s3ls(options).ls(_fpath, s3ListFilesCallback);
     }
   };
+};
+var getProfileHeadLocalPath = function (filename) {
+  return path.dirname(module.main) + "/storage/tmp/profile/" + filename;
+};
+var getProfileHeadRemotePath = function (filename) {
+  return "profile/" + filename;
 };
 var getLocalPath = function (the_rest) {
   return path.dirname(module.main) + "/storage/tmp/storage_f/" + the_rest;
@@ -203,22 +217,24 @@ module.exports = {
   fnGetLocalPath: getLocalPath,
   fnGetFolderPathS3: getFolderPathS3,
   fnGetRemotePath: getRemotePath,
-
+  fnGetLocalHeadImagePath: getProfileHeadLocalPath,
+  fnGetRemoteHeadImagePath: getProfileHeadRemotePath,
   db: require("./../util/db.js"),
   loopback: require('loopback')(),
   async: require('async'),
   fs: require('fs'),
   path: path,
   l: _,
-  s3_node_client: s3_client_engine,
-  s3_base_engine: function () {
-    return new s3_aws.S3(access);
-  },
   cluster: require('cluster'),
   numCPUs: require('os').cpus.length,
   aws: s3_aws,
   s3FsRm: rmrecursively_v2,
   crTool: tool,
-  s3Ls: s3ls
-};
+  cloudinary_access: access_cloudinary,
+  s3Ls: s3ls,
+  newS3Client: function () {
+    return s3_client_engine.createClient({s3Client: new s3_aws.S3(access)});
+  }
+}
+;
 

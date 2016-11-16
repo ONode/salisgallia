@@ -6,30 +6,30 @@
   "initial": {
     "compression": {},
     "loopback-context#per-request": {}
-  },
-  "session": {
-  },
-  "auth": {
-  },
-  "parse": {
-  },
-  "routes": {
-    "loopback#rest": {
-      "paths": [
-        "${restApiRoot}"
-      ]
+    },
+    "session": {
+    },
+    "auth": {
+    },
+    "parse": {
+    },
+    "routes": {
+      "loopback#rest": {
+        "paths": [
+          "${restApiRoot}"
+        ]
+      }
+    },
+    "files": {
+      "loopback#static": {
+        "params": "$!../client"
+      }
+    },
+    "final": {
+      "loopback#urlNotFound": {}
+    },
+    "final:after": {
+      "./middleware/custom-error": {},
+      "errorhandler": {}
     }
-  },
-  "files": {
-    "loopback#static": {
-      "params": "$!../client"
-    }
-  },
-  "final": {
-    "loopback#urlNotFound": {}
-  },
-  "final:after": {
-    "./middleware/custom-error": {},
-    "errorhandler": {}
   }
-}

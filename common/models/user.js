@@ -8,6 +8,7 @@ var speakeasy = require("speakeasy"),
   _crypto = require("crypto"),
   loopback = require("loopback"),
   promise = require("promise"),
+  profile_pic = require("../logic/profileUpload"),
   db = require("../../common/util/db.js"),
   logTag = "> user.js",
   result_bool = {
@@ -417,6 +418,33 @@ module.exports = function (user) {
     });
     console.log("update", "execute first faster line here");
   };
+  /**
+   * implementation for loopback 2.0
+   * @param req content request
+   * @param res the request item
+   * @param user_id the string in user id
+   * @param cb the callback next
+   */
+  user.update_profile_photo = function (req, res, user_id, cb) {
+    var StorageContainer = user.app.models.container;
+    StorageContainer.getContainers(function (err, containers) {
+      if (containers.some(function (e) {
+          return e.name == user_id;
+        })) {
+        StorageContainer.upload(req, res, {container: user_id}, function (err, result) {
+        //  console.log("update", result);
+          profile_pic.profile_upload_s3(result, user, cb);
+        });
+      } else {
+        StorageContainer.createContainer({name: user_id}, function (err, c) {
+          StorageContainer.upload(req, res, {container: c.name}, function (err, result) {
+           // console.log("create", result);
+            profile_pic.profile_upload_s3(result, user, cb);
+          });
+        });
+      }
+    });
+  };
   user.remoteMethod("email_verify_from_code", {
     description: ["Email verification with the code. "],
     accepts: [
@@ -473,6 +501,21 @@ module.exports = function (user) {
       },
       // isStatic: false, /* this is to need id systematically */
       http: {verb: "post", path: "/:id/insertimagemeta"}
+    }
+  );
+  user.remoteMethod(
+    "update_profile_photo",
+    {
+      description: ["Update user profile in this api"],
+      accepts: [
+        {arg: 'req', type: 'object', 'http': {source: 'req'}},
+        {arg: 'res', type: 'object', 'http': {source: 'res'}},
+        {arg: 'id', type: 'string'}
+      ],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      http: {verb: "post", path: "/update_profile_photo/:id"}
     }
   );
 
