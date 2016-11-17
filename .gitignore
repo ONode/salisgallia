@@ -44,6 +44,6 @@ node_modules
 .project
 \storage\tmp\storage_f\**\*.jpg
 \storage\tmp\tmpsgi\**
-storage
+\storage\tmp\profile\**\*.jpg
 localkey.txt
 .env
