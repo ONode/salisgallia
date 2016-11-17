@@ -30,7 +30,6 @@ upload_prob.prototype.exe_s3 = function () {
     };
     console.log(logTag, "==========> start AWS upload profile image too");
     console.log(logTag, dta);
-    console.log(logTag, "==========> end AWS upload profile image too");
     const newUp = this.client.uploadFile(dta);
     newUp.on('error', function (err) {
       console.error("Unable to upload:", err);
@@ -40,23 +39,31 @@ upload_prob.prototype.exe_s3 = function () {
     });
     newUp.on('end', function () {
       this.updateUserProfilePhoto(function (result) {
-        return this.callback(null, result);
+        //   return this.callback(null, result);
+        console.log("upprogress", "progress completed");
+        console.log(logTag, "==========> end AWS upload profile image too");
       }.bind(this));
+    }.bind(this));
+    /**
+     * give an instance response to the request.
+     */
+    this.db.findOne({where: {id: this.user_id}}, function (err, oneDoc) {
+      return this.callback(null, oneDoc.photo);
     }.bind(this));
   }
 };
-upload_prob.prototype.updateUserProfilePhoto = function (callback) {
+upload_prob.prototype.getReturnObject = function () {
   var path_sub = pS3.fnGetRemoteHeadImagePath(this.src_filename);
   var path_pre = "http://s3.heskeyo.com/" + path_sub;
-  pS3.db.updateByIdUpdate(this.db, this.user_id, {
+  return {
     "photo.url": path_pre,
     "photo.secure_url": path_pre,
     "photo.format": this.format,
     "photo.image_size": this.image_size
-  }, function () {
-    this.db.findOne({where: {id: this.user_id}}, function (err, oneDoc) {
-      callback(oneDoc.photo);
-    });
+  };
+};
+upload_prob.prototype.updateUserProfilePhoto = function (callback) {
+  pS3.db.updateByIdUpdate(this.db, this.user_id, this.getReturnObject(), function () {
   }.bind(this));
 };
 upload_prob.prototype.setUpdateUserObject = function (user) {
@@ -87,7 +94,6 @@ module.exports.profile_upload_s3 = function (result, user_lb, cb) {
     cb(new Error("no result"));
   } else {
     var image = result.files.user_image[0];
-    console.log("user_image", image);
     var filename = image.name;
     var path = image.container;
     var size = image.size;

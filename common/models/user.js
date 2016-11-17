@@ -418,6 +418,17 @@ module.exports = function (user) {
     });
     console.log("update", "execute first faster line here");
   };
+  var renamefiles = function (fileInfo, req, res) {
+    var uuid = require('node-uuid');
+    var origFilename = fileInfo.name;
+    // optimisticly get the extension
+    var parts = origFilename.split('.'),
+      extension = parts[parts.length - 1];
+    // Using a local timestamp + user id in the filename (you might want to change this)
+    var newFilename1 = (new Date()).getTime() + '_' + uuid.v1() + '.' + extension;
+    var newFilename2 = uuid.v1() + '.' + extension;
+    return newFilename2;
+  };
   /**
    * implementation for loopback 2.0
    * @param req content request
@@ -431,14 +442,20 @@ module.exports = function (user) {
       if (containers.some(function (e) {
           return e.name == user_id;
         })) {
-        StorageContainer.upload(req, res, {container: user_id}, function (err, result) {
-        //  console.log("update", result);
+        StorageContainer.upload(req, res, {
+          container: user_id,
+          getFilename: renamefiles
+        }, function (err, result) {
+          //  console.log("update", result);
           profile_pic.profile_upload_s3(result, user, cb);
         });
       } else {
         StorageContainer.createContainer({name: user_id}, function (err, c) {
-          StorageContainer.upload(req, res, {container: c.name}, function (err, result) {
-           // console.log("create", result);
+          StorageContainer.upload(req, res, {
+            container: c.name,
+            getFilename: renamefiles
+          }, function (err, result) {
+            // console.log("create", result);
             profile_pic.profile_upload_s3(result, user, cb);
           });
         });
