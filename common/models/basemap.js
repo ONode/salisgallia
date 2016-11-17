@@ -11,6 +11,11 @@ const logTag = "> basemap.js model";
 var result_bool = {
   acknowledged: true
 };
+function ensureVariableInteger(context, item) {
+  if (!_.isUndefined(context.query.where[item])) {
+    context.query.where[item] = parseInt(context.query.where[item]);
+  }
+}
 module.exports = function (basemap) {
   /**
    * Throwing in an extra request on value in the filter object
@@ -26,9 +31,14 @@ module.exports = function (basemap) {
       context.query.order = "createtime DESC";
       context.query.where['complete'] = 100;
       context.query.where['listing.enabled'] = true;
+      ensureVariableInteger(context, 'image_meta.material');
+      ensureVariableInteger(context, 'image_meta.shape');
+      ensureVariableInteger(context, 'image_meta.cat');
+      ensureVariableInteger(context, 'image_meta.topic');
+      ensureVariableInteger(context, 'image_meta.frame_width');
+      ensureVariableInteger(context, 'image_meta.frame_shadow');
       //context.query.where['listing.enabled'] = {$exists: true};
       //context.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
-
       context.query.fields = {
         id: true,
         owner: true,
@@ -44,12 +54,9 @@ module.exports = function (basemap) {
         currency: true,
         rename_file: true
       };
-
-      // console.log(logTag, 'Additional query request filter', context.Model.modelName, JSON.stringify(context.query.where));
     } else {
       context.query.order = "createtime DESC";
     }
-
     //console.log(logTag, "=> logtag in the context", context.query);
     next()
   });
