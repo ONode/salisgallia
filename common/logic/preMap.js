@@ -1,26 +1,31 @@
-/**
- * Created by hesk on 16年10月11日.
- */
+
+
+
+
+const
+__parentDir = require('app-root-path');
+
+console.log("----------");
+console.log(__parentDir);
+
 const
   tool_crypt = require('crypto'),
   numCPUs = require('os').cpus.length,
-  path = require('path'),
   uploaderMU = require('multer'),
   mapSliceArc = require('mapslice'),
   output = require('.././util/outputjson.js'),
   rmdir = require('.././util/rmdir.js'),
   _ = require('lodash'),
+
   async = require('async'),
   fse = require('fs-extra'),
   _moduleIm = require('zyn-imagemagick'),
   uploaderS32 = require('./s3upload'),
   colorPaletteGenerator = require('colors-palette'),
-  basemapInfo = require('./basemapinfo.js')
-  ;
+  basemapInfo = require('./basemapinfo.js'),
 
-const
+
   logTag = "> preMap.js",
-  __parentDir = path.dirname(module.main),
   saltFile = "cath52i43#$#^ebs*^%$ig69",
   upload_file_field = "art",
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
@@ -112,7 +117,7 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
  */
 module.exports = {
   logTag: logTag,
-  __parentDir: path.dirname(module.main),
+  __parentDir: __parentDir,
   saltFile: 'catherineboobsarebig69',
   upload_file_field: 'art',
   base_folder: base_folder,

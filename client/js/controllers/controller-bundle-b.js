@@ -2,6 +2,13 @@
  * Created by hesk on 16年10月13日.
  */
 angular.module('app')
+
+  .controller('CertReview', ['$scope', '$state', '$stateParams',
+    function ($scope, $state, $stateParams) {
+
+      console.log("=CertReview===");
+
+    }])
   .controller('PreviewController',
     ['$scope', '$stateParams', '$q', '$http', 'Basemap',
       function ($scope, $stateParams, $q, $http, _basemap) {

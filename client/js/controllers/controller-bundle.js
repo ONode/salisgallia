@@ -5,8 +5,7 @@
 
 angular
   .module('app')
-  .controller('AllReviewsController', ['$scope', 'Review', function ($scope,
-                                                                     Review) {
+  .controller('AllReviewsController', ['$scope', 'Review', function ($scope, Review) {
     $scope.reviews = Review.find({
       filter: {
         include: [

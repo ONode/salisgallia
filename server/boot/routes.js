@@ -5,15 +5,12 @@
 const
   makerMap = require("../../common/logic/mapMakerV2.js"),
   clearall = require("../../common/logic/clearallfolders"),
-  path = require("path"),
   _ = require("lodash"),
   express = require("express"),
   timeout = require("req-timeout"),
   request = require("request")
-  ;
-const
-  __parentDir = path.dirname(module.main)
-  ;
+  __parentDir = require('app-root-path');
+
 module.exports = function (app) {
   // Install a "/ping" route that returns "pong"
   app.get("/ping", function (req, res) {

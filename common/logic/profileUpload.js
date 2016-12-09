@@ -2,7 +2,7 @@
  * Created by hesk on 16年11月11日.
  */
 
-const pre = require("./preMap");
+//const pre = require("./preMap");
 const pS3 = require("./preS3");
 const resizeModule = require("./resize_queue");
 const cloudinary = require("cloudinary");

@@ -49,6 +49,10 @@
     "dataSource": "rocket_us_east",
     "public": true
   },
+  "Contract": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
   "Basemap": {
     "dataSource": "rocket_us_east",
     "public": true

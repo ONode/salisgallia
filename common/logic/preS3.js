@@ -24,7 +24,7 @@ const
   }
   ;
 var _ = require('lodash');
-var path = require('path');
+var __parentDir = require('app-root-path');
 var depthResolver = require('mapslice/lib/util/outputResolve');
 var s3_fs = require('s3fs');
 var s3_aws = require('aws-sdk');
@@ -103,13 +103,13 @@ var s3lpkeys = function (options) {
   };
 };
 var getProfileHeadLocalPath = function (filename) {
-  return path.dirname(module.main) + "/storage/tmp/profile/" + filename;
+  return __parentDir + "/storage/tmp/profile/" + filename;
 };
 var getProfileHeadRemotePath = function (filename) {
   return "profile/" + filename;
 };
 var getLocalPath = function (the_rest) {
-  return path.dirname(module.main) + "/storage/tmp/storage_f/" + the_rest;
+  return __parentDir + "/storage/tmp/storage_f/" + the_rest;
 };
 var getRemotePath = function (the_rest) {
   return "basemap/" + the_rest;
@@ -223,7 +223,7 @@ module.exports = {
   loopback: require('loopback')(),
   async: require('async'),
   fs: require('fs'),
-  path: path,
+  rootpath: __parentDir,
   l: _,
   cluster: require('cluster'),
   numCPUs: require('os').cpus.length,

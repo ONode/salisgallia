@@ -1,6 +1,6 @@
 {
   "name": "galleria-loopback-a72",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "server/server.js",
   "scripts": {
     "pretest": "jshint .",
@@ -10,7 +10,7 @@
     "heroku-postbuild": "echo This runs afterwards."
   },
   "engines": {
-    "node": "5.11.1"
+    "node": "4.5.0"
   },
   "dependencies": {
     "async": "https://github.com/caolan/async.git",
@@ -55,6 +55,8 @@
     "fs-extra": "^0.30.0",
     "colors-palette": "0.0.4",
     "promise": "7.1.1",
+    "app-root-path": "2.0.1",
+    "stripe": "https://github.com/stripe/stripe-node.git",
     "gulp": "^3.9.1"
   },
   "devDependencies": {
