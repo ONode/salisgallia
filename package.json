@@ -11,7 +11,7 @@
     "heroku-postbuild": "echo This runs afterwards."
   },
   "engines": {
-    "node": "4.5.0"
+    "node": "6.9.2"
   },
   "dependencies": {
     "async": "https://github.com/caolan/async.git",
