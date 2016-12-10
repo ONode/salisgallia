@@ -2,8 +2,9 @@
  * Created by zJJ on 7/19/2016.
  */
 var _ = require('lodash');
-var db_worker = require("./../util/db.js");
 var async = require('async');
+var LoopBackContext = require('loopback-context');
+var db_worker = require("./../util/db.js");
 var s3thread = require("./../logic/s3upload");
 var s3clean = require("./../logic/s3cleaner");
 var fixId = require("./../logic/db_patch");
@@ -20,26 +21,28 @@ module.exports = function (basemap) {
   /**
    * Throwing in an extra request on value in the filter object
    */
-  basemap.observe('access', function (context, next) {
+  basemap.observe('access', function (ctx, next) {
+   // var ctx = LoopBackContext.getCurrentContext();
+
     /**
      * The query specific for getting the complete listing
      */
-    if (_.isEqual(context.query['ready'], 'on')) {
-      if (!context.query.where) {
-        context.query.where = {}
+    if (_.isEqual(ctx.query['ready'], 'on')) {
+      if (!ctx.query.where) {
+        ctx.query.where = {}
       }
-      context.query.order = "createtime DESC";
-      context.query.where['complete'] = 100;
-      context.query.where['listing.enabled'] = true;
-      ensureVariableInteger(context, 'image_meta.material');
-      ensureVariableInteger(context, 'image_meta.shape');
-      ensureVariableInteger(context, 'image_meta.cat');
-      ensureVariableInteger(context, 'image_meta.topic');
-      ensureVariableInteger(context, 'image_meta.frame_width');
-      ensureVariableInteger(context, 'image_meta.frame_shadow');
-      //context.query.where['listing.enabled'] = {$exists: true};
-      //context.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
-      context.query.fields = {
+      ctx.query.order = "createtime DESC";
+      ctx.query.where['complete'] = 100;
+      ctx.query.where['listing.enabled'] = true;
+      ensureVariableInteger(ctx, 'image_meta.material');
+      ensureVariableInteger(ctx, 'image_meta.shape');
+      ensureVariableInteger(ctx, 'image_meta.cat');
+      ensureVariableInteger(ctx, 'image_meta.topic');
+      ensureVariableInteger(ctx, 'image_meta.frame_width');
+      ensureVariableInteger(ctx, 'image_meta.frame_shadow');
+      //ctx.query.where['listing.enabled'] = {$exists: true};
+      //ctx.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
+      ctx.query.fields = {
         id: true,
         owner: true,
         createtime: true,
@@ -55,9 +58,9 @@ module.exports = function (basemap) {
         rename_file: true
       };
     } else {
-      context.query.order = "createtime DESC";
+      ctx.query.order = "createtime DESC";
     }
-    //console.log(logTag, "=> logtag in the context", context.query);
+    //console.log(logTag, "=> logtag in the ctx", ctx.query);
     next()
   });
   /*
@@ -76,6 +79,7 @@ module.exports = function (basemap) {
 
    */
   basemap.observe('before save', function updateTimestamp(ctx, next) {
+    //var ctx = LoopBackContext.getCurrentContext();
     if (ctx.instance) {
 
       /*  if (!_.isUndefined(ctx.instance.owner)) {
@@ -98,9 +102,14 @@ module.exports = function (basemap) {
   });
 
   basemap.observe('before delete', function (ctx, next) {
+
+    //var ctx = LoopBackContext.getCurrentContext();
+
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
       ctx.where);
+
+
     var basemapId = ctx.where['id'];
     db_worker.getInstanceById(basemap, basemapId,
       function (data) {
@@ -124,7 +133,7 @@ module.exports = function (basemap) {
       });
   });
 
-  basemap.observe('after delete', function (context, next) {
+  basemap.observe('after delete', function (ctx, next) {
     console.log(logTag, 'remove item', 'done');
     next();
   });

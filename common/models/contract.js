@@ -2,94 +2,66 @@
  * Created by hesk on 16年12月9日.
  */
 var _ = require('lodash');
-var db_worker = require("./../util/db.js");
 var async = require('async');
-var s3thread = require("./../logic/s3upload");
-var s3clean = require("./../logic/s3cleaner");
-var fixId = require("./../logic/db_patch");
+var contract_process = require("./../logic/contract_process");
 const logTag = "> basemap.js model";
+/*
 var result_bool = {
   acknowledged: true
 };
-/*
- var k = function () {
- var StorageContainer = user.app.models.container;
- StorageContainer.getContainers(function (err, containers) {
- if (containers.some(function (e) {
- return e.name == user_id;
- })) {
- StorageContainer.upload(req, res, {
- container: user_id,
- getFilename: renamefiles
- }, function (err, result) {
- //  console.log("update", result);
- profile_pic.profile_upload_s3(result, user, cb);
- });
- } else {
- StorageContainer.createContainer({name: user_id}, function (err, c) {
- StorageContainer.upload(req, res, {
- container: c.name,
- getFilename: renamefiles
- }, function (err, result) {
- // console.log("create", result);
- profile_pic.profile_upload_s3(result, user, cb);
- });
- });
- }
- }*/
+*/
 module.exports = function (contract) {
-
-  contract.construct_contract = function (user_id, data, cb) {
+ /* contract.construct_contract = function (user_id, data, cb) {
     if (typeof data === 'function') {
       data = undefined;
     }
-
     var
-      contract_type = data["contract_type"];
+      contract_type = data["contract_type"],
+      context = LoopBackContext.getCurrentContext();
 
-    if (contract_type == "self_manage") {
+    console.log(context);
 
-/*
-      var actiontaken = parseInt(data["actiontaken"]),
-        verify = data["verify"],
-        subject_id = data["subject_id"],
-        from_agent_id = data["from_agent_id"];
+  };*/
 
-      */
-
-      cb(null, result_bool);
-    } else if (contract_type == "agent_manage") {
-
-/*
-      var actiontaken = parseInt(data["actiontaken"]),
-        verify = data["verify"],
-        subject_id = data["subject_id"],
-        from_agent_id = data["from_agent_id"];
-*/
-
-
-      cb(null, result_bool);
-    } else if (contract_type == "org_manage") {
-
-  /*
-      var actiontaken = parseInt(data["actiontaken"]),
-        verify = data["verify"],
-        subject_id = data["subject_id"],
-        from_agent_id = data["from_agent_id"];
-
-*/
-
-
-
-
-      cb(null, result_bool);
-    } else {
-      fn(new Error("no action is taken 7775"), null);
-    }
+  contract.by_user = function (user_id, cb) {
+    var where_cond = {
+      "userId": user_id
+    };
+    contract.find({
+      where: where_cond,
+      order: "createtime DESC",
+      limit: 5,
+      skip: 0
+    }, function (err, results) {
+      if (_.isError(err)) {
+        return cb(err);
+      }
+      contract.count(where_cond, function (err, number) {
+        console.log(logTag, ">> How many does it count? ", number);
+      });
+      cb(null, results);
+    });
+    //fixId.fixIddb(basemap, "owner");
+    //cb(null, result_bool);
   };
+  contract.remoteMethod("by_user", {
+    description: ["Construct the certificate from given ids."],
+    accepts: [
+      {
+        arg: "user_id",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "check with user id"
+      }
+    ],
+    returns: {
+      arg: "luckylist", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/by_user/:user_id"}
 
-
-  contract.remoteMethod("construct_contract", {
+  });
+  /*contract.remoteMethod("construct_contract", {
     description: ["Construct the certificate from given ids."],
     accepts: [
       {
@@ -111,5 +83,5 @@ module.exports = function (contract) {
       arg: "luckylist", type: "object", root: true, description: "Return value"
     },
     http: {verb: "post", path: "/construct_contract/:user_id"}
-  });
+  });*/
 };

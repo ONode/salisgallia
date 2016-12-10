@@ -9,14 +9,6 @@
       "generated": true,
       "required": false
     },
-    "owner_role": {
-      "type": "string",
-      "required": false
-    },
-    "owner": {
-      "type": "string",
-      "required": false
-    },
     "photo_id_a": {
       "type": "string",
       "description": "the path url for photo ID for party A",
@@ -42,17 +34,10 @@
       "description": "the type of agreement expressed in integer. artist standalone = 1, agent-artist standalone = 2, organization sales = 3, maker organization = 4",
       "required": true
     },
-    "agreement_detail": {
-      "type": {
-        "chinese_traditional": "string",
-        "chinese_simpified": "string",
-        "english": "string",
-        "japanese": "string",
-        "korean": "string",
-        "french": "string",
-        "updatetime": "Date"
-      },
-      "description": "The business detail of the agreement between Zyntauri and the end users"
+    "status": {
+      "type": "number",
+      "description": "the current status of certification 1 -pending 2 -approved 3 -rejected 4 -revoked",
+      "required": true
     },
     "path": {
       "type": "string",
@@ -62,6 +47,36 @@
     "path_aws": {
       "type": "string",
       "description": "pdf file backup stored location in aws server",
+      "required": false
+    },
+    "name_agent": {
+      "type": "string",
+      "description": "main applicant name",
+      "required": true
+    },
+    "name_agent_id": {
+      "type": "string",
+      "description": "main applicant name",
+      "required": true
+    },
+    "name_artist": {
+      "type": "string",
+      "description": "the authorized artist name",
+      "required": false
+    },
+    "name_artist_id": {
+      "type": "string",
+      "description": "the authorized artist id",
+      "required": false
+    },
+    "corp_name": {
+      "type": "string",
+      "description": "the name of the organization",
+      "required": false
+    },
+    "corp_id": {
+      "type": "string",
+      "description": "registration id of the organization",
       "required": false
     },
     "createtime": {
@@ -78,9 +93,9 @@
   "validations": [],
   "relations": {
     "user": {
-      "type": "belongsTo",
+      "type": "hasOne",
       "model": "user",
-      "foreignKey": "owner"
+      "foreignKey": "userId"
     }
   },
   "acls": [

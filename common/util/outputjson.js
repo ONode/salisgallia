@@ -41,3 +41,8 @@ exports.resDataSuccess = response_success_object;
 exports.outResErro = res_error;
 exports.outResSuccess = res_success;
 exports.outResSuccessWithMessage = res_success_message;
+exports.outSimpleAcknowledge = function (res) {
+  return res.json({
+    acknowledged: true
+  });
+};

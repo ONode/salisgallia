@@ -9,10 +9,6 @@
       "generated": true,
       "required": false
     },
-    "owner": {
-      "type": "string",
-      "required": false
-    },
     "brand_logo_original": {
       "type": "string",
       "description": "the path url logo brand name uploaded size",

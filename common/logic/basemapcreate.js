@@ -5,7 +5,6 @@ const
 
   tool_crypt = require('crypto'),
   numCPUs = require('os').cpus.length,
-  path = require('path'),
   mulOperation = require('multer'),
   mapSliceArc = require('mapslice'),
   output = require('.././util/outputjson.js'),
@@ -25,7 +24,7 @@ const
 const
 
   logTag = '> basemapcreate.js',
-  __parentDir = path.dirname(module.main),
+  __parentDir = require('app-root-path'),
   saltFile = 'catherineboobsarebig69',
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",

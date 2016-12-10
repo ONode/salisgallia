@@ -8,7 +8,7 @@ var speakeasy = require("speakeasy"),
   _crypto = require("crypto"),
   loopback = require("loopback"),
   promise = require("promise"),
-  profile_pic = require("../logic/profileUpload"),
+  profile_pic = require("../logic/s3profile"),
   db = require("../../common/util/db.js"),
   logTag = "> user.js",
   result_bool = {
@@ -102,7 +102,7 @@ module.exports = function (user) {
     user.find({
       where: {},
       order: "uploads DESC",
-      limit: 12
+      limit: 5
     }, function (err, list) {
       if (_.isError(err)) {
         cb(err, null);
@@ -228,14 +228,23 @@ module.exports = function (user) {
     });
   };
 
-  // Set up remote methods from model config schema json.
+
+  /**
+   * input object consist of
+   *
+   * {
+   *    email: xxxxx,
+   *    twofactor: xxxx
+   * }
+   *
+   * @param credentials
+   * @param fn
+   */
   user.loginWithCode = function (credentials, fn) {
+    console.log("update", "loginWithCode");
     var err = new Error("Sorry, but that verification code does not work!");
     err.statusCode = 401;
     err.code = "LOGIN_FAILED";
-
-    console.log("update", "loginWithCode");
-
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       // And don"t forget to match this secret to the one in requestCode()
       var code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
@@ -256,7 +265,7 @@ module.exports = function (user) {
       // fn = include;
       data = undefined;
     }
-    //   console.log("update", "line1");
+    // console.log("update", "line1");
     /* var ctx = loopback.getCurrentContext();
      var accessToken = ctx.get("accessToken");
      var userid = accessToken.userId;*/
@@ -437,7 +446,7 @@ module.exports = function (user) {
    * @param cb the callback next
    */
   user.update_profile_photo = function (req, res, user_id, cb) {
-    var StorageContainer = user.app.models.container;
+    var StorageContainer = user.app.models.Container;
     StorageContainer.getContainers(function (err, containers) {
       if (containers.some(function (e) {
           return e.name == user_id;
@@ -473,6 +482,17 @@ module.exports = function (user) {
     http: {verb: "post", path: "/reset_code_verify"}
   });
 
+  user.remoteMethod("requestCode", {
+    description: ["Email verification with the code. "],
+    accepts: [
+      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/request_code"}
+  });
+
   user.remoteMethod("email_verify", {
     description: ["Email verification. "],
     accepts: [
@@ -483,7 +503,6 @@ module.exports = function (user) {
     },
     http: {verb: "post", path: "/reset_login_pass"}
   });
-
   user.remoteMethod("fb_login_call", {
     description: ["Update facebook login access channel in here.."],
     accepts: [
@@ -494,6 +513,22 @@ module.exports = function (user) {
     },
     http: {verb: "post", path: "/login_facebook"}
   });
+  user.remoteMethod("loginWithCode", {
+    description: ["Using token to login the system directly."],
+    accepts: [
+      {
+        arg: "data",
+        type: "object",
+        http: {source: "body"},
+        required: true,
+        description: "credential object consists of email and twofactor code"
+      }
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/direct_login"}
+  });
   user.remoteMethod(
     "most_popular", {
       description: ["List out the filter of popular artist in the community."],
@@ -501,7 +536,6 @@ module.exports = function (user) {
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"
       },
-      isStatic: true, /* this is to need id systematically */
       http: {verb: "get", path: "/most_popular"}
     }
   );
@@ -516,7 +550,6 @@ module.exports = function (user) {
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"
       },
-      // isStatic: false, /* this is to need id systematically */
       http: {verb: "post", path: "/:id/insertimagemeta"}
     }
   );

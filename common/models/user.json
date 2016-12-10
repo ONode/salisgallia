@@ -115,74 +115,14 @@
     "bitcoin",
     "ltecoin"
   ],
-  "acls": [
-    {
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "requestCode"
-    },
-    {
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW",
-      "property": "loginWithCode"
-    }
-  ],
+  "acls": [],
   "relations": {
-    "basemaps": {
+    "contract": {
       "type": "hasMany",
-      "model": "Basemap",
-      "foreignKey": "publisherId"
+      "model": "Contract",
+      "foreignKey": "contractId"
     }
   },
-  "methods": {
-    "requestCode": {
-      "isStatic": false,
-      "description": "Remote method is allowing people to use it.",
-      "accepts": [
-        {
-          "arg": "credentials",
-          "type": "object",
-          "required": true,
-          "description": "credential object json"
-        }
-      ],
-      "returns": {
-        "arg": "person",
-        "type": "object",
-        "root": true,
-        "description": "The updated person object."
-      },
-      "http": {
-        "path": "/requestCode",
-        "verb": "post"
-      }
-    },
-    "loginWithCode": {
-      "isStatic": false,
-      "description": "Allow login the account with login code",
-      "accepts": [
-        {
-          "arg": "credential",
-          "type": "number",
-          "required": true,
-          "http": {
-            "source": "text"
-          },
-          "description": "PersistedModel id"
-        }
-      ],
-      "returns": {
-        "arg": "person",
-        "type": "object",
-        "root": true,
-        "description": "The updated person object."
-      },
-      "http": {
-        "path": "/loginWithCode",
-        "verb": "post"
-      }
-    }
-  }
+  "methods": [
+  ]
 }

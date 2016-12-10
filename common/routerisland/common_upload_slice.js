@@ -21,7 +21,7 @@ const
  * @type {string}
  */
 const logTag = 'file info',
-  __parentDir = path.dirname(module.main),
+  __parentDir = require('app-root-path'),
   upload_path_public = '/sdpupload',
   upload_hash_file_secret = 'catherineboobsarebig69',
   upload_file_field = 'art',

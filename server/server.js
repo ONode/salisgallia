@@ -10,22 +10,41 @@ if (process.env.S3_ACCESS_KEY_ID == undefined) {
   console.log('Now search for .env file');
   require('dotenv').config();
 }
+//var LoopBackContext = require('loopback-context');
 //app.use(loopback.token({model: app.models.accessToken}));
+/*
+ app.use(LoopBackContext.perRequest());
+ app.use(loopback.token());
+ app.use(function setCurrentUser(req, res, next) {
+ if (!req.accessToken) {
+ return next();
+ }
+ app.models.UserModel.findById(req.accessToken.userId, function(err, user) {
+ if (err) {
+ return next(err);
+ }
+ if (!user) {
+ return next(new Error('No user with this access token was found.'));
+ }
+ var loopbackContext = LoopBackContext.getCurrentContext();
+ if (loopbackContext) {
+ loopbackContext.set('currentUser', user);
+ }
+ next();
+ });
+ });*/
 app.start = function () {
   // start the web server
   return app.listen(function () {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
-    console.log('Web server listening at: %s', baseUrl);
+    console.log('Web server listening at: %s', app.get('url'));
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
 };
-/*
- Using the technique shown above, the application will still run all the boot scripts in /server/boot in alphabetical order (unless you move or delete them) after your custom-ordered boot scripts specified in bootScripts.
- */
 app.buildError = function (err) {
   err.message = 'Custom message: ' + err.message;
   err.status = 408; // override the status
@@ -34,7 +53,7 @@ app.buildError = function (err) {
   return err;
 };
 //app.use(require('compression'));
-app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}));
+//app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}));
 /*var bootOptions = {
  "appRootDir": __dirname,
  "bootScripts": [
@@ -44,20 +63,7 @@ app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}
  };*/
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-/*
-
 boot(app, __dirname, function (err) {
-  if (err) throw err;
-  // start the server if `$ node server.js`
-  if (require.main === module)
-    app.start();
-});
-*/
-
-
-// Bootstrap the application, configure models, datasources and middleware.
-// Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`

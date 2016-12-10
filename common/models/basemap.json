@@ -135,13 +135,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "user": {
-      "type": "belongsTo",
-      "model": "user",
-      "foreignKey": "owner"
-    }
-  },
+  "relations": {},
   "acls": [
   ],
   "methods": []

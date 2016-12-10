@@ -17,9 +17,9 @@ var upload_prob = function (file_name, cb) {
   this.image_size = 0;
   this.client = pS3.newS3Client();
 };
-upload_prob.prototype.exe_s3 = function () {
+upload_prob.prototype.exe_aws_profile_image = function () {
   if (pS3.l.isFunction(this.callback)) {
-    var dta = {
+    var aws_upload_meta_configuration = {
       localFile: pS3.fnGetLocalHeadImagePath(this.src_filename),
       s3Params: {
         Bucket: pS3.bucket_name,
@@ -29,19 +29,18 @@ upload_prob.prototype.exe_s3 = function () {
       }
     };
     console.log(logTag, "==========> start AWS upload profile image too");
-    console.log(logTag, dta);
-    const newUp = this.client.uploadFile(dta);
+    console.log(logTag, aws_upload_meta_configuration);
+    const newUp = this.client.uploadFile(aws_upload_meta_configuration);
     newUp.on('error', function (err) {
       console.error("Unable to upload:", err);
       return this.callback(err);
     }.bind(this));
     newUp.on('progress', function () {
+
     });
     newUp.on('end', function () {
       this.updateUserProfilePhoto(function (result) {
-        //   return this.callback(null, result);
-        console.log("upprogress", "progress completed");
-        console.log(logTag, "==========> end AWS upload profile image too");
+        console.log("success", "progress completed aws end.");
       }.bind(this));
     }.bind(this));
     /**
@@ -103,6 +102,6 @@ module.exports.profile_upload_s3 = function (result, user_lb, cb) {
     d.setId(path);
     d.setformat(format);
     d.setUpdateUserObject(user_lb);
-    d.exe_s3();
+    d.exe_aws_profile_image();
   }
 };

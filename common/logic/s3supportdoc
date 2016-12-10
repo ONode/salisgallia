@@ -1,0 +1,78 @@
+const pS3 = require("./preS3");
+const logTag = "S3supporting";
+var s3seriesupload = function (data, cb) {
+  var local_zipped_items = pS3.l.zip(data.local_paths, data.file_names);
+  this.contract_lb = data.lb_item;
+  this.final_dest_paths = [];
+  this.src_file_tasks = pS3.l.map(local_zipped_items, function (d) {
+    return function (iterate_loop_next) {
+      var aws_meta_config = {
+        localFile: d[0],
+        s3Params: {
+          Bucket: pS3.bucket_name,
+          Key: "profile/" + data.user_id + "/" + d[1],
+          ContentType: 'image/jpeg',
+          ACL: 'public-read'
+        }
+      };
+      console.log(logTag, "=======================>start AWS upload");
+      console.log(logTag, aws_meta_config);
+      console.log(logTag, "=======================>end AWS upload");
+      this.final_dest_paths.push(aws_meta_config.s3Params.Key);
+      const newUp = this.client.uploadFile(aws_meta_config);
+      newUp.on('error', function (err) {
+        console.error("Unable to upload:", err);
+        return iterate_loop_next(err);
+      });
+      newUp.on('progress', function () {
+
+      });
+      newUp.on('end', function () {
+        return iterate_loop_next();
+      }.bind(this));
+
+    }.bind(this);
+
+  }.bind(this));
+
+  this.callback = cb;
+  this.client = pS3.newS3Client();
+};
+s3seriesupload.prototype.exe_aws_supporting_documents = function () {
+  pS3.async.parallel(this.src_file_tasks, function (err, results) {
+
+    var update = {};
+    var dest = "https://s3.heskeyo.com/";
+    var endpath = pS3.l.map(this.final_dest_paths, function (path) {
+      return dest + path;
+    });
+    switch (this.contract_lb.agreement_type) {
+      case 1:
+        update.photo_id_a = endpath[0];
+        break;
+      case 2:
+        update.photo_id_a = endpath[0];
+        update.photo_id_b = endpath[1];
+        break;
+      case 3:
+        update.photo_id_a = endpath[0];
+        update.cert_a = endpath[1];
+        update.cert_b = endpath[2];
+        break;
+    }
+
+    console.log(logTag, update);
+    this.contract_lb.updateAttributes(update, function (err, r) {
+      if (pS3.l.isError(err)) {
+        console.log(logTag, "updateAttribute has error ..... ", err);
+        return;
+      }
+      console.log(logTag, "S3 process all done....");
+      this.callback("done");
+    }.bind(this));
+  }.bind(this));
+};
+module.exports.contract_file_async_aws = function (filesConfig, cb) {
+  var ty = new s3seriesupload(filesConfig, cb);
+  ty.exe_aws_supporting_documents();
+};

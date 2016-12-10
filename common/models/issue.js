@@ -36,7 +36,7 @@ module.exports = function (Issue) {
   });
 
   Issue.observe('before save', function (ctx, next) {
-    // const cctx = LoopBackContext.getCurrentContext();
+    // const ctx = LoopBackContext.getCurrentContext();
     //console.log(ctx);
     if (_.isEmpty(ctx.instance)) {
       console.log('> no query body found ...');

@@ -8,7 +8,7 @@ const
   _ = require("lodash"),
   express = require("express"),
   timeout = require("req-timeout"),
-  request = require("request")
+  request = require("request"),
   __parentDir = require('app-root-path');
 
 module.exports = function (app) {
@@ -17,18 +17,15 @@ module.exports = function (app) {
     res.send("pong");
   });
   console.log("> created /ping request router");
-
   app.post("/api/basemapupload/:owner/", function (req, res) {
     makerMap.uploadTiling(app, req, res);
   });
   app.post("/api/basemapnonstd/:owner/", function (req, res) {
     makerMap.uploadRegular(app, req, res);
   });
-
   app.post("/api/basemap_std_test_upload/", function (req, res) {
     makerMap.uploadRegularTest(app, req, res);
   });
-
   app.get("/api/config/", function (req, res) {
     var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
     var development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";

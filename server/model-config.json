@@ -1,25 +1,8 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
-      "../common/models",
-      "./models"
+      "../common/models"
     ]
-  },
-  "User": {
-    "dataSource": "rocket_us_east",
-    "options": {
-      "emailVerificationRequired": false
-    },
-    "public": false
-  },
-  "user": {
-    "dataSource": "rocket_us_east",
-    "options": {
-      "emailVerificationRequired": false
-    },
-    "public": true
   },
   "AccessToken": {
     "dataSource": "rocket_us_east",
@@ -37,15 +20,14 @@
     "dataSource": "rocket_us_east",
     "public": false
   },
-  "Review": {
+  "User": {
     "dataSource": "rocket_us_east",
-    "public": true
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": false
   },
   "Issue": {
-    "dataSource": "rocket_us_east",
-    "public": true
-  },
-  "Reviewer": {
     "dataSource": "rocket_us_east",
     "public": true
   },
@@ -58,9 +40,17 @@
     "public": true
   },
   "Email": {
-    "dataSource": "gmail_data_source"
+    "dataSource": "gmail_data_source",
+    "public": false
   },
-  "container": {
+  "user": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": true
+  },
+  "Container": {
     "dataSource": "storage",
     "public": true
   }

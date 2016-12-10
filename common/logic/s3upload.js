@@ -118,8 +118,7 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
   });
 };
 uploadQueneManager.prototype.transfer_in_action = function (path_key) {
-
-  return function worker(aync_next_loop) {
+  return function (aync_next_loop) {
     var dta = {
       localFile: pre.fnGetLocalPath(path_key),
       s3Params: {

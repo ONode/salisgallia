@@ -1,14 +1,5 @@
-
-
-
-
 const
-__parentDir = require('app-root-path');
-
-console.log("----------");
-console.log(__parentDir);
-
-const
+  __parentDir = require('app-root-path'),
   tool_crypt = require('crypto'),
   numCPUs = require('os').cpus.length,
   uploaderMU = require('multer'),
@@ -24,9 +15,8 @@ const
   colorPaletteGenerator = require('colors-palette'),
   basemapInfo = require('./basemapinfo.js'),
 
-
   logTag = "> preMap.js",
-  saltFile = "cath52i43#$#^ebs*^%$ig69",
+  saltFile = "c%#4i43#$#^ebs*^%$ig69",
   upload_file_field = "art",
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
