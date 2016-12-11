@@ -75,11 +75,13 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
       return uploader.basepath + it;
     });
     var submission = req.query;
+
     console.log("===========");
     console.log("field for body");
     console.log(submission);
     console.log(paths);
     console.log("===========");
+
     if (pre_fix == "self_manage") {
       submission.photo_id_a = paths[0];
       submission.agreement_type = 1;
@@ -112,8 +114,16 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
         user_id: user_id,
         lb_item: cent
       }, function (done) {
-
+        // remove the existing items from the tmp folders
+        pres3.async.eachSeries(paths, function (item, next) {
+          fse.removeSync(item);
+          next();
+        }, function (next_done) {
+          console.log("removed local files");
+          done();
+        });
       });
+
       return cb(null, result_bool);
     });
   });
