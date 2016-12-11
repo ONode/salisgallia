@@ -2,7 +2,8 @@ var output = require('./../../common/util/outputjson');
 var contract_process = require("./../../common/logic/contract_process");
 module.exports = function (app) {
   //app.use(loopback.token());
-  app.post("/api/contracts/construct/:userId",
+  console.log("contract process app");
+  app.post("/api/contracts_static/construct/:userId",
     function (req, res) {
       contract_process.process(
         req, res,

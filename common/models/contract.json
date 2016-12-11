@@ -79,6 +79,11 @@
       "description": "registration id of the organization",
       "required": false
     },
+    "corp_pos": {
+      "type": "string",
+      "description": "the representative position of the organization",
+      "required": false
+    },
     "createtime": {
       "type": "Date",
       "default": "$now",
