@@ -53,7 +53,6 @@ var upload_start = function (pre_fix, user_id) {
       c.fileNames.push(newFile);
 
       console.log("===========");
-      console.log(generated);
       console.log(file.originalname);
       console.log("===========");
       console.log(newFile);
@@ -124,6 +123,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
         });
       });
 
+      console.log("result trigger now");
       return cb(null, result_bool);
     });
   });
