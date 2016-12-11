@@ -68,9 +68,10 @@ var upload_start = function (pre_fix, user_id) {
   return c;
 };
 module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
-  var uploader = upload_start(pre_fix, user_id);
+  const uploader = upload_start(pre_fix, user_id);
   uploader.engine(req, res, function (err) {
-    var paths = _.map(uploader.fileNames, function (it) {
+    const fileList = uploader.fileNames;
+    var paths = _.map(fileList, function (it) {
       return uploader.basepath + it;
     });
     var submission = req.query;
@@ -101,6 +102,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
     submission.status = 1;
     submission.userId = user_id;
     delete submission.contract_type;
+    delete uploader;
     contract.create(submission, function (err, cent) {
       if (_.isError(err)) {
         console.log("technical error from db", err);
@@ -108,7 +110,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
       }
 
       upload_aws.contract_file_async_aws({
-        file_names: uploader.fileNames,
+        file_names: fileList,
         local_paths: paths,
         user_id: user_id,
         lb_item: cent
