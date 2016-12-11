@@ -3,6 +3,7 @@
  */
 const
   upload_aws = require("./s3supportdoc"),
+  pres3 = require("./preS3"),
   logTag = '> contract process',
   tool_crypt = require('crypto'),
   _ = require('lodash'),
@@ -50,7 +51,6 @@ var upload_start = function (pre_fix, user_id) {
 
       var newFile = pre_fix + "_" + generated.substring(generated.length - 12, generated.length - 1) + '.' + extension;
       c.fileNames.push(newFile);
-
 
       console.log("===========");
       console.log(generated);

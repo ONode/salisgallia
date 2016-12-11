@@ -30,6 +30,7 @@ var s3_fs = require('s3fs');
 var s3_aws = require('aws-sdk');
 var s3_client_engine = require('s3');
 var base_aws_s3_client = new s3_aws.S3(access);
+var ObjectID = require('mongodb').ObjectID;
 var s3ls = function (options) {
   var bucket = options.bucket;
   //var s3 = new s3_aws.S3(access);
@@ -195,7 +196,13 @@ var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
     }
   });
 };
-
+function ensureId(id) {
+  if (/^[0-9a-fA-F]{24}$/.test(id)) {
+    return new ObjectID(id);
+  } else {
+    return id;
+  }
+}
 module.exports = {
   resolve_format: function (z, y, x) {
     return depthResolver(tool.map_path_key, z, y, x);
@@ -234,7 +241,8 @@ module.exports = {
   s3Ls: s3ls,
   newS3Client: function () {
     return s3_client_engine.createClient({s3Client: new s3_aws.S3(access)});
-  }
+  },
+  makeId: ensureId
 }
 ;
 
