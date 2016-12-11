@@ -9,7 +9,7 @@ module.exports = function (app) {
   var remotes = app.remotes();
   remotes.after('*.find', function (ctx, next) {
     //var ctx = LoopBackContext.getCurrentContext();
-    // console.log("check remote Context", ctx);
+   // console.log("check remote Context", ctx);
     var _filter = {};
     if (ctx.args && ctx.args.filter) {
       _filter = ctx.args.filter.where;

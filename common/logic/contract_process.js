@@ -98,6 +98,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
 
     //this is a pending status
     submission.status = 1;
+    submission.userId = user_id;
     delete submission.contract_type;
     contract.create(submission, function (err, cent) {
       if (_.isError(err)) {

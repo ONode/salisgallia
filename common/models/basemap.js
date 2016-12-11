@@ -3,16 +3,17 @@
  */
 var _ = require('lodash');
 var async = require('async');
-var LoopBackContext = require('loopback-context');
 var db_worker = require("./../util/db.js");
 var s3thread = require("./../logic/s3upload");
 var s3clean = require("./../logic/s3cleaner");
 var fixId = require("./../logic/db_patch");
+var loopback = require('loopback');
 const logTag = "> basemap.js model";
 var result_bool = {
   acknowledged: true
 };
 function ensureVariableInteger(context, item) {
+ // var context = loopback.getCurrentContext();
   if (!_.isUndefined(context.query.where[item])) {
     context.query.where[item] = parseInt(context.query.where[item]);
   }
@@ -22,7 +23,7 @@ module.exports = function (basemap) {
    * Throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (ctx, next) {
-   // var ctx = LoopBackContext.getCurrentContext();
+    //var ctx = loopback.getCurrentContext();
 
     /**
      * The query specific for getting the complete listing
@@ -79,7 +80,7 @@ module.exports = function (basemap) {
 
    */
   basemap.observe('before save', function updateTimestamp(ctx, next) {
-    //var ctx = LoopBackContext.getCurrentContext();
+   // var ctx = loopback.getCurrentContext();
     if (ctx.instance) {
 
       /*  if (!_.isUndefined(ctx.instance.owner)) {
@@ -103,7 +104,7 @@ module.exports = function (basemap) {
 
   basemap.observe('before delete', function (ctx, next) {
 
-    //var ctx = LoopBackContext.getCurrentContext();
+    //var ctx = loopback.getCurrentContext();
 
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
