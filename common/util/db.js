@@ -121,10 +121,31 @@ var getInstanceById = function (persistentModel, _id, next, errnext) {
     }
   });
 };
+var patch_to_ensure_monogodb_id = function (persistentModel, _id) {
+  return persistentModel.getDataSource().ObjectID(_id);
+};
 var removeAll = function (persistentModel, where, callback) {
   persistentModel.destroyAll(where, callback);
 };
+var patch_find_by_fk = function (persistentModel, persistentModelName, fk_field, fk_id, callback) {
+  persistentModel.getDataSource().connector.connect(function (err, db) {
+    var collection = db.collection(persistentModelName);
+    var where = {};
+    where[fk_field] = patch_to_ensure_monogodb_id(persistentModel, fk_id);
+    collection.find(where).toArray(callback);
+    /*  collection.aggregate([
+     {$match: {fk_field: FK_ID}},
+     { $group: {
+     _id: authorId,
+     total: { $sum: "$price" }
+     }}
+     ], function (err, data) {
+     if (err) return callback(err);
+     return callback(null, data);
+     });*/
 
+  });
+};
 module.exports.customJobLoopOverModel = function (model_obj, next_up) {
   var _offset = 0, page = 10, migrate_fn;
 
@@ -169,3 +190,5 @@ module.exports.updateByIdAndReduce = updateByIdAndReduce;
 module.exports.updateByIdUpdate = updateByIdUpdate;
 module.exports.removeAll = removeAll;
 module.exports.getInstanceById = getInstanceById;
+module.exports.patch_find_by_fk = patch_find_by_fk;
+module.exports.patch_find_ensure_id = patch_to_ensure_monogodb_id;

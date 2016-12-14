@@ -6,7 +6,6 @@ var async = require('async');
 var db_worker = require("./../util/db.js");
 var s3thread = require("./../logic/s3upload");
 var s3clean = require("./../logic/s3cleaner");
-var fixId = require("./../logic/db_patch");
 var loopback = require('loopback');
 const logTag = "> basemap.js model";
 var result_bool = {
@@ -195,7 +194,7 @@ module.exports = function (basemap) {
       });
       cb(null, results);
     });
-    //fixId.fixIddb(basemap, "owner");
+
     cb(null, result_bool);
   };
   /**

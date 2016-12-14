@@ -3,6 +3,7 @@
  */
 const
   upload_aws = require("./s3supportdoc"),
+  contact_approval = require("./../ai/contact_approval"),
   pres3 = require("./preS3"),
   logTag = '> contract process',
   tool_crypt = require('crypto'),
@@ -120,7 +121,8 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
           fse.removeSync(item);
           next();
         }, function (next_done) {
-          console.log("removed local files");
+          console.log("removed local files and start machine approval processing");
+          contact_approval.machine_process(cent);
           done();
         });
       });
@@ -129,4 +131,55 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
       return cb(null, result_bool);
     });
   });
+};
+
+module.exports.list_contracts = function (contract, user_id, cb) {
+  var where_cond = {
+    "userId": user_id
+  };
+
+  contract.find({
+    where: where_cond,
+    order: "createtime DESC",
+    limit: 5,
+    skip: 0
+  }, function (err, results) {
+    if (pres3.l.isError(err)) {
+      return cb(err);
+    }
+    contract.count(where_cond, function (err, number) {
+      console.log(logTag, ">> How many does it count? ", number);
+    });
+    cb(null, results);
+  });
+};
+
+module.exports.approved_can_sell_now = function (contract, user_id, cb) {
+  var result_call = function (err, results) {
+    if (pres3.l.isError(err)) {
+      return cb(err);
+    }
+    var allowed = false;
+    pres3.async.eachSeries(results, function (result, next) {
+      if (!pres3.l.isUndefined(result.status)) {
+        if (result.status == 2) {
+          allowed = true;
+        }
+      }
+      next();
+    }, function (next_done) {
+      cb(null, {
+        allow_making_sale: allowed
+      });
+    });
+  };
+  /*
+   var where_cond = {
+   "userId": user_id
+   };contract.find({
+   where: where_cond,
+   order: "createtime DESC",
+   skip: 0
+   }, result_call);*/
+  pres3.patchFindFk(contract, "Contract", "userId", user_id, result_call);
 };
