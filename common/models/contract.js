@@ -23,6 +23,7 @@ module.exports = function (contract) {
   contract.sell_ready = function (user_id, cb) {
     contract_process.approved_can_sell_now(contract, user_id, cb);
   };
+
   contract.remoteMethod("by_user", {
     description: ["Construct the certificate from given ids."],
     accepts: [
@@ -41,7 +42,7 @@ module.exports = function (contract) {
   });
 
   contract.remoteMethod("sell_ready", {
-    description: ["Construct the certificate from given ids."],
+    description: ["Answer whether this user can make sell of artworks."],
     accepts: [
       {
         arg: "user_id",
