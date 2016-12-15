@@ -29,14 +29,16 @@ module.exports.request_action_for_sale = function (instance_basemap, item_id, cb
       }
     }
 
-    if (pres3.l.isInteger(doc.baseprice)) {
-      if (doc.baseprice > 0) {
-        approved = true;
+    if (pres3.l.has(doc, "baseprice")) {
+      if (pres3.l.isInteger(doc.baseprice)) {
+        if (doc.baseprice > 0) {
+          approved = true;
+        } else {
+          approved = false;
+        }
       } else {
         approved = false;
       }
-    } else {
-      approved = false;
     }
 
     if (approved) {
