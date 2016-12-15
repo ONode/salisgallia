@@ -112,7 +112,10 @@
         "frame_shadow": "number"
       }
     },
-    "image_surf": "string",
+    "image_surf": {
+      "type": "string",
+      "doc": "image feature extraction document"
+    },
     "listing": {
       "type": {
         "enabled": "Boolean",
