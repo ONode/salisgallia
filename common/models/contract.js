@@ -81,4 +81,14 @@ module.exports = function (contract) {
    },
    http: {verb: "post", path: "/construct_contract/:user_id"}
    });*/
+
+  /**
+   * document
+   * status
+   * 101 - ready for public sale
+   * 102 - not for public sale
+   * 103 - sold not price shall be listed
+   * 104 - reserved for private sale during the period
+   * 105 - scheduled for private sale
+   */
 };
