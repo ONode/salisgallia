@@ -227,7 +227,7 @@ module.exports = function (basemap) {
    */
   basemap.request_action = function (basemapid, requeststatuscode, cb) {
     if (requeststatuscode == 101) {
-      ai_basemap.request_action_for_sale(basemap, basemap_id, cb);
+      ai_basemap.request_action_for_sale(basemap, basemapid, cb);
     } else {
       cb(new Error("not available for this action"), null);
     }
