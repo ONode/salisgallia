@@ -4,7 +4,7 @@
 
 const
   logTag = '> contract process',
-  pres3 = require("./preS3"),
+  pres3 = require("./../logic/preS3"),
   __parentDir = require('app-root-path'),
   numCPUs = require('os').cpus.length,
   uuid = require('node-uuid'),
