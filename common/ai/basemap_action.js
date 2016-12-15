@@ -17,14 +17,16 @@ module.exports.request_action_for_sale = function (instance_basemap, item_id, cb
   var approved = false;
   instance_basemap.findOne({where: {id: item_id}}, function (err, doc) {
 
-    if (pres3.l.isArray(doc.listings.violations)) {
-      if (doc.listings.violations.length > 0) {
-        approved = false;
+    if (pres3.l.has(doc.listing, "violations")) {
+      if (pres3.l.isArray(doc.listing.violations)) {
+        if (doc.listing.violations.length > 0) {
+          approved = false;
+        } else {
+          approved = true;
+        }
       } else {
         approved = true;
       }
-    } else {
-      approved = true;
     }
 
     if (pres3.l.isInteger(doc.baseprice)) {
