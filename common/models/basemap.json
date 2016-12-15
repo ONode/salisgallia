@@ -112,14 +112,13 @@
         "frame_shadow": "number"
       }
     },
+    "image_surf": "string",
     "listing": {
       "type": {
         "enabled": "Boolean",
         "violations": "array",
         "meta_ready": "Boolean",
-        "date_auction_from": "Date",
-        "date_auction_to": "Date",
-        "status_sold": "Date",
+        "status": "number",
         "searchable": "Boolean"
       }
     },
