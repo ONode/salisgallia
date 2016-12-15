@@ -235,8 +235,14 @@ module.exports = {
   newS3Client: function () {
     return s3_client_engine.createClient({s3Client: new s3_aws.S3(access)});
   },
-  patchFindFk:dbpatch.patch_find_by_fk,
-  makeId: dbpatch.patch_find_ensure_id
+  patchFindFk: dbpatch.patch_find_by_fk,
+  makeId: dbpatch.patch_find_ensure_id,
+  positive_result: {
+    acknowledged: true
+  },
+  negative_result: {
+    acknowledged: false
+  }
 }
 ;
 

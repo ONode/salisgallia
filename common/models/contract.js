@@ -17,9 +17,19 @@ module.exports = function (contract) {
       next();
     }
   });
+  /**
+   * the user usually making it work
+   * @param user_id the user id
+   * @param cb the call back
+   */
   contract.by_user = function (user_id, cb) {
     contract_process.list_contracts(contract, user_id, cb);
   };
+  /**
+   * to confirm if the item is ready for sale
+   * @param user_id user id
+   * @param cb call back
+   */
   contract.sell_ready = function (user_id, cb) {
     contract_process.approved_can_sell_now(contract, user_id, cb);
   };

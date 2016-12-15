@@ -13,9 +13,7 @@ const
   fse = require('fs-extra'),
   uuid = require('node-uuid'),
   multia = require('multer');
-var result_bool = {
-  acknowledged: true
-};
+
 
 var fileFilterFn = function fileFilter(req, file, cb) {
   console.log(logTag, file.mimetype);
@@ -128,7 +126,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
       });
 
       console.log("result trigger now");
-      return cb(null, result_bool);
+      return cb(null, pres3.positive_result);
     });
   });
 };
@@ -154,7 +152,7 @@ module.exports.list_contracts = function (contract, user_id, cb) {
   });
 };
 
-module.exports.approved_can_sell_now = function (contract, user_id, cb) {
+var approve_can_sell = module.exports.approved_can_sell_now = function (contract, user_id, cb) {
   var result_call = function (err, results) {
     if (pres3.l.isError(err)) {
       return cb(err);
@@ -183,3 +181,4 @@ module.exports.approved_can_sell_now = function (contract, user_id, cb) {
    }, result_call);*/
   pres3.patchFindFk(contract, "Contract", "userId", user_id, result_call);
 };
+

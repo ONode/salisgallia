@@ -12,6 +12,7 @@ const
   fse = require('fs-extra'),
   uuid = require('node-uuid');
 
+
 module.exports.machine_process = function (instance_model) {
   console.log("========= machine process now ===========");
   console.log(instance_model);

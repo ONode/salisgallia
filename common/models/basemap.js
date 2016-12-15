@@ -6,13 +6,14 @@ var async = require('async');
 var db_worker = require("./../util/db.js");
 var s3thread = require("./../logic/s3upload");
 var s3clean = require("./../logic/s3cleaner");
+var ai_basemap = require("./../ai/basemap_action");
 var loopback = require('loopback');
 const logTag = "> basemap.js model";
 var result_bool = {
   acknowledged: true
 };
 function ensureVariableInteger(context, item) {
- // var context = loopback.getCurrentContext();
+  // var context = loopback.getCurrentContext();
   if (!_.isUndefined(context.query.where[item])) {
     context.query.where[item] = parseInt(context.query.where[item]);
   }
@@ -79,7 +80,7 @@ module.exports = function (basemap) {
 
    */
   basemap.observe('before save', function updateTimestamp(ctx, next) {
-   // var ctx = loopback.getCurrentContext();
+    // var ctx = loopback.getCurrentContext();
     if (ctx.instance) {
 
       /*  if (!_.isUndefined(ctx.instance.owner)) {
@@ -217,6 +218,46 @@ module.exports = function (basemap) {
     });
     cb(null, result_bool);
   };
+
+  /**
+   * further request approval for sale of this item
+   * @param basemapid item id
+   * @param requeststatuscode request code
+   * @param cb call back
+   */
+  basemap.request_action = function (basemapid, requeststatuscode, cb) {
+    if (requeststatuscode == 101) {
+      ai_basemap.request_action_for_sale(basemap, basemap_id, cb);
+    } else {
+      cb(new Error("not available for this action"), null);
+    }
+  };
+
+  basemap.remoteMethod("request_action", {
+    description: ["Request action for running against the approval of listing process."],
+    accepts: [
+      {
+        arg: "basemapid",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "resource id"
+      },
+      {
+        arg: "requeststatuscode",
+        type: "number",
+        http: {source: "path"},
+        required: true,
+        description: "the status code id"
+      }
+    ],
+    returns: {
+      arg: "luckylist", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/request_action/:basemapid/:requeststatuscode"}
+  });
+
+
   basemap.remoteMethod("get_custom_job", {
     description: ["Cron get empty removals ..."],
     accepts: [],
