@@ -109,7 +109,9 @@
         "frame_color": "string",
         "backdrop_color": "string",
         "frame_width": "number",
-        "frame_shadow": "number"
+        "frame_shadow": "number",
+        "frame_spc": "number",
+        "frame_spc_color": "string"
       }
     },
     "image_surf": {
