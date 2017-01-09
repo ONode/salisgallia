@@ -53,8 +53,8 @@ module.exports = function (app) {
     res.end();
   });
 
-  app.use("/.well-known/acme-challenge/iSTxbvI4_Va4J5c1f1C5EMGvbxPkHI3Cqo87V5JId9k", function (req, res) {
-    res.write("iSTxbvI4_Va4J5c1f1C5EMGvbxPkHI3Cqo87V5JId9k.ZJ-PHo7PYvpQ_yjOBiq3jSQ85yBES9ASYB7uz8tkN6o");
+  app.use("/.well-known/acme-challenge/vVnaMtY8RVYE14i_hGBEOAUGyhLZhMAGEpewArt4IRM", function (req, res) {
+    res.write("vVnaMtY8RVYE14i_hGBEOAUGyhLZhMAGEpewArt4IRM.ZJ-PHo7PYvpQ_yjOBiq3jSQ85yBES9ASYB7uz8tkN6o");
     res.end();
   });
 
