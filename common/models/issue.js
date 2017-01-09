@@ -26,7 +26,7 @@ module.exports = function (Issue) {
     var MyModel = this;
     // since setup is called for every extended model
     // the extended model will also have the event listener
-    MyIssue.on('myEvent', function () {
+    Issue.on('myEvent', function () {
       MyModel.printModelName();
     });
   };
