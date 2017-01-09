@@ -52,5 +52,11 @@ module.exports = function (app) {
     res.write("VoIsK8u8Q1UtO5ngPbFOytwGgL_TwGS4fstTx7Sjd3c.ZJ-PHo7PYvpQ_yjOBiq3jSQ85yBES9ASYB7uz8tkN6o");
     res.end();
   });
+
+  app.use("/.well-known/acme-challenge/iSTxbvI4_Va4J5c1f1C5EMGvbxPkHI3Cqo87V5JId9k", function (req, res) {
+    res.write("iSTxbvI4_Va4J5c1f1C5EMGvbxPkHI3Cqo87V5JId9k.ZJ-PHo7PYvpQ_yjOBiq3jSQ85yBES9ASYB7uz8tkN6o");
+    res.end();
+  });
+
   console.log("> remove all uploaded tmp files with http://{domain}/removeallxxx");
 };
