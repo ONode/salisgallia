@@ -48,7 +48,7 @@ module.exports = function (app) {
     var Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
-  app.use("/.well-known/acme-challenge/", function (req, res) {
+  app.use("/.well-known/acme-challenge/GBuuVVgDU1vRE2N0U5QzXNRzeti8eClK4lybzMI6Yyw", function (req, res) {
     res.write("GBuuVVgDU1vRE2N0U5QzXNRzeti8eClK4lybzMI6Yyw.kwtz9jKUK5tLPEEmXq50AIsg9MyZPhHLSgAdD3cppNw");
     res.end();
   });
