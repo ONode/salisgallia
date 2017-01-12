@@ -93,6 +93,11 @@
       "required": false,
       "description": "the age of the user"
     },
+    "cate_pref": {
+      "type": "array",
+      "required": false,
+      "description": "array of cate"
+    },
     "photo": {
       "type": "object",
       "required": false,

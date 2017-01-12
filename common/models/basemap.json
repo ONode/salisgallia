@@ -66,12 +66,32 @@
     "price": {
       "default": 0,
       "type": "number",
-      "required": true
+      "required": true,
+      "doc": "the final bare price tag for the customer in USD in cent"
     },
     "baseprice": {
       "default": 0,
       "type": "number",
-      "required": true
+      "required": true,
+      "doc": "original artwork priced by the artist in USD in cent"
+    },
+    "license_price": {
+      "default": 0,
+      "type": "number",
+      "required": true,
+      "doc": "original artwork full copyright to be sold in USD in cent"
+    },
+    "factory_shared": {
+      "default": 0,
+      "type": "number",
+      "required": true,
+      "doc": "shared benefit from a piece that product or wood works that produced by the factory in cent"
+    },
+    "printed_shared": {
+      "default": 0,
+      "type": "number",
+      "required": true,
+      "doc": "shared benefit from a piece that printed, framed, produced by the factory USD in cent"
     },
     "estprice": {
       "type": "string"
