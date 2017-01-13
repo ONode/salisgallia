@@ -156,20 +156,25 @@ module.exports = function (user) {
        * step2
        */
 
-      user.app.models.Email.send({
-          to: credentials.email,
-          from: "no-reply@zyntario.com",
-          subject: "Password recovery for missing account.",
-          text: message,
-          html: ""
-        },
+      var data_confirmation = {
+        to: credentials.email,
+        from: "no-reply@zyntario.com",
+        subject: "Password recovery for missing account.",
+        text: message,
+        html: ""
+      };
+
+      user.app.models.Email.send(data_confirmation,
         function (err, mail) {
           console.log("Email Sent!");
-          console.log(mail);
+
           if (_.isError(err)) {
             cb(err, null);
             return;
           }
+
+          console.log(mail);
+
           if (mail != null) {
             db.updateByIdUpdate(user, r.id, {
               "recovery_code": code
