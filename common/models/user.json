@@ -126,6 +126,11 @@
       "type": "hasMany",
       "model": "Contract",
       "foreignKey": "contractId"
+    },
+    "order": {
+      "type": "hasMany",
+      "model": "Order",
+      "foreignKey": "orderId"
     }
   },
   "methods": [

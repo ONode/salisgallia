@@ -43,6 +43,10 @@
     "dataSource": "gmail_data_source",
     "public": false
   },
+  "Order": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
   "Receipt": {
     "dataSource": "rocket_us_east",
     "public": true

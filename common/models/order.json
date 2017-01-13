@@ -1,0 +1,97 @@
+{
+  "name": "Order",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "source_network_id": {
+      "type": "string",
+      "required": true
+    },
+    "amount_in_cent": {
+      "type": "number",
+      "required": true,
+      "description": "the dollar amount in cent per item"
+    },
+    "unit": {
+      "type": "number",
+      "default": 1,
+      "required": true,
+      "description": "the dollar amount in cent"
+    },
+    "currency_type": {
+      "type": "string",
+      "required": true,
+      "description": "which type of currency for the customer did pay"
+    },
+    "stock_uuid": {
+      "type": "string",
+      "required": true,
+      "description": "basemap uuid"
+    },
+    "device_order_uuid": {
+      "type": "string",
+      "required": true,
+      "description": "order_uuid"
+    },
+    "detail_customization": {
+      "type": "string",
+      "required": false,
+      "description": "customization from the customer"
+    },
+    "product_type": {
+      "type": "number",
+      "required": false,
+      "default": -1,
+      "description": "as the type of product to be producted"
+    },
+    "progress_delivery": {
+      "type": "number",
+      "required": false,
+      "default": -1,
+      "description": "progress customization"
+    },
+    "maker_email": {
+      "type": "string",
+      "required": false,
+      "description": "email related source"
+    },
+    "is_live_mode": {
+      "type": "Boolean",
+      "required": true,
+      "description": "is that a test mode or the live mode"
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    }
+  },
+  "hidden": [
+    "source_network_id",
+    "maker_email",
+    "updatetime",
+    "createtime",
+    "is_live_mode"
+  ],
+  "acls": [],
+  "relations": {
+    "register_customer": {
+      "type": "hasOne",
+      "model": "user",
+      "foreignKey": "userID"
+    }
+  },
+  "methods": [
+  ]
+}
