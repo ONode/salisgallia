@@ -18,27 +18,41 @@ var display_as_list = {
   createtime: true,
   updatetime: true,
   listing: true,
-  image_meta: true,
-  folder_base_name: true,
+
   price: true,
   estprice: true,
   baseprice: true,
+
+  image_meta: true,
+  folder_base_name: true,
+  mid_size: true,
   rename_file: true
 };
-var display_single = {
+var display_single_owner = {
   id: true,
+  fast_id: true,
+  complete: true,
   owner: true,
-  total_zoom_levels: true,
   createtime: true,
   updatetime: true,
+  
   listing: true,
-  image_meta: true,
-  folder_base_name: true,
-  secret_base_map_file: true,
   price: true,
+
   estprice: true,
   baseprice: true,
+  license_price: true,
+  factory_shared: true,
+  printed_shared: true,
+  print_limit: true,
   currency: true,
+
+  total_zoom_levels: true,
+  secret_base_map_file: true,
+  image_meta: true,
+  folder_base_name: true,
+  mid_size: true,
+  image_type: true,
   rename_file: true
 };
 function ensureVariableInteger(context, item) {
@@ -94,7 +108,7 @@ module.exports = function (basemap) {
       ctx.query.fields = display_as_list;
       //console.log("with fields");
     } else {
-      ctx.query.fields = display_single;
+      ctx.query.fields = display_single_owner;
       //console.log("no fields");
     }
     ctx.query.order = "createtime DESC";
