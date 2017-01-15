@@ -147,6 +147,7 @@
     "listing": {
       "type": {
         "enabled": "Boolean",
+        "monetize": "Boolean",
         "violations": "array",
         "meta_ready": "Boolean",
         "status": "number",

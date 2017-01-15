@@ -12,56 +12,92 @@ const logTag = "> basemap.js model";
 var result_bool = {
   acknowledged: true
 };
+var display_as_list = {
+  id: true,
+  owner: true,
+  createtime: true,
+  updatetime: true,
+  listing: true,
+  image_meta: true,
+  folder_base_name: true,
+  price: true,
+  estprice: true,
+  baseprice: true,
+  rename_file: true
+};
+var display_single = {
+  id: true,
+  owner: true,
+  total_zoom_levels: true,
+  createtime: true,
+  updatetime: true,
+  listing: true,
+  image_meta: true,
+  folder_base_name: true,
+  secret_base_map_file: true,
+  price: true,
+  estprice: true,
+  baseprice: true,
+  currency: true,
+  rename_file: true
+};
 function ensureVariableInteger(context, item) {
   // var context = loopback.getCurrentContext();
   if (!_.isUndefined(context.query.where[item])) {
     context.query.where[item] = parseInt(context.query.where[item]);
+    //  console.log("added query-- ", item);
   }
 }
 module.exports = function (basemap) {
+  basemap.disableRemoteMethodByName('create');
+  basemap.disableRemoteMethodByName('upsert');
+  basemap.disableRemoteMethodByName("deleteById");
+  basemap.disableRemoteMethodByName("updateAll");
+  basemap.disableRemoteMethodByName("updateAttributes");
+  basemap.disableRemoteMethodByName("createChangeStream");
+  basemap.disableRemoteMethodByName("patchOrCreate");
+  basemap.disableRemoteMethodByName("replaceOrCreate");
+  basemap.disableRemoteMethodByName("replaceById");
+  basemap.disableRemoteMethodByName("upsertWithWhere");
+
   /**
    * Throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (ctx, next) {
     //var ctx = loopback.getCurrentContext();
-
+    var isSingle = !_.isEmpty(ctx.query.where.id);
+    var hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
     /**
      * The query specific for getting the complete listing
      */
-    if (_.isEqual(ctx.query['ready'], 'on')) {
+    // console.log(ctx.query);
+    if (!isSingle) {
+
       if (!ctx.query.where) {
-        ctx.query.where = {}
+        ctx.query.where = {};
+        console.log("reset where");
       }
-      ctx.query.order = "createtime DESC";
-      ctx.query.where['complete'] = 100;
-      ctx.query.where['listing.enabled'] = true;
+
+      if (!hasOwnerQuery) {
+        ctx.query.where['complete'] = 100;
+        ctx.query.where['listing.enabled'] = true;
+      } else {
+        ctx.query.where['owner'] = db_worker.patch_find_ensure_id(basemap, ctx.query.where.owner);
+      }
+
       ensureVariableInteger(ctx, 'image_meta.material');
       ensureVariableInteger(ctx, 'image_meta.shape');
       ensureVariableInteger(ctx, 'image_meta.cat');
       ensureVariableInteger(ctx, 'image_meta.topic');
       ensureVariableInteger(ctx, 'image_meta.frame_width');
       ensureVariableInteger(ctx, 'image_meta.frame_shadow');
-      //ctx.query.where['listing.enabled'] = {$exists: true};
-      //ctx.query.include = ["folder_base_name", "secret_base_map_file", "rename_file", "price", "estprice", "baseprice", "currency", "owner", "image_type", "image_meta", "listing","createtime","updatetime"];
-      ctx.query.fields = {
-        id: true,
-        owner: true,
-        createtime: true,
-        updatetime: true,
-        listing: true,
-        image_meta: true,
-        folder_base_name: true,
-        secret_base_map_file: true,
-        price: true,
-        estprice: true,
-        baseprice: true,
-        currency: true,
-        rename_file: true
-      };
+      ctx.query.fields = display_as_list;
+      //console.log("with fields");
     } else {
-      ctx.query.order = "createtime DESC";
+      ctx.query.fields = display_single;
+      //console.log("no fields");
     }
-    //console.log(logTag, "=> logtag in the ctx", ctx.query);
+    ctx.query.order = "createtime DESC";
     next()
   });
   /*

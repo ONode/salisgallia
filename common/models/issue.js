@@ -22,6 +22,18 @@ var LoopBackContext = require('loopback-context');
  });
  };*/
 module.exports = function (Issue) {
+
+
+  Issue.disableRemoteMethodByName('upsert');
+  Issue.disableRemoteMethodByName("deleteById");
+  Issue.disableRemoteMethodByName("updateAll");
+  Issue.disableRemoteMethodByName("updateAttributes");
+  Issue.disableRemoteMethodByName("createChangeStream");
+
+  Issue.disableRemoteMethodByName("patchOrCreate");
+  Issue.disableRemoteMethodByName("replaceOrCreate");
+  Issue.disableRemoteMethodByName("replaceById");
+  Issue.disableRemoteMethodByName("upsertWithWhere");
   Issue.setup = function () {
     var MyModel = this;
     // since setup is called for every extended model

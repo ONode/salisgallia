@@ -6,6 +6,18 @@ var contract_process = require("./../logic/contract_process");
 var pre = require("./../logic/preS3");
 const logTag = "> basemap.js model";
 module.exports = function (contract) {
+
+  contract.disableRemoteMethodByName('upsert');
+  contract.disableRemoteMethodByName("deleteById");
+  contract.disableRemoteMethodByName("updateAll");
+  contract.disableRemoteMethodByName("updateAttributes");
+  contract.disableRemoteMethodByName("createChangeStream");
+
+  contract.disableRemoteMethodByName("patchOrCreate");
+  contract.disableRemoteMethodByName("replaceOrCreate");
+  contract.disableRemoteMethodByName("replaceById");
+  contract.disableRemoteMethodByName("upsertWithWhere");
+
   contract.observe('after save', function (ctx, next) {
     if (ctx.instance) {
       var id = ctx.instance.userId;

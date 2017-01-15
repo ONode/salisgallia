@@ -11,7 +11,16 @@ const logTag = ">OrderOp";
 var LoopBackContext = require('loopback-context');
 
 module.exports = function (Order) {
-
+  Order.disableRemoteMethodByName('create');
+  Order.disableRemoteMethodByName('upsert');
+  Order.disableRemoteMethodByName("deleteById");
+  Order.disableRemoteMethodByName("updateAll");
+  Order.disableRemoteMethodByName("updateAttributes");
+  Order.disableRemoteMethodByName("createChangeStream");
+  Order.disableRemoteMethodByName("patchOrCreate");
+  Order.disableRemoteMethodByName("replaceOrCreate");
+  Order.disableRemoteMethodByName("replaceById");
+  Order.disableRemoteMethodByName("upsertWithWhere");
   Order.post_order_notification = function (data, user_id, fn) {
     if (typeof data === "function") {
       data = undefined;

@@ -36,6 +36,11 @@ var check_date_expired = function (expire_time) {
     return false;
 };
 module.exports = function (user) {
+  user.disableRemoteMethodByName("createChangeStream");
+  user.disableRemoteMethodByName("patchOrCreate");
+  user.disableRemoteMethodByName("replaceOrCreate");
+  user.disableRemoteMethodByName("replaceById");
+  user.disableRemoteMethodByName("upsertWithWhere");
   var change_password = function (user_id, new_password, callback_normal) {
     db.updateByIdUpdate(user, user_id, {
       "recovery_code": -1,

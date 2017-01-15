@@ -5,15 +5,25 @@ const pre = require("../util/outputjson");
 var _ = require('lodash');
 var stripe = require("stripe")(process.env.STRIPE_API_LIVE_SC || "");
 module.exports = function (Receipt) {
+  Receipt.disableRemoteMethodByName('create');
+  Receipt.disableRemoteMethodByName('upsert');
+  Receipt.disableRemoteMethodByName("updateAll");
+  Receipt.disableRemoteMethodByName("deleteById");
+  Receipt.disableRemoteMethodByName("updateAttributes");
+  Receipt.disableRemoteMethodByName("createChangeStream");
+  Receipt.disableRemoteMethodByName("patchOrCreate");
+  Receipt.disableRemoteMethodByName("replaceOrCreate");
+  Receipt.disableRemoteMethodByName("replaceById");
+  Receipt.disableRemoteMethodByName("upsertWithWhere");
   // since setup is called for every extended model
   // the extended model will also have the event listener
   /*
-  Receipt.setup = function () {
-    var MyModel = this;
-    Receipt.on('myEvent', function () {
-      MyModel.printModelName();
-    });
-  };*/
+   Receipt.setup = function () {
+   var MyModel = this;
+   Receipt.on('myEvent', function () {
+   MyModel.printModelName();
+   });
+   };*/
 
   function trycc(source_cc) {
     var city = source_cc.address_city == undefined ? "" : source_cc.address_city;
