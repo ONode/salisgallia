@@ -35,7 +35,7 @@ var display_single_owner = {
   owner: true,
   createtime: true,
   updatetime: true,
-  
+
   listing: true,
   price: true,
 
@@ -79,6 +79,11 @@ module.exports = function (basemap) {
    */
   basemap.observe('access', function (ctx, next) {
     //var ctx = loopback.getCurrentContext();
+    if (!ctx.query.where) {
+      ctx.query.where = {};
+     // console.log("reset where");
+    }
+
     var isSingle = !_.isEmpty(ctx.query.where.id);
     var hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
     /**
@@ -86,11 +91,6 @@ module.exports = function (basemap) {
      */
     // console.log(ctx.query);
     if (!isSingle) {
-
-      if (!ctx.query.where) {
-        ctx.query.where = {};
-        console.log("reset where");
-      }
 
       if (!hasOwnerQuery) {
         ctx.query.where['complete'] = 100;
