@@ -40,11 +40,10 @@ node_modules
 *.jpg
 *.sgi
 .DS_Store
-.idea
-*.idea
+.idea/*
 .project
-coverage
-node_modules
-npm-debug.log
-\storage\tmp\storage_f\**
+\storage\tmp\storage_f\**\*.jpg
 \storage\tmp\tmpsgi\**
+\storage\tmp\profile\**\*.jpg
+localkey.txt
+.env

@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
-  <head>
-    <meta charset="utf-8">
-    <title>loopback-getting-started-intermediate</title>
-    <link href="css/style.css" rel="stylesheet">
-  </head>
-  <body>
-    <header>
-      <h1>Coffee shop reviews</h1>
+<head>
+  <meta charset="utf-8">
+  <title>Go Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="css/songplay.css" rel="stylesheet">
+  <script src="bower_components/angular/angular.min.js" type='text/javascript'></script>
+  <script src="http://www.heskeyo.com/javascripts/installation.js" type='text/javascript'></script>
+</head>
+<body>
+<div id="root">
+  <main ui-view></main>
+  <!-- <header>
       <h2 ng-show="currentUser">Hello {{currentUser.email}}</h2>
       <nav>
         <ul>
-          <li>
-            <a ui-sref="all-reviews" ui-sref-active="active">All reviews</a>
+          <li ng-show="currentUser">
+            <a ui-sref="add-review" ui-sref-active="active">Add My Artwork</a>
           </li>
           <li ng-hide="currentUser">
-            <a ui-sref="sign-up" ui-sref-active="active">Sign up</a>
+            <a ui-sref="login" ui-sref-active="active">View Better</a>
           </li>
           <li ng-show="currentUser">
-            <a ui-sref="my-reviews" ui-sref-active="active">My Reviews</a>
-          </li>
-          <li ng-show="currentUser">
-            <a ui-sref="add-review" ui-sref-active="active">Add Review</a>
-          </li>
-          <li ng-hide="currentUser">
-            <a ui-sref="login" ui-sref-active="active">Log in</a>
-          </li>
-          <li ng-show="currentUser">
-            <a ui-sref="logout" ui-sref-active="active">Log out</a>
+            <a ui-sref="logout" ui-sref-active="active">Sell My</a>
           </li>
         </ul>
       </nav>
-    </header>
-
-    <main ui-view></main>
-
-    <script src="vendor/angular.js"></script>
-    <script src="vendor/angular-resource.js"></script>
-    <script src="vendor/angular-ui-router.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/services/lb-services.js"></script>
-    <script src="js/controllers/auth.js"></script>
-    <script src="js/controllers/review.js"></script>
-    <script src="js/services/auth.js"></script>
-  </body>
+    </header>-->
+</div>
+<!--
+<script type="text/javascript" href="https://cdnjs.cloudflare.com/ajax/libs/userinfo/1.0.0/userinfo.min.js"></script>
+-->
+<script src='bower_components/angular-animate/angular-animate.min.js' type='text/javascript'></script>
+<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js" type='text/javascript'></script>
+<script src="bower_components/lodash/dist/lodash.min.js" type='text/javascript'></script>
+<script src="bower_components/ng-device-detector/ng-device-detector.min.js" type='text/javascript'></script>
+<script src="bower_components/re-tree/re-tree.min.js" type='text/javascript'></script>
+<script src="bower_components/angular-touch/angular-touch.min.js" type='text/javascript'></script>
+<script src="bower_components/jquery/dist/jquery.min.js" type='text/javascript'></script>
+<script src="js/app.js" type='text/javascript'></script>
+<script src="js/services/lb-services.min.js" type='text/javascript'></script>
+<script src="js/controllers/auth.js" type='text/javascript'></script>
+<script src="js/controllers/controlj74879iuihuifhsuie.min.js" type='text/javascript'></script>
+<script src="js/services/auth.js" type='text/javascript'></script>
+</body>
 </html>

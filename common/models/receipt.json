@@ -1,0 +1,78 @@
+{
+  "name": "Receipt",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "source_network_id": {
+      "type": "string",
+      "required": true
+    },
+    "source_rec_id": {
+      "type": "string",
+      "required": true
+    },
+    "amount_in_cent": {
+      "type": "number",
+      "required": true,
+      "description": "the dollar amount in cent"
+    },
+    "currency_type": {
+      "type": "string",
+      "required": true,
+      "description": "which type of currency"
+    },
+    "customer_source_id": {
+      "type": "string",
+      "required": false,
+      "description": "card transaction id"
+    },
+    "customer_source_country": {
+      "type": "string",
+      "required": true,
+      "description": "what country"
+    },
+    "customer_source_address": {
+      "type": "string",
+      "required": false,
+      "description": "specific address of a customer"
+    },
+    "customer_source_email": {
+      "type": "string",
+      "required": false,
+      "description": "email related source"
+    },
+    "is_live_mode": {
+      "type": "Boolean",
+      "required": true,
+      "description": "is that a test mode or the live mode"
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    }
+  },
+  "hidden": [
+    "recovery_code",
+    "customer_source_country",
+    "customer_source_email",
+    "customer_source_address",
+    "is_live_mode"
+  ],
+  "acls": [],
+  "relations": {
+  },
+  "methods": [
+  ]
+}

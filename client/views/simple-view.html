@@ -1,0 +1,60 @@
+<div class="wrap" id="main_box">
+  <div class="box">
+    <div class="flex_box">
+
+
+      <div class="album_cover">
+        <div class="cover_container">
+          <img id="album_pic"
+               src="{{ThisArticle.preview}}"
+               style="visibility: visible;"/>
+        </div>
+      </div>
+
+      <div class="song_info">
+        <div class="star star-1"></div>
+        <div class="star star-2"></div>
+        <div class="star star-3"></div>
+        <div class="star star-4"></div>
+        <div class="cont">
+          <span class="line"></span>
+          <h1 class="song" id="song_name">{{ThisArticle.meta.article_name_native}}</h1>
+          <p class="singer" id="goSinger">{{ThisArticle.size}}</p>
+          <span class="line"></span>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div device-detector class="openGox" id="openGallery" ng-click="OnClickFn.installapp()">
+    <div>開啟Gallery Go!<span class="open-icon" ng-class="{'rotatingloop':OnClickFn.rotating}"></span></div>
+  </div>
+
+  <div class="download" id="btnsJoox">
+    <div class="icon"></div>
+    <div class="word"></div>
+    <div id="open" class="install" device-detector ng-click="OnClickFn.installapp()">下載</div>
+  </div>
+
+  <div class="bg" id="album_pic2"
+       style="background-image:url({{ThisArticle.preview}});"></div>
+
+  <div class="bg_mask"></div>
+
+  <div class="box-download">
+    <span class="close"></span>
+
+    <div class="logo">
+      <span class="pic"></span>
+    </div>
+
+    <div class="btn-line">
+      <button class="btn" device-detector id="device-android">已安裝Gallery Go!，現在打開</button>
+      <button class="btn" device-detector id="browser-chrome">前往下載Gallery Go!</button>
+    </div>
+  </div>
+
+
+</div>

@@ -5,7 +5,6 @@
 const
   logTag = '> rm worker',
   gulp = require('gulp'),
-  del = require('del'),
   fs = require('fs'),
   path = require("path"),
   fse = require('fs-extra'),

@@ -1,16 +1,13 @@
 {
   "restApiRoot": "/api",
   "host": "0.0.0.0",
-  "legacyExplorer": false,
   "port": 3000,
   "remoting": {
-    "context": {
-      "enableHttpContext": false
-    },
     "rest": {
       "normalizeHttpPath": false,
       "xml": false
     },
+    "context": false,
     "json": {
       "strict": false,
       "limit": "100kb"
@@ -19,12 +16,8 @@
       "extended": true,
       "limit": "100kb"
     },
-    "cors": {
-      "origin": true,
-      "credentials": true
-    },
-    "errorHandler": {
-      "disableStackTrace": false
-    }
-  }
+    "cors": false,
+    "handleErrors": false
+  },
+  "legacyExplorer": false
 }

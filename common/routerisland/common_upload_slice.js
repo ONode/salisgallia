@@ -10,7 +10,7 @@ const
   output = require('.././util/outputjson.js'),
   path = require('path'),
   _ = require('lodash'),
-  mkp = require('mkdirp'),
+  mkp = require('mkdirp-promise/lib/node5'),
   async = require('async'),
   rimraf = require('gulp-rimraf'),
   im = require('imagemagick'),
@@ -21,7 +21,7 @@ const
  * @type {string}
  */
 const logTag = 'file info',
-  __parentDir = path.dirname(module.main),
+  __parentDir = require('app-root-path'),
   upload_path_public = '/sdpupload',
   upload_hash_file_secret = 'catherineboobsarebig69',
   upload_file_field = 'art',

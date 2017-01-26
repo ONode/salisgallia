@@ -4,13 +4,12 @@
 const
   output = require('.././util/outputjson.js'),
   db_worker = require("./../util/db.js"),
-  rmdir = require('.././util/rmdir.js'),
-  path = require('path')
+  rmdir = require('.././util/rmdir.js')
   ;
 
 const
-  logTag = '> remove files info',
-  __parentDir = path.dirname(module.main),
+  logTag = '> remove',
+  __parentDir = require('app-root-path'),
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/"
   ;

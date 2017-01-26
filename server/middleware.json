@@ -1,10 +1,17 @@
 {
   "initial:before": {
     "loopback#favicon": {},
-    "loopback#compress": {}
+    "loopback#token": {}
   },
   "initial": {
-    "compression": {}
+    "compression": {},
+    "cors": {
+      "params": {
+        "origin": true,
+        "credentials": true,
+        "maxAge": 86400
+      }
+    }
   },
   "session": {
   },
@@ -28,7 +35,11 @@
     "loopback#urlNotFound": {}
   },
   "final:after": {
-    "./middleware/custom-error": {},
-    "errorhandler": {}
+    "strong-error-handler": {
+      "params": {
+        "debug": true,
+        "log": true
+      }
+    }
   }
 }

@@ -1,0 +1,39 @@
+{
+  "name": "Auction",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "consign_asset_id": {
+      "type": "string",
+      "required": true
+    },
+    "consign": {
+      "type": "Date",
+      "required": true
+    },
+    "open_for_internet": {
+      "type": "Date",
+      "required": false
+    },
+    "est_settlement": {
+      "type": "Date",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "publisherId"
+    }
+  },
+  "acls": [],
+  "methods": []
+}

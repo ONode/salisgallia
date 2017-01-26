@@ -1,0 +1,102 @@
+{
+  "name": "Maker",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "brand_logo_original": {
+      "type": "string",
+      "description": "the path url logo brand name uploaded size",
+      "required": false
+    },
+    "brand_logo_s": {
+      "type": "string",
+      "description": "the path url logo brand name size small",
+      "required": false
+    },
+    "brand_logo_m": {
+      "type": "string",
+      "description": "the path url logo brand name size middle",
+      "required": false
+    },
+    "brand_logo_l": {
+      "type": "string",
+      "description": "the path url logo brand name size large",
+      "required": false
+    },
+    "factoryname": {
+      "type": "string",
+      "description": "The name of the factory provider",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "description": "use country ID from use country dictionary",
+      "required": true
+    },
+    "address": {
+      "type": "string",
+      "description": "the full address in native address location",
+      "required": true
+    },
+    "breifdesc": {
+      "type": "string",
+      "description": "the brief description of the company business nature",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "description": "hot link to introduce the company background and its teams",
+      "required": false
+    },
+    "cert_photo": {
+      "type": "string",
+      "description": "the photo of the upload image path for the business registration certification",
+      "required": false
+    },
+    "cert_key": {
+      "type": "string",
+      "description": "the digital signature of its business entity",
+      "required": false
+    },
+    "business_logic": {
+      "type": {
+        "currency": "string",
+        "unitcountname": "string",
+        "pricing": [
+          {
+            "start_from_volume": "number",
+            "priceperunit": "number"
+          }
+        ]
+      },
+      "description": "The business detail of the agreement between Zyntauri and the end users"
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "user",
+      "foreignKey": "owner"
+    }
+  },
+  "acls": [
+  ],
+  "methods": []
+}

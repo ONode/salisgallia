@@ -1,0 +1,993 @@
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  font-family: "Arial";
+  height: 100% !important;
+}
+
+.btn_music:after, .btn_open:before, .btns.disabled:after, .download .install:after, .slogan:before {
+  content: ""
+}
+
+/*.box-download .close, .box-download .logo .pic, .icons-sprite {
+  background-image: url(../image/downloadBox/icons-s04e00beb70.png);
+  background-repeat: no-repeat;
+}*/
+
+.box-download {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  opacity: .5;
+  display: none;
+  z-index: 99999
+}
+
+.box-download .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-position: 0 1;
+  background-size: 118px 74px !important;
+  height: 24px !important;
+  width: 24px !important;
+  cursor: pointer
+}
+
+.box-download .logo {
+  width: 100%;
+  padding: 108px 0;
+  text-align: center;
+  text-indent: 0
+}
+
+.box-download .logo .pic {
+  display: inline-block;
+  background-position: 0 -35px;
+  background-size: 177px 111px;
+  height: 77px !important;
+  width: 178px !important;
+}
+
+.box-download .btn-line {
+  margin: 0 21px;
+}
+
+.box-download .btn-line .btn {
+  display: block;
+  height: 47px;
+  line-height: 47px;
+  text-align: center;
+  font-size: 18px;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 50px;
+  width: 100%;
+  background: 0 0;
+}
+
+#root, .flex_box, .wrap, body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden
+}
+
+.box-download .btn-line .btn:last-child {
+  margin-top: 39px
+}
+
+@media (max-width: 320px) {
+  .box-download .logo {
+    padding: 70px 0
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0
+}
+
+body {
+  font: 12px/1.5 "hiragino sans gb", "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  -webkit-tap-highlight-color: transparent
+}
+
+a {
+  text-decoration: none
+}
+
+li {
+  list-style: none;
+}
+
+a, img {
+  -webkit-touch-callout: none;
+}
+
+/*.wrap {
+  position: relative;
+}*/
+
+.box {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  width: 100%;
+}
+
+.flex_box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  -webkit-box-orient: vertical;
+  -ms-flex-direction: column;
+}
+
+.flex_item {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  position: relative;
+  text-align: center
+}
+
+.user_info {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  z-index: 6;
+  height: 32px;
+  line-height: 32px;
+  -webkit-border-radius: 0 300px 300px 0;
+  border-radius: 0 300px 300px 0;
+  background: rgba(0, 0, 0, .25)
+}
+
+.user_info .txt {
+  float: left;
+  margin: 0 5px;
+  font-size: 12px;
+  color: #fff
+}
+
+.user_info .avatar {
+  float: left;
+  width: 25px;
+  height: 25px;
+  margin: 4px 4px 0 0;
+  -webkit-border-radius: 300px;
+  border-radius: 300px
+}
+
+.song_info, .song_info .cont {
+  width: 100%
+}
+
+.song_info .line {
+  background: url(../image/common/lc_line_one.png) 0 0px no-repeat;
+  display: block;
+  width: 100%;
+  height: 33px;
+  -webkit-background-size: auto;
+  -moz-background-size: auto;
+  -o-background-size: auto;
+  background-size: auto;
+}
+
+.user_info .avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 300px;
+  border-radius: 300px
+}
+
+.song_info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  position: absolute;
+  width: 250px;
+  left: 10px;
+  top: 32%;
+}
+
+.song_info .singer, .song_info .song {
+  width: 60%;
+  margin: 0 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: #FFF
+}
+
+.song_info .song {
+  font-size: 21px;
+  font-weight: 400
+}
+
+.song_info .singer {
+  margin-top: 4px;
+  font-size: 13px
+}
+
+.song_info .singer .arrow {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  width: 8px;
+  height: 13px;
+  margin-left: 5px;
+  background: url(http://imgcache.gtimg.cn/mediastyle/mobile/app/wechat/img/sprite_page_play.png?d=20140507151851) 0 -160px no-repeat;
+  background-size: 50px 200px
+}
+
+.album_cover .cover_container, .copy-text {
+  position: relative;
+  margin: 0 auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-bottom: 10px;
+}
+
+/*max-width: 50%;*/
+.album_cover.round img {
+  border-radius: 50%
+}
+
+.album_cover img {
+  display: block;
+  width: 100%;
+  background: #fff;
+}
+
+.btn_music, .btn_open {
+  display: inline-block
+}
+
+.album_cover .btn_pause, .album_cover .btn_play {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 10;
+  width: 46px;
+  height: 46px;
+  overflow: hidden;
+  margin-left: -23px;
+  top: 33%;
+  opacity: .8
+}
+
+.album_cover .btn_pause:active span, .album_cover .btn_play:active span, .bg_mask, .icon_download:active i, .icon_love:active i, .icon_loved:active i {
+  opacity: .5
+}
+
+.album_cover .btn_pause span, .album_cover .btn_play span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  line-height: 999em;
+  background: url(http://imgcache.gtimg.cn/mediastyle/mobile/app/wechat/img/sprite_page_play.png?d=20140507151851) no-repeat;
+  background-size: 50px 200px
+}
+
+.album_cover .btn_pause span {
+  background-position: 0 -50px
+}
+
+.album_cover .btn_pause i, .album_cover .btn_play i {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  z-index: 1;
+  width: 42px;
+  height: 42px;
+  -webkit-border-radius: 300px;
+  border-radius: 300px;
+  background: rgba(0, 0, 0, .8)
+}
+
+.album_cover .btn_pause:active i, .album_cover .btn_play:active i {
+  background: rgba(0, 0, 0, .9)
+}
+
+.btns {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
+  text-align: center;
+  background: rgba(0, 0, 0, .2);
+  color: #fff
+}
+
+.bg, .btn_music:after, .btn_open:before, .slogan:before {
+  background-size: cover
+}
+
+.slogan {
+  float: left
+}
+
+.slogan:before {
+  position: absolute;
+  top: 13px;
+  left: 22px;
+  width: 77px;
+  height: 25px;
+  background-image: url(../image/common/logo_gg.png)
+}
+
+/*
+#btnsQQmusic .slogan:before {
+  background-image: url(../image/playsong/qqmusic.png)
+}*/
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  /*#btnsQQmusic .slogan:before {
+    background-image: url(../image/playsong/qqmusic@2x.png)
+  }*/
+}
+
+.logo {
+  font-size: 20px;
+  text-align: left;
+  text-indent: 90px;
+  margin-top: 16px;
+  margin-bottom: 2px
+}
+
+.btn_open, .copy-text, .lyric .cont p {
+  text-align: center
+}
+
+.btn_music {
+  position: relative;
+  height: 28px;
+  line-height: 28px;
+  padding: 4px 16px 4px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 16px;
+  color: #fff;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  float: right;
+  margin-right: 20px;
+  margin-top: 8px
+}
+
+.btn_music:after {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  width: 7px;
+  height: 12px;
+  background-image: url(../image/common/arrow_right.png)
+}
+
+.bg, .bg_mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%
+}
+
+.btn_music:active {
+  background-color: #0a9244
+}
+
+.bg {
+  z-index: 1;
+  background-position: center;
+  -webkit-filter: blur(15px);
+  -webkit-transform: scale(1.05)
+}
+
+.bg_mask {
+  z-index: 2;
+  background-color: #000
+}
+
+.copy-text {
+  color: #fff;
+  font-size: 14px;
+  max-width: 230px;
+  width: 230px
+}
+
+.btn_open {
+  font-size: 18px;
+  color: #22ff8b;
+  width: 210px;
+  height: 34px;
+  border: 2px solid #22ff8b;
+  border-radius: 21px;
+  position: relative;
+  line-height: 34px;
+  text-indent: 30px
+}
+
+.btn_open:before {
+  position: absolute;
+  top: 8px;
+  left: 32px;
+  width: 18px;
+  height: 20px;
+  background-image: url(../image/playsong/play.png)
+}
+
+#album_pic2 {
+  background-color: #393939
+}
+
+#album_pic {
+  visibility: hidden
+}
+
+#play_loading, #play_on {
+  -webkit-transform: translateX(0)
+}
+
+#h5audio_media {
+  height: 0;
+  width: 0
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  .btn_open:before {
+    background-image: url(../image/playsong/play@2x.png)
+  }
+}
+
+.area {
+  display: none
+}
+
+@media only screen and (max-width: 362px) {
+  .th .btn_music {
+    margin-right: 5px
+  }
+}
+
+.lyric .cont {
+  width: 100%;
+  height: 48px;
+  overflow: hidden
+}
+
+.lyric .cont.three_row {
+  height: 72px
+}
+
+.lyric .cont .txt {
+  padding: 0 50px
+}
+
+.lyric .cont p {
+  width: 100%;
+  height: 24px;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: rgba(255, 255, 255, .4)
+}
+
+.lyric .cont .current {
+  color: #fff
+}
+
+.lyric .cont p.loading {
+  line-height: 100%
+}
+
+.love {
+  position: absolute;
+  right: 12px;
+  bottom: 15px;
+  z-index: 6;
+  width: 34px;
+  height: 34px
+}
+
+.icon_download, .icon_love, .icon_loved {
+  display: block;
+  width: 33px;
+  height: 33px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  -webkit-border-radius: 300px;
+  border-radius: 300px;
+  overflow: hidden
+}
+
+.icon_download i, .icon_love i, .icon_loved i {
+  display: block;
+  width: 17px;
+  height: 14px;
+  line-height: 999px;
+  overflow: hidden;
+  margin: 10px auto 0;
+  background: url(http://imgcache.gtimg.cn/mediastyle/mobile/app/wechat/img/sprite_page_play.png?d=20140507151851) no-repeat;
+  background-size: 50px 200px
+}
+
+.icon_download i {
+  width: 17px;
+  height: 18px;
+  margin-top: 5px;
+  background-position: 0 -140px
+}
+
+.play_bar, .play_bar .progress {
+  height: 40px;
+  position: absolute
+}
+
+.icon_love i {
+  background-position: 0 -100px
+}
+
+.icon_loved i {
+  background-position: 0 -120px
+}
+
+.play_bar {
+  bottom: 87px;
+  z-index: 5;
+  width: 100%
+}
+
+.play_bar .progress {
+  left: 50px;
+  right: 50px;
+  z-index: 2;
+  overflow: hidden
+}
+
+.play_bar .bar {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  z-index: 3;
+  width: 100%;
+  height: 2px;
+  background-color: #fff;
+  opacity: .3
+}
+
+.play_bar .has_load, .play_bar .has_play {
+  top: 20px;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  position: absolute
+}
+
+.play_bar .has_load {
+  z-index: 4;
+  background-color: #fff;
+  opacity: .3
+}
+
+.play_bar .has_play {
+  z-index: 5;
+  background-color: #0EAD51
+}
+
+.play_bar .has_play span {
+  position: absolute;
+  top: -20px;
+  right: -21px;
+  width: 40px;
+  height: 40px
+}
+
+.play_bar .has_play span i {
+  display: block;
+  width: 2px;
+  height: 8px;
+  margin: 17px auto 0;
+  background: #0EAD51
+}
+
+.play_bar .play_time {
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  right: 5px;
+  z-index: 1
+}
+
+.play_bar .play_time time {
+  position: absolute;
+  top: 3px;
+  font-size: 12px;
+  font-family: arial;
+  color: #878787
+}
+
+.play_bar .play_time time:nth-child(1) {
+  left: 5px
+}
+
+.play_bar .play_time time:nth-child(2) {
+  right: 5px
+}
+
+.description {
+  font-size: 12px;
+  text-indent: 90px
+}
+
+.box {
+  padding-top: 50px
+}
+
+.facebook .flex_box {
+  height: 90%
+}
+
+.btn_music .dot {
+  display: inline-block;
+  width: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+  vertical-align: middle
+}
+
+.btns.disabled:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%
+}
+
+.download, .openGox {
+  position: absolute;
+  z-index: 9999
+}
+
+@media (min-width: 330px) {
+  .song_info .song {
+    font-size: 23px
+  }
+
+  .lyric .cont p, .song_info .singer {
+    font-size: 15px
+  }
+
+  .play_bar {
+    bottom: 107px
+  }
+
+  .facebook .play_bar {
+    bottom: 127px
+  }
+}
+
+@media (max-width: 520px) {
+  /*.album_cover .cover_container {
+    max-width: 50%
+  }*/
+  .cover_container {
+    width: 400px;
+  }
+
+  .album_cover img {
+    width: 400px;
+    height: auto;
+  }
+
+  .lyric .cont p {
+    font-size: 13px
+  }
+}
+
+@media (min-width: 520px) {
+  .cover_container {
+    width: 450px
+  }
+
+  .album_cover img {
+    width: 450px;
+    height: auto;
+  }
+}
+
+.openGox {
+  width: 100%;
+  bottom: 31px;
+  text-align: center
+}
+
+.openGox div, .openGoxvip {
+  padding: 12px 24px;
+  display: inline-block;
+  background: #cac840;
+  font-size: 15px;
+  color: #ccff7e;
+  border-radius: 30px;
+  box-shadow: 0 7px 7px rgba(0, 0, 0, .4)
+}
+
+.openGox .open-icon, .openGoxvip .open-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  margin-bottom: 3px;
+  background: url(../image/common/circle.png);
+  background-size: 15px 15px;
+  vertical-align: middle
+}
+
+@-webkit-keyframes rotating /* Safari and Chrome */
+{
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.open-icon.rotatingloop {
+  -webkit-animation: rotating 2s linear infinite;
+  -moz-animation: rotating 2s linear infinite;
+  -ms-animation: rotating 2s linear infinite;
+  -o-animation: rotating 2s linear infinite;
+  animation: rotating 2s linear infinite;
+}
+
+.download {
+  width: 100%;
+  height: 50px;
+  top: 0;
+  background: #d9d9d9;
+  background: -moz-linear-gradient(top, #d9d9d9 0%, #ffffff 93%, #ffffff 100%);
+  background: -webkit-linear-gradient(top, #d9d9d9 0%, #ffffff 93%, #ffffff 100%);
+  background: linear-gradient(to bottom, #d9d9d9 0%, #ffffff 93%, #ffffff 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d9d9d9', endColorstr='#ffffff', GradientType=0);
+  opacity: .9;
+}
+
+.download .icon {
+  float: left;
+  width: 200px;
+  height: 50px;
+  background: url(../image/common/logo_gg.png) center center no-repeat;
+  background-size: 200px 50px;
+  margin: 3px
+}
+
+.download .word {
+  float: left;
+  line-height: 25px;
+  margin-top: 20px
+}
+
+.download .word p:first-child {
+  font-size: 20px
+}
+
+.download .install {
+  position: relative;
+  float: right;
+  padding: 2px 16px 2px 8px;
+  height: 28px;
+  line-height: 28px;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 8px;
+  margin-right: 10px;
+  max-width: 96px;
+  color: #808080;
+}
+
+.download .install:after {
+  position: absolute;
+  top: 11px;
+  right: 0;
+  width: 7px;
+  height: 12px;
+  background-image: url(../image/common/circle.png);
+  background-size: cover
+}
+
+.facebook .openGox {
+  bottom: 120px
+}
+
+.facebook .play_bar {
+  bottom: 175px
+}
+
+@media (max-width: 320px) {
+  .song_info .song {
+    font-size: 16px
+  }
+
+  .song_info .singer {
+    font-size: 12px;
+    margin-top: 1px
+  }
+
+  .song_info .hifi {
+    margin-top: 8px
+  }
+
+  .lyric .cont p {
+    font-size: 12px
+  }
+
+  .lyric .cont.three_row {
+    height: 78px
+  }
+
+  .flex_box {
+    height: 98%
+  }
+
+  #album_pic, .cover_container {
+    width: 150px;
+    height: auto;
+  }
+
+  .album_cover .btn_pause, .album_cover .btn_play {
+    top: 32%
+  }
+
+  .play_bar {
+    bottom: 50px
+  }
+
+  .openGox div {
+    padding: 8px 20px;
+    font-size: 13px
+  }
+
+  .openGox {
+    bottom: 19px
+  }
+
+  .facebook .play_bar {
+    bottom: 155px
+  }
+
+  .facebook .openGox {
+    bottom: 126px
+  }
+
+  .facebook .flex_box {
+    height: 98%
+  }
+
+  .ios8 .flex_box {
+    display: block
+  }
+
+  .ios8 .song_info {
+    position: static;
+    margin-top: 15px
+  }
+
+  .ios8 .cover_container {
+    margin: 40px auto 0
+  }
+
+  .ios7 .play_bar {
+    bottom: 35px
+  }
+
+  .ios7 .openGox {
+    bottom: 11px
+  }
+}
+
+.song_info .con, .song_info .hifi {
+  font-size: 12px;
+  color: rgba(255, 255, 255, .8)
+}
+
+.song_info .hifi {
+  margin-top: 24px;
+  line-height: 22px
+}
+
+.hifi .hicon {
+  background: url(../image/playsong/hifi.png) center center no-repeat;
+  background-size: 24px 12px;
+  display: inline-block;
+  width: 24px;
+  height: 12px;
+  position: absolute;
+  top: 2px
+}
+
+.song_info .word {
+  margin-left: 24px
+}
+
+.song_info .con {
+  position: relative
+}
+
+.song_info .none {
+  display: none
+}
+
+.star {
+  position: absolute;
+  background: url(https://dl.dropbox.com/u/1488103/julie-logo-sparkle.png) no-repeat;
+  background-size: contain;
+  overflow: hidden;
+}
+
+.star.star-1 {
+  width: 50px;
+  height: 34px;
+  top: 110px;
+  left: 97px;
+}
+
+.star.star-2 {
+  width: 83px;
+  height: 77px;
+  top: 18px;
+  left: 224px;
+}
+
+.star.star-3 {
+  width: 74px;
+  height: 70px;
+  top: 115px;
+  left: 172px;
+}
+
+.star.star-4 {
+  width: 68px;
+  height: 70px;
+  top: 46px;
+  left: 162px;
+}

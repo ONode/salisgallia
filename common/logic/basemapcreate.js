@@ -2,29 +2,36 @@
  * Created by zJJ on 7/18/2016.
  */
 const
-  crypto = require('crypto'),
-  multer = require('multer'),
+
+  tool_crypt = require('crypto'),
+  numCPUs = require('os').cpus.length,
+  mulOperation = require('multer'),
   mapSliceArc = require('mapslice'),
   output = require('.././util/outputjson.js'),
   rmdir = require('.././util/rmdir.js'),
-  path = require('path'),
   _ = require('lodash'),
-  mkp = require('mkdirp'),
   async = require('async'),
-  im = require('imagemagick'),
-  save_data = require('./basemapinfo.js')
+  fse = require('fs-extra'),
+  _moduleIm = require('imagemagick'),
+  s3thread = require('./s3upload.js'),
+  basemapInfo = require('./basemapinfo.js')
+
   ;
 /**
  * setup system configurations
  * @type {string}
  */
-const logTag = '> file info',
-  __parentDir = path.dirname(module.main),
-  upload_hash_file_secret = 'catherineboobsarebig69',
+const
+
+  logTag = '> basemapcreate.js',
+  __parentDir = require('app-root-path'),
+  saltFile = 'catherineboobsarebig69',
   upload_file_field = 'art',
   upload_helper_folder = __parentDir + "/storage/tmp/tmpsgi/",
   base_folder = __parentDir + "/storage/tmp/storage_f/",
+  base_folder_process = __parentDir + "/storage/tmp/tmpsgi/",
   public_folder_path = "/static/storage_f/"
+
   ;
 
 const fileFilterFn = function fileFilter(req, file, cb) {
@@ -45,6 +52,7 @@ const fileFilterFn = function fileFilter(req, file, cb) {
     cb(new Error(str));
   }
 };
+
 const basic_config = {
   tileSize: 256,
   // (default: 256) Tile-size to be used
@@ -55,20 +63,101 @@ const basic_config = {
   // tmp: "./tmp",
   tmp: upload_helper_folder,
   // (default: '.tmp') Temporary directory to be used to store helper files
-  parallelLimit: 4,
+  parallelLimit: 1,
   // (default: 5) Maximum parallel tasks to be run at the same time (warning: processes can consume a lot of memory!)
   minWidth: 900,
   // See explanation about Size detection below
   skipEmptyTiles: true,
   // Skips all the empty tiles
-  zoomMin: 3
+  zoomMin: 1
 };
-const wrapping_process = function (basemap, req, res, next_step) {
-//res.writeHead(200);
-//http://www.scantips.com/basics1d.html
-  var is_done = false;
 
-  var mapSlicer;
+var defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endCallback) {
+  var mapSlicer = mapSliceArc(_.extend(configNew, basic_config));
+  mapSlicer.on("start", function (files, options) {
+    console.info("Starting to process " + files + " files.");
+  });
+
+  mapSlicer.on("error", function (err) {
+    if (_.isFunction(errCallback)) {
+      return errCallback(err);
+    }
+    console.error(err);
+  });
+
+  mapSlicer.on("progress", function (progress, total, current, file) {
+    var percentNum = Math.round(progress * 100);
+    var percent = percentNum + "%";
+    //console.info("Progress: " + percent);
+    console.info(logTag, "dataStructure.carry_id: ", dataStructure.carry_id);
+    if (dataStructure.carry_id != null) {
+      basemapInfo.progress(lb_map, percentNum / 2, dataStructure.carry_id, null);
+    }
+  });
+
+  mapSlicer.on("end", function () {
+    if (_.isFunction(endCallback)) {
+      return endCallback(dataStructure);
+    }
+  });
+
+  mapSlicer.on("levels", function (levels_found) {
+    dataStructure.total_zoom_levels = levels_found;
+    console.info("Levels calculated: ", levels_found.length);
+  });
+
+  return mapSlicer;
+};
+
+var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined, callback_err) {
+  var _storage = mulOperation.diskStorage({
+    destination: function (req, file, cb) {
+      console.log(logTag, '==================================');
+      console.log(logTag, 'check folder structure and define upload folder structures');
+      console.log(logTag, '==================================');
+
+      dataStructure.folder_base_name = 'basemap-' + Date.now();
+      dataStructure.folder_path = public_folder_path + dataStructure.folder_base_name + "/";
+      var folder_tmp = base_folder + dataStructure.folder_base_name;
+      fse.mkdirs(folder_tmp, function (err) {
+        if (_.isError(err)) {
+          return callback_err(err);
+        } else {
+          fse.mkdirsSync(base_folder_process);
+          console.log(logTag, '==================================');
+          console.log(logTag, 'create folder that is not existed!');
+          console.log(logTag, folder_tmp);
+          console.log(logTag, base_folder_process);
+          console.log(logTag, '==================================');
+          cb(null, folder_tmp);
+        }
+      });
+    },
+    filename: function (req, file, cb) {
+      console.log(logTag, "rename file");
+      var hash = tool_crypt.createHmac('sha256', saltFile)
+        .update(dataStructure.folder_base_name)
+        .digest('hex');
+
+      dataStructure.secret_base_map_file = hash.substring(0, 18) + '.jpg';
+      dataStructure.rename_file = dataStructure.folder_base_name + '.jpg';
+      if (_.isFunction(extraOperationFromAfterNameDefined)) {
+        extraOperationFromAfterNameDefined(dataStructure);
+      }
+      cb(null, dataStructure.secret_base_map_file);
+    }
+  });
+  return mulOperation({
+    fileFilter: fileFilterFn,
+    storage: _storage,
+    //   dest: __parentDir + '/tmp/',
+    limits: {fileSize: 104857600, files: 1}
+  }).single(upload_file_field);
+};
+
+const wrap_process_tilingmap = function (basemap, req, res, next_step) {
+//http://www.scantips.com/basics1d.html
+  console.log(logTag, "cpu: " + numCPUs);
   var O = {
     carry_id: "",
     complete: -1,
@@ -78,86 +167,19 @@ const wrapping_process = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
-  var _storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      console.log(logTag, "rename destination");
-      O.folder_base_name = 'basemap-' + Date.now();
-      O.folder_path = public_folder_path + O.folder_base_name + "/";
-      mkp(base_folder + O.folder_base_name, function (err) {
-        if (err) console.error(err);
-        else console.log('create folder that is not existed!')
-      });
-
-      cb(null, base_folder + O.folder_base_name);
-    },
-    filename: function (req, file, cb) {
-      console.log(logTag, "rename file");
-      var hash = crypto.createHmac('sha256', upload_hash_file_secret)
-        .update(O.folder_base_name)
-        .digest('hex');
-      O.secret_base_map_file = hash + '.jpg';
-      O.rename_file = O.folder_base_name + '.jpg';
-      var _config = {
-        file: base_folder + O.folder_base_name + "/" + O.secret_base_map_file,
-        //file: base_folder + base_name + '/' +O. secret_base_map_file,
-        // (required) Huge image to slice
-        output: base_folder + O.folder_base_name + "/{z}/t_{y}_{x}.jpg"
-        // Output file pattern
-      };
-
-      mapSlicer = mapSliceArc(_.extend(_config, basic_config));
-      mapSlicer.on("start", function (files, options) {
-        console.info("Starting to process " + files + " files.");
-      });
-
-      mapSlicer.on("error", function (err) {
-        console.error(err);
-        // output.outResErro(err.message, res);
-        is_done = true;
-        next_step(err, res);
-      });
-
-      mapSlicer.on("progress", function (progress, total, current, file) {
-        var percentNum = Math.round(progress * 100);
-        var percent = percentNum + "%";
-        console.info("Progress: " + percent);
-        
-        save_data.progress(basemap, percentNum, O.carry_id, null);
-      });
-
-      mapSlicer.on("end", function () {
-        console.info("Finished processing slices.");
-        if (!is_done) {
-          // output.outResSuccess(O, res);
-          next_step(O, res);
-        }
-      });
-      mapSlicer.on("levels", function (levels_found) {
-        O.total_zoom_levels = levels_found;
-      });
-      cb(null, O.secret_base_map_file);
-    }
+  var mapSlicer = null;
+  var uploadStarter = setupUploader(O, null, function (err) {
+    console.log(logTag, "==========================================");
+    console.log(logTag, "==> uploadStarter error  =");
+    console.log(logTag, "==========================================");
+    return next_step(err);
   });
 
-  var uploadStarter = multer({
-    fileFilter: fileFilterFn,
-    storage: _storage,
-    //   dest: __parentDir + '/tmp/',
-    limits: {fileSize: 104857600, files: 1}
-  }).single(upload_file_field);
-
-  // console.log(req);
-  // var tmp_path = req.files["art"].path;
-  // var isArtDefined = !_.isNull(req.files["art"]);
-  // var isArtDefined = !_.isNull(req.body["art"]);
-  // console.log(req.files);
-  // if (req.files && isArtDefined) {
 
   uploadStarter(req, res, function (err) {
     if (err) {
       console.log(logTag, "error from upload", +err.message);
-      output.outResErro(err.message, res);
-      return;
+      return next_step(err);
     }
     //   var storage = "127.0.0.5:3000/";
     var a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
@@ -182,39 +204,196 @@ const wrapping_process = function (basemap, req, res, next_step) {
       dstPath: b
     };
     //rmdir(upload_helper_folder);
-    im.resize(options, function (err) {
+    _moduleIm.resize(options, function (err) {
       if (err) {
         var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
-        output.outResErro(notworking, res);
-        return;
+        // output.outResErro(notworking, res);
+        return next_step(err);
       } else {
-        save_data.start(basemap, O, function (id) {
+        if (req.params.owner != null) {
+          O.owner = req.params.owner;
+        } else {
+          console.log("====================================");
+          console.log("warning there is no owner id for this basemap..");
+          console.log("====================================");
+        }
+        basemapInfo.startNewMapData(basemap, O, function (id) {
           O.carry_id = id;
-          output.outResSuccess(O, res);
+          // output.outResSuccess(O, res);
+
+          mapSlicer = defineSlicer({
+              file: base_folder + O.folder_base_name + "/" + O.secret_base_map_file,
+              //file: base_folder + base_name + '/' +O. secret_base_map_file,
+              // (required) Huge image to slice
+              output: base_folder + O.folder_base_name + "/{z}/t_{y}_{x}.jpg"
+              // Output file pattern
+            },
+            O,
+            basemap,
+            function (err) {
+              console.log(logTag, "==========================================");
+              console.log(logTag, "==> mapSlicer error  =");
+              console.log(logTag, "==========================================");
+              console.log(err);
+              console.log(logTag, "==========================================");
+            },
+            function (endPack) {
+              console.log(logTag, "==> mapSlicer progress complete  =");
+              return next_step(endPack);
+            });
+
           mapSlicer.start();
+
         }, function (err) {
-          output.outResErro(err.message, res);
+
+          return next_step(err);
         });
       }
+    });
+  });
+};
+
+const wrap_process_regular = function (basemap, req, res, next_step) {
+//res.writeHead(200);
+//http://www.scantips.com/basics1d.html
+  console.log(logTag, "cpu: " + numCPUs);
+  var O = {
+    carry_id: "",
+    complete: -1,
+    total_zoom_levels: [],
+    folder_base_name: "",
+    secret_base_map_file: "",
+    rename_file: "",
+    folder_path: ""
+  };
+  var uploadStarter = setupUploader(O, null, function (err) {
+    return next_step(err);
+  });
+  uploadStarter(req, res, function (err) {
+    if (_.isError(err)) {
+      console.log(logTag, "error from upload", +err.message);
+      //output.outResErro(err.message, res);
+      next_step(err);
+      return;
+    }
+    //var storage = "127.0.0.5:3000/";
+    var a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
+    var b = base_folder + O.folder_base_name + "/" + O.rename_file;
+    var c = {
+      size: {
+        width: 600,
+        height: 400
+      },
+      quality: 0.9,
+      format: 'jpg'
+    };
+    console.log("=======create resize input==========");
+    console.log(logTag, a);
+    console.log(logTag, b);
+    console.log("====================================");
+    var options = {
+      width: 1000,
+      height: 400,
+      srcPath: a,
+      dstPath: b
+    };
+    _moduleIm.resize(options, function (err) {
+      if (_.isError(err)) {
+        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        console.log(logTag, notworking);
+        return next_step(err);
+      }
+      if (req.params.owner != null) {
+        O.owner = req.params.owner;
+      } else {
+        console.log("====================================");
+        console.log("warning there is no owner id for this basemap..");
+        console.log("====================================");
+      }
+      basemapInfo.startNewMapData(basemap, O, function (id) {
+        O.carry_id = id;
+        next_step(O);
+      }, function (err) {
+        next_step(err);
+      });
+
     });
   });
 };
 //limit is 100mb
 //https://github.com/martinheidegger/mapslice
 //https://www.npmjs.com/package/multer
-module.exports = function (loopbackBasemap, req, res) {
-  wrapping_process(loopbackBasemap, req, res, function (result, res) {
+//Add your routes here, etc.
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
+module.exports.uploadRegular = function (app, req, res) {
+  var model_base_map = app.models.Basemap;
+  var model_user = app.models.user;
+  wrap_process_regular(model_base_map, req, res, function (result) {
     if (_.isError(result)) {
-      output.outResErro(result.message, res);
+      return output.outResErro(result.message, res);
+    }
+    var _id = result.carry_id;
+
+    if (req.params.owner != null) {
+      result["owner"] = req.params.owner;
+      result["listing.enabled"] = true;
     } else {
-      var _id = result.carry_id;
+      return output.outResSuccess(result, res);
+
+    }
+    basemapInfo.localUploadProgressComplete(model_base_map, model_user, _id, result, function (err) {
+      if (_.isError(err)) {
+        return res(err);
+      }
+      console.log(logTag, "save and update complete status");
+      output.outResSuccess(result, res);
       delete result.carry_id;
       delete result.complete;
-      save_data.complete(loopbackBasemap, _id, result, function () {
-        //output.outResSuccess(result, res);
-        console.log(logTag, "save and update complete status");
-      });
+      // res(result);
+      console.log(logTag, "regular images of 2 transfer to S3 now");
+      s3thread.transferSimpleSingleSmallMapS3(model_base_map, _id, result);
+    });
+
+  });
+};
+
+module.exports.uploadTiling = function (app, req, res) {
+  //IF u have large image then. use this to avoid timeout..
+  //req.connection.setTimeout(120000);
+  var model_base_map = app.models.Basemap;
+  var model_user = app.models.user;
+  wrap_process_tilingmap(model_base_map, req, res, function (result) {
+    if (_.isError(result)) {
+      return output.outResErro(result.message, res);
     }
+    var _id = result.carry_id;
+
+    if (req.params.owner != null) {
+      console.info(logTag, "Id adding..");
+      result["owner"] = req.params.owner;
+      result["listing.enabled"] = false;
+    } else {
+      return output.outResSuccess(result, res);
+    }
+    console.info(logTag, "Finished processing slices. start saving to DB.");
+    console.info(logTag, "Process before --------------------", result);
+
+
+    basemapInfo.localUploadProgressComplete(model_base_map, model_user, _id, result, function (err) {
+      if (_.isError(err)) {
+        console.info(logTag, "stop here because of the error.");
+        return output.outResErro(err.message, res);
+      }
+
+      console.log(logTag, "save and update complete status");
+      delete result.carry_id;
+      delete result.complete;
+      console.log(logTag, "all local images are transfering to S3 cloud now.");
+      s3thread.transferSyncBaseMapS3(model_base_map, _id, result);
+      return output.outResSuccess(result, res);
+    });
   });
 };

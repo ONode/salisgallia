@@ -1,0 +1,138 @@
+{
+  "name": "user",
+  "base": "User",
+  "idInjection": true,
+  "emailVerificationRequired": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "facebook": {
+      "type": {
+        "userid": "string",
+        "token": "string",
+        "expire": "Date",
+        "email": "string"
+      }
+    },
+    "phone": {
+      "type": "string",
+      "required": false
+    },
+    "mac": {
+      "type": "string",
+      "required": false,
+      "description": "mac address"
+    },
+    "bitcoin": {
+      "type": "string",
+      "required": false,
+      "description": "coin address"
+    },
+    "ltecoin": {
+      "type": "string",
+      "required": false,
+      "description": "coin address"
+    },
+    "rose": {
+      "type": "string",
+      "required": false,
+      "description": "rose amount"
+    },
+    "coin": {
+      "type": "string",
+      "required": false,
+      "description": "local internal coin counts"
+    },
+    "publications": {
+      "type": [
+        {
+          "title": {
+            "type": "string",
+            "required": true
+          },
+          "date": {
+            "type": "string",
+            "required": true
+          }
+        }
+      ],
+      "description": "the name and the series of publications",
+      "required": false
+    },
+    "bio": {
+      "type": "string",
+      "required": false,
+      "description": "local internal coin counts"
+    },
+    "name": {
+      "type": "string",
+      "required": false,
+      "description": "name of the artist or seller"
+    },
+    "role": {
+      "type": "number",
+      "required": false,
+      "description": "to express the user with different point of interest.."
+    },
+    "country": {
+      "type": "string",
+      "required": false,
+      "description": "country key to show"
+    },
+    "search_key": {
+      "type": "array",
+      "required": false,
+      "description": "express interest on selective keys"
+    },
+    "age": {
+      "type": "number",
+      "required": false,
+      "description": "the age of the user"
+    },
+    "cate_pref": {
+      "type": "array",
+      "required": false,
+      "description": "array of cate"
+    },
+    "photo": {
+      "type": "object",
+      "required": false,
+      "description": "the path or url to display the head photo"
+    },
+    "uploads": {
+      "type": "number",
+      "required": false,
+      "description": "total uploaded items"
+    },
+    "recovery_code": {
+      "type": "number",
+      "description": "code from the email verification"
+    }
+  },
+  "hidden": [
+    "recovery_code",
+    "facebook",
+    "mac",
+    "bitcoin",
+    "ltecoin"
+  ],
+  "acls": [],
+  "relations": {
+    "contract": {
+      "type": "hasMany",
+      "model": "Contract",
+      "foreignKey": "contractId"
+    },
+    "order": {
+      "type": "hasMany",
+      "model": "Order",
+      "foreignKey": "orderId"
+    }
+  },
+  "methods": [
+  ]
+}

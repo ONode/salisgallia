@@ -1,0 +1,48 @@
+{
+  "name": "Issue",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "violation_code": {
+      "type": [
+        {
+          "type": "number"
+        }
+      ],
+      "required": false
+    },
+    "subject_type": {
+      "type": "string",
+      "required": false
+    },
+    "subject_id": {
+      "type": "string",
+      "required": false
+    },
+    "additional": {
+      "type": "string",
+      "required": false
+    },
+    "from_agent_type": {
+      "type": "string",
+      "required": false
+    },
+    "from_agent_id": {
+      "type": "string",
+      "required": false
+    },
+    "create": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}

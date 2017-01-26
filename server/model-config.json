@@ -1,44 +1,37 @@
 {
   "_meta": {
     "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
-      "../common/models",
-      "./models"
+      "../common/models"
     ]
   },
-  "User": {
-    "dataSource": "db"
-  },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "rocket_us_east",
     "public": false
   },
-  "CoffeeShop": {
+  "User": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": false
+  },
+  "Issue": {
     "dataSource": "rocket_us_east",
     "public": true
   },
-  "Review": {
-    "dataSource": "rocket_us_east",
-    "public": true
-  },
-  "Reviewer": {
-    "dataSource": "rocket_us_east",
-    "public": true
-  },
-  "Artist": {
+  "Contract": {
     "dataSource": "rocket_us_east",
     "public": true
   },
@@ -46,7 +39,26 @@
     "dataSource": "rocket_us_east",
     "public": true
   },
-  "container": {
+  "Email": {
+    "dataSource": "gmail_data_source",
+    "public": false
+  },
+  "Order": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "Receipt": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "user": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": true
+  },
+  "Container": {
     "dataSource": "storage",
     "public": true
   }

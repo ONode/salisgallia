@@ -1,32 +1,194 @@
 /**
  * Created by zJJ on 7/21/2016.
  */
+const logTag = "> db.js";
 const _ = require('lodash');
-var updateByIdAndIncrease = function (persistentModel, _id_, field_name_inc_1, next) {
-  persistentModel.findById(_id_, function (err, r) {
-    var update = {};
-    update[field_name_inc_1] = r[field_name_inc_1] + 1;
-    r.updateAttribute(update, function (err, r) {
+const ay = require('async');
+var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name_inc_1, next) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdAndIncrease, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
+  console.log(logTag, "==========================================");
+  console.log(logTag, "==> Update By Id And Increase Start Here =");
+  console.log(logTag, "==========================================");
+  persistentModel.findOne({where: {id: query_item_id}}, function (err, _doc_user) {
+    if (_.isError(err)) {
+      console.log(logTag, "findById has error ..... ", err);
+      return;
+    }
+
+    var val = 0;
+    console.log(logTag, "got item for value increase [", field_name_inc_1, " : ", _doc_user[field_name_inc_1], " ]");
+    var read = _doc_user[field_name_inc_1];
+    if (_.isNumber(read)) {
+      val = read + 1;
+    } else {
+      console.log(logTag, "this field is not a number..  [", field_name_inc_1);
+      val = 1;
+    }
+
+    console.log(logTag, "instruction to update a single attribute -[ ", field_name_inc_1, val, " ]");
+
+    _doc_user.updateAttribute(field_name_inc_1, val, function (err, r) {
+      if (_.isError(err)) {
+        console.log(logTag, "updateAttribute has error ..... ", err);
+        return;
+      }
       if (_.isFunction(next)) {
-        delete update;
+        next();
+      }
+    })
+  });
+};
+var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, next) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdAndReduce, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
+  console.log(logTag, "==========================================");
+  console.log(logTag, "==> Update By Id And Reduce Start Here ===");
+  console.log(logTag, "==========================================");
+  persistentModel.findOne({where: {id: _id_}}, function (err, oneDoc) {
+    var val = 0;
+    if (_.isNaN(parseInt(oneDoc[field_name_inc_1]))) {
+      val = 0;
+    } else {
+      val = parseInt(oneDoc[field_name_inc_1]) - 1;
+      if (val < 0) {
+        val = 0;
+      }
+    }
+    oneDoc.updateAttribute(field_name_inc_1, val, function (err, r) {
+
+      if (_.isError(err)) {
+        console.log(logTag, "updateAttribute has error ..... ", err);
+        return;
+      }
+
+      if (_.isFunction(next)) {
+
+        console.log(logTag, "==========================================");
+        console.log(logTag, "==> update doc attribute done =");
+        console.log(logTag, "==========================================");
+
         next();
       }
     })
   });
 };
 var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
-  persistentModel.findById(_id_, function (err, r) {
-    console.log(update_object);
-    r.updateAttributes(update_object, function (err, r) {
+
+  if (persistentModel == null) {
+    console.log(logTag, "updateByIdUpdate, persistentModel is undefined ..... ");
+    console.log(logTag, "==========================================");
+    return;
+  }
+
+  persistentModel.findOne({where: {id: _id_}}, function (err, oneDoc) {
+    if (_.isError(err) || oneDoc == null) {
+      console.info(logTag, "error incurred or the query object is not found", err);
       if (_.isFunction(next)) {
-        next();
+        next(err);
       }
-    })
+    } else {
+      try {
+        oneDoc.updateAttributes(update_object, function (err, r) {
+          if (_.isFunction(next)) {
+            //  console.info(logTag, "success r.updateAttributes");
+            next(r);
+          }
+        })
+      } catch (e) {
+        console.info(logTag, "failure r.updateAttributes");
+      }
+    }
   });
+};
+var getInstanceById = function (persistentModel, _id, next, errnext) {
+  persistentModel.findOne({where: {id: _id}}, function (err, oneDoc) {
+    if (_.isError(next)) {
+      return errnext(err);
+    }
+    if (_.isFunction(next)) {
+      next(oneDoc);
+    }
+  });
+};
+var patch_to_ensure_monogodb_id = function (persistentModel, _id) {
+  return persistentModel.getDataSource().ObjectID(_id);
 };
 var removeAll = function (persistentModel, where, callback) {
   persistentModel.destroyAll(where, callback);
 };
+var patch_find_by_fk = function (persistentModel, persistentModelName, fk_field, fk_id, callback) {
+  persistentModel.getDataSource().connector.connect(function (err, db) {
+    var collection = db.collection(persistentModelName);
+    var where = {};
+    where[fk_field] = patch_to_ensure_monogodb_id(persistentModel, fk_id);
+    collection.find(where).toArray(callback);
+    /*  collection.aggregate([
+     {$match: {fk_field: FK_ID}},
+     { $group: {
+     _id: authorId,
+     total: { $sum: "$price" }
+     }}
+     ], function (err, data) {
+     if (err) return callback(err);
+     return callback(null, data);
+     });*/
+
+  });
+};
+module.exports.customJobLoopOverModel = function (model_obj, next_up) {
+  var _offset = 0, page = 10, migrate_fn;
+
+  var uploop = function () {
+    model_obj.find({limit: page, offset: _offset}, function (err, docList) {
+
+      if (_.isError(err) || docList.length == 0) {
+        console.info(logTag, "=> error ... custom.job", err, docList);
+        return next_up();
+      }
+
+      ay.eachSeries(docList, function (item, next) {
+          if (_.isFunction(migrate_fn)) {
+            migrate_fn(item, next);
+          } else {
+            console.info(logTag, "custom.job", "cannot find the migration function operation");
+          }
+        },
+        function (err, nu) {
+          if (docList.length < page) {
+            if (_.isFunction(next_up)) {
+              next_up();
+            }
+          } else {
+            _offset += page;
+            uploop();
+          }
+        });
+    });
+  };
+
+  return {
+    setModelMigrateLogic: function (fn) {
+      migrate_fn = fn;
+      uploop();
+    }
+  }
+};
+
 module.exports.updateByIdAndIncrease = updateByIdAndIncrease;
+module.exports.updateByIdAndReduce = updateByIdAndReduce;
 module.exports.updateByIdUpdate = updateByIdUpdate;
 module.exports.removeAll = removeAll;
+module.exports.getInstanceById = getInstanceById;
+module.exports.patch_find_by_fk = patch_find_by_fk;
+module.exports.patch_find_ensure_id = patch_to_ensure_monogodb_id;

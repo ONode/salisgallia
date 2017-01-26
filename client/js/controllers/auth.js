@@ -19,6 +19,7 @@ angular
         });
     };
   }])
+
   .controller('AuthLogoutController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
     AuthService.logout()
@@ -26,6 +27,7 @@ angular
         $state.go('all-reviews');
       });
   }])
+
   .controller('SignUpController', ['$scope', 'AuthService', '$state',
       function($scope, AuthService, $state) {
     $scope.user = {
@@ -39,4 +41,22 @@ angular
           $state.transitionTo('sign-up-success');
         });
     };
-  }]);
+  }])
+
+  .controller('SingleArtWorkPreview', ['$scope', 'AuthService', '$state',
+    function($scope, AuthService, $state) {
+      $scope.user = {
+        email: 'baz@qux.com',
+        password: 'bazqux'
+      };
+
+      $scope.register = function() {
+        AuthService.register($scope.user.email, $scope.user.password)
+          .then(function() {
+            $state.transitionTo('sign-up-success');
+          });
+      };
+    }])
+
+
+;

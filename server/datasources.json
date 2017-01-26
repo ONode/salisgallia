@@ -38,6 +38,22 @@
     "name": "storage",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "./storage"
+    "root": "./storage/tmp/profile"
+  },
+  "gmail_data_source": {
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "secureConnection": true,
+        "port": 465,
+        "auth": {
+          "user": "zyntauribot@gmail.com",
+          "pass": "zyn9*&]_tnx~@g"
+        }
+      }
+    ]
   }
 }

@@ -1,0 +1,43 @@
+  "rocket_us_east": {
+    "name": "rocket_us_east",
+    "connector": "mongodb",
+    "host": "iad2-c6-2.mongo.objectrocket.com",
+    "port": 52100,
+    "database": "coingallery",
+    "username": "userasianboken94",
+    "password": "b66b55e7cf73425a9c7be58937ahkde768"
+  },
+
+rocket:
+coingallery
+userasianboken94
+b66b55e7cf73425a9c7be58937ahkde768
+
+mongodb://72ce0dc639f34c5f82bb76a7bf4702fd/iad2-c6-2.mongo.objectrocket.com:52100,iad2-c6-1.mongo.objectrocket.com:52100,iad2-c6-0.mongo.objectrocket.com:52100/coingallery
+
+
+
+
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "$HOME/storage"
+  }
+
+
+https://www.mlab.com/databases/heroku_dk71d7jj#tools
+mlab:
+usergraceg
+cf73425a9b663428e7cf734XX39
+
+mongodb://usergraceg:cf73425a9b663428e7cf734XX39@ds023455.mlab.com:23455/heroku_dk71d7jj
+
+
+sms
+price: https://elements.heroku.com/addons/blowerio
+https://578f4ed498a259000f000002:adde31eb063b217ee09a528f2813ba22@api.easysmsapp.com/accounts/578f4ed498a259000f000002
+
+
+
+http://xboxdoc.s3-ap-northeast-1.amazonaws.com/final_bstSnapshot_31871.jpg

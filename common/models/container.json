@@ -1,9 +1,15 @@
 {
-  "name": "container",
+  "name": "Container",
   "base": "Model",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+
+  },
   "acls": [],
   "methods": []
 }

@@ -5,7 +5,15 @@
   "properties": {
     "id": {
       "type": "string",
-      "required": true
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "fast_id": {
+      "type": "number",
+      "generated": false,
+      "required": false,
+      "doc": "This is the secondary ID used to identify a basemap"
     },
     "complete": {
       "type": "number",
@@ -35,6 +43,10 @@
       ],
       "required": false
     },
+    "owner": {
+      "type": "string",
+      "required": false
+    },
     "folder_base_name": {
       "type": "string",
       "required": true
@@ -47,31 +59,115 @@
       "type": "string",
       "required": true
     },
-    "price": {
-      "default": 0,
-      "type": "number",
+    "mid_size": {
+      "type": "string",
       "required": true
+    },
+    "price": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "the final bare price tag for the customer in USD in cent"
+    },
+    "baseprice": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "original artwork priced by the artist in USD in cent"
+    },
+    "license_price": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "original artwork full copyright to be sold in USD in cent"
+    },
+    "factory_shared": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "shared benefit from a piece that product or wood works that produced by the factory in cent"
+    },
+    "printed_shared": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "shared benefit from a piece that printed, framed, produced by the factory USD in cent"
+    },
+    "print_limit": {
+      "default": -1,
+      "type": "number",
+      "required": false,
+      "doc": "the limited amount that available for sale for the copies of printing products"
+    },
+    "estprice": {
+      "type": "string"
     },
     "currency": {
       "default": "HKD",
       "type": "string",
       "required": true
     },
-    "owner": {
-      "type": "string"
-    },
     "image_type": {
       "type": "string"
+    },
+    "image_meta": {
+      "type": {
+        "dimension": {
+          "type": {
+            "x": "number",
+            "y": "number",
+            "r": "number"
+          }
+        },
+        "material": "number",
+        "shape": "number",
+        "cat": "number",
+        "topic": "number",
+        "path": "array",
+        "tag": "string",
+        "city": "string",
+        "country": "string",
+        "era_native": "string",
+        "article_name_native": "string",
+        "measure_unit": "string",
+        "publication": "string",
+        "introduction": "string",
+        "frame_color": "string",
+        "backdrop_color": "string",
+        "frame_width": "number",
+        "frame_shadow": "number",
+        "frame_spc": "number",
+        "frame_spc_color": "string"
+      }
+    },
+    "image_surf": {
+      "type": "string",
+      "doc": "image feature extraction document"
+    },
+    "listing": {
+      "type": {
+        "enabled": "Boolean",
+        "monetize": "Boolean",
+        "violations": "array",
+        "meta_ready": "Boolean",
+        "status": "number",
+        "searchable": "Boolean"
+      }
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
     }
   },
   "validations": [],
-  "relations": {
-    "artist": {
-      "type": "belongsTo",
-      "model": "Artist",
-      "foreignKey": "publisherId"
-    }
-  },
-  "acls": [],
+  "relations": {},
+  "acls": [
+  ],
   "methods": []
 }
