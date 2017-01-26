@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "sources": [
+      "../common/models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../node_modules/loopback-ds-timestamp-mixin",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "AccessToken": {
+    "dataSource": "rocket_us_east",
+    "public": false
+  },
+  "Issue": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "Contract": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "Order": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "ACL": {
+    "dataSource": "rocket_us_east",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "rocket_us_east",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "rocket_us_east",
+    "public": false
+  },
+  "User": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": false
+  },
+  "Basemap": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "Email": {
+    "dataSource": "gmail_data_source",
+    "public": false
+  },
+  "Receipt": {
+    "dataSource": "rocket_us_east",
+    "public": true
+  },
+  "user": {
+    "dataSource": "rocket_us_east",
+    "options": {
+      "emailVerificationRequired": false
+    },
+    "public": true
+  },
+  "Container": {
+    "dataSource": "storage",
+    "public": true
+  }
+}

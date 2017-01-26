@@ -1,0 +1,128 @@
+{
+  "name": "Artist",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "emailVerificationRequired": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "generated": true,
+      "required": false
+    },
+    "verified": {
+      "type": "Boolean",
+      "required": false
+    },
+    "state": {
+      "type": "string",
+      "required": false
+    },
+    "memberaccessid": {
+      "type": "string",
+      "required": false
+    },
+    "publications": {
+      "type": [
+        {
+          "title": {
+            "type": "string",
+            "required": true
+          },
+          "date": {
+            "type": "string",
+            "required": true
+          }
+        }
+      ],
+      "description": "the name and the series of publications",
+      "required": false
+    },
+    "native_name": {
+      "type": "string",
+      "required": false,
+      "description": "name of the artist"
+    },
+    "intel_name": {
+      "type": "string",
+      "required": false,
+      "description": "name of the artist"
+    },
+    "bio": {
+      "type": "string",
+      "required": false,
+      "description": "some information"
+    },
+    "wiki": {
+      "type": "string",
+      "required": false,
+      "description": "wiki link"
+    },
+    "twitter": {
+      "type": "string",
+      "required": false,
+      "description": "twitter link or page"
+    },
+    "linkedin": {
+      "type": "string",
+      "required": false,
+      "description": "linkedin link or page"
+    },
+    "facebook": {
+      "type": "string",
+      "required": false,
+      "description": "facebook link or page"
+    },
+    "country": {
+      "type": "string",
+      "required": false,
+      "description": "country key to show"
+    },
+    "search_key": {
+      "type": "array",
+      "required": false,
+      "description": "express interest on selective keys"
+    },
+    "age": {
+      "type": "number",
+      "required": false,
+      "description": "the age of the user"
+    },
+    "photo": {
+      "type": "object",
+      "required": false,
+      "description": "the path or url to display the head photo"
+    },
+    "born": {
+      "type": "Date",
+      "required": false
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    }
+  },
+  "hidden": [
+    "recovery_code",
+    "facebook",
+    "mac",
+    "bitcoin",
+    "ltecoin"
+  ],
+  "acls": [],
+  "relations": {
+    "contract": {
+      "type": "hasMany",
+      "model": "Contract",
+      "foreignKey": "contractId"
+    },
+    "order": {
+      "type": "hasMany",
+      "model": "Order",
+      "foreignKey": "orderId"
+    }
+  },
+  "methods": [
+  ]
+}
