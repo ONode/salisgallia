@@ -23,7 +23,8 @@ module.exports = function (Receipt) {
    Receipt.on('myEvent', function () {
    MyModel.printModelName();
    });
-   };*/
+   };
+   */
 
   function trycc(source_cc) {
     var city = source_cc.address_city == undefined ? "" : source_cc.address_city;

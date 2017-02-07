@@ -37,6 +37,14 @@ function getDB() {
       "connector": "mongodb",
       "url": process.env.MLAB_M1
     },
+    "mlabKSdb": {
+      "connector": "mongodb",
+      "url": process.env.MLAB_M3
+    },
+    "pricedoc": {
+      "connector": "postgresql",
+      "url": process.env.POSTGRESQL
+    },
     "gmail_data_source": {
       "connector": "mail",
       "transports": [

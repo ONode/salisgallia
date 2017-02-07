@@ -62,6 +62,9 @@ function ensureVariableInteger(context, item) {
     //  console.log("added query-- ", item);
   }
 }
+
+const ks_db_pricemgr = require("./../keystoneconnector/pricemanager");
+
 module.exports = function (basemap) {
   basemap.disableRemoteMethodByName('create');
   basemap.disableRemoteMethodByName('upsert');
@@ -81,7 +84,7 @@ module.exports = function (basemap) {
     //var ctx = loopback.getCurrentContext();
     if (!ctx.query.where) {
       ctx.query.where = {};
-     // console.log("reset where");
+      // console.log("reset where");
     }
 
     var isSingle = !_.isEmpty(ctx.query.where.id);
@@ -91,14 +94,12 @@ module.exports = function (basemap) {
      */
     // console.log(ctx.query);
     if (!isSingle) {
-
       if (!hasOwnerQuery) {
         ctx.query.where['complete'] = 100;
         ctx.query.where['listing.enabled'] = true;
       } else {
         ctx.query.where['owner'] = db_worker.patch_find_ensure_id(basemap, ctx.query.where.owner);
       }
-
       ensureVariableInteger(ctx, 'image_meta.material');
       ensureVariableInteger(ctx, 'image_meta.shape');
       ensureVariableInteger(ctx, 'image_meta.cat');
@@ -283,6 +284,19 @@ module.exports = function (basemap) {
     }
   };
 
+  basemap.pricemanager = function (stock_id, content, cb) {
+    if (typeof content === 'function') {
+      content = undefined;
+    }
+    ks_db_pricemgr.submit_deal(stock_id, content, function () {
+      cb(null, result_bool);
+    })
+  };
+  basemap.checkprice = function (stock_id, cb) {
+    ks_db_pricemgr.get_price(stock_id, function (doc) {
+      cb(null, doc);
+    })
+  };
   basemap.remoteMethod("request_action", {
     description: ["Request action for running against the approval of listing process."],
     accepts: [
@@ -326,7 +340,6 @@ module.exports = function (basemap) {
     http: {verb: "get", path: "/check_removals/"}
   });
 
-
   basemap.remoteMethod("get_by_owner_v2", {
     description: ["Cron job to the list locally.."],
     accepts: [{
@@ -358,6 +371,44 @@ module.exports = function (basemap) {
     http: {verb: "get", path: "/getlucky/:count"}
   });
 
+  basemap.remoteMethod("pricemanager", {
+    description: ["This is the submission of the suggestion price models .."],
+    accepts: [
+      {
+        arg: "stock_uuid",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "Deal with the price model and its calculations"
+      },
+      {
+        arg: "data", type: "object", http: {source: "body"},
+        required: true,
+        description: "The content of the deal details"
+      }
+    ],
+    returns: {
+      arg: "ret", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/pricemanager/:stock_uuid"}
+  });
+
+  basemap.remoteMethod("checkprice", {
+    description: ["This is the submission of the suggestion price models .."],
+    accepts: [
+      {
+        arg: "stock_uuid",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "Deal with the price model and its calculations"
+      }
+    ],
+    returns: {
+      arg: "ret", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/checkprice/:stock_uuid"}
+  });
 
   /*
 

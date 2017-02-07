@@ -37,7 +37,7 @@ function getDB() {
       "connector": "mongodb",
       "url": process.env.MLAB_M1
     },
-    "mlab_gallerio_keystone": {
+    "mlabKSdb": {
       "connector": "mongodb",
       "url": process.env.MLAB_M3
     },

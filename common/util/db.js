@@ -20,7 +20,6 @@ var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name
       console.log(logTag, "findById has error ..... ", err);
       return;
     }
-
     var val = 0;
     console.log(logTag, "got item for value increase [", field_name_inc_1, " : ", _doc_user[field_name_inc_1], " ]");
     var read = _doc_user[field_name_inc_1];
@@ -30,9 +29,7 @@ var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name
       console.log(logTag, "this field is not a number..  [", field_name_inc_1);
       val = 1;
     }
-
     console.log(logTag, "instruction to update a single attribute -[ ", field_name_inc_1, val, " ]");
-
     _doc_user.updateAttribute(field_name_inc_1, val, function (err, r) {
       if (_.isError(err)) {
         console.log(logTag, "updateAttribute has error ..... ", err);
@@ -133,17 +130,6 @@ var patch_find_by_fk = function (persistentModel, persistentModelName, fk_field,
     var where = {};
     where[fk_field] = patch_to_ensure_monogodb_id(persistentModel, fk_id);
     collection.find(where).toArray(callback);
-    /*  collection.aggregate([
-     {$match: {fk_field: FK_ID}},
-     { $group: {
-     _id: authorId,
-     total: { $sum: "$price" }
-     }}
-     ], function (err, data) {
-     if (err) return callback(err);
-     return callback(null, data);
-     });*/
-
   });
 };
 module.exports.customJobLoopOverModel = function (model_obj, next_up) {

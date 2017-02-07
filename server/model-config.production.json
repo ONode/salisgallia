@@ -58,6 +58,10 @@
     "dataSource": "rocket_us_east",
     "public": true
   },
+  "Artist": {
+    "dataSource": "mlabKSdb",
+    "public": true
+  },
   "user": {
     "dataSource": "rocket_us_east",
     "options": {

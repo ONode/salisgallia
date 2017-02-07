@@ -47,3 +47,4 @@ node_modules
 \storage\tmp\profile\**\*.jpg
 localkey.txt
 .env
+/__client/

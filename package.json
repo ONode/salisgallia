@@ -36,6 +36,7 @@
     "loopback-component-storage": "git+https://github.com/strongloop/loopback-component-storage.git",
     "loopback-connector-mongodb": "1.17.0",
     "loopback-connector-mysql": "^1.4.7",
+    "loopback-connector-postgresql": "^2.7.0",
     "loopback-connector-redis": "https://github.com/strongloop/loopback-connector-redis.git",
     "loopback-connector-rest": "^1.1.4",
     "loopback-context": "https://github.com/strongloop/loopback-context.git",

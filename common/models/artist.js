@@ -1,13 +1,11 @@
-var _ = require('lodash');
 var async = require('async');
 var db_worker = require("./../util/db.js");
-var s3thread = require("./../logic/s3upload");
-var s3clean = require("./../logic/s3cleaner");
-var ai_basemap = require("./../ai/basemap_action");
+var output = require("./../util/outputjson");
 var loopback = require('loopback');
 var pd = require("./../logic/preS3");
 const logTag = "> basemap.js model";
-
+const ks_db_artist = require("./../keystoneconnector/artistmanager");
+const remotepagination = require("./../../server/middleware/pagination");
 module.exports = function (artist) {
   artist.disableRemoteMethodByName('create');
   artist.disableRemoteMethodByName('upsert');
@@ -20,47 +18,122 @@ module.exports = function (artist) {
   artist.disableRemoteMethodByName("replaceById");
   artist.disableRemoteMethodByName("upsertWithWhere");
 
+  artist.create_artist = function (data, user_id, fn) {
+    if (typeof data === "function") {
+      data = undefined;
+    }
+    ks_db_artist.insertOrUpdate(null, pd.l.merge({
+      user: user_id
+    }, data), fn);
+  };
+  artist.update_artist_info_single = function (data, user_id, artist_id, fn) {
+    ks_db_artist.insertOrUpdate(artist_id, data, function (res) {
+      fn(null, output.outAcknowledgePositive());
+    });
+  };
+  artist.update_artist_info_batch = function (data, user_id, artist_id, fn) {
+    if (typeof data === "function") {
+      data = undefined;
+    }
+    if (pd.l.isArray(data)) {
+      ks_db_artist.insertOrUpdate(artist_id, data, function (res) {
+        fn(null, output.outAcknowledgePositive());
+      });
+    } else {
+      fn(new Error("type error from content data post"));
+    }
+  };
+  artist.listitems = function (queryContext, cb) {
+    if (pd.l.isObject(queryContext)) {
+      ks_db_artist.ListPublic(queryContext, function (err, output_data) {
+        if (err) {
+          cb(err, null);
+        } else {
+          cb(null, output_data);
+        }
+      });
+    } else {
+      cb(new Error("type error from content data get"));
+    }
+  };
+  artist.afterRemote('listitems', function (context, remoteMethodOutput, next) {
+    remotepagination.paginationKs(context, function () {
+      next();
+    });
+  });
   artist.remoteMethod(
-    "update_artist_info",
+    "listitems",
+    {
+      description: ["list out the artists"],
+      accepts: [{
+        arg: "query",
+        type: "object",
+        http: function (context) {
+          //    var expressReq = context.req;
+          return context;
+        }
+      }],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      http: {verb: "get", path: "/list"}
+    }
+  );
+  artist.remoteMethod(
+    "detailitem",
+    {
+      description: ["get info from single detail artist"],
+      accepts: [
+        {arg: "artist_id", type: "string"}
+      ],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      http: {verb: "get", path: "/detail/:artist_id"}
+    }
+  );
+  artist.remoteMethod(
+    "update_artist_info_batch",
     {
       description: ["post the artist information about the artist bio"],
       accepts: [
         {arg: "data", type: "array", http: {source: "body"}, required: true, description: "document in json"},
+        {arg: "id", type: "string"},
+        {arg: "artist_id", type: "string"}
+      ],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      http: {verb: "post", path: "/updatebatch/:id"}
+    }
+  );
+  artist.remoteMethod(
+    "create_artist",
+    {
+      description: ["post new artist information about the artist bio"],
+      accepts: [
+        {arg: "data", type: "object", http: {source: "body"}, required: true, description: "document in json"},
         {arg: "id", type: "string"}
       ],
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"
       },
-      http: {verb: "post", path: "/update/:id"}
+      http: {verb: "post", path: "/newartist/:id"}
     }
   );
-
-  artist.update_artist_info = function (data, user_id, fn) {
-    if (typeof data === "function") {
-      data = undefined;
+  artist.remoteMethod(
+    "update_artist_info_single",
+    {
+      description: ["post new artist information about the artist bio"],
+      accepts: [
+        {arg: "data", type: "object", http: {source: "body"}, required: true, description: "document in json"},
+        {arg: "id", type: "string"},
+        {arg: "artist_id", type: "string"}
+      ],
+      returns: {
+        arg: "user", type: "object", root: true, description: "Return value"
+      },
+      http: {verb: "post", path: "/update/:id/:artist_id"}
     }
-
-    if (pd.l.isArray(data)) {
-   /*   pd.async.eachSeries(data, function (d, next) {
-        var _recorded = new Date;
-        d.userID = user_id;
-        var mOrder = new Order(d);
-        mOrder.save(function (err, doc) {
-          if (err) {
-            console.log(logTag, "save order error", err);
-            return next(err);
-          } else {
-            console.log(logTag, "save order success", doc.id);
-            return next();
-          }
-        });
-      }, function (next_done) {
-        fn(null, output.outAcknowledgePositive());
-      });*/
-
-      fn(null, output.outAcknowledgePositive());
-    } else {
-      fn(new Error("type error from content data post"));
-    }
-  };
+  );
 };

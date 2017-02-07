@@ -57,6 +57,7 @@ module.exports = function (app) {
     res.write("vVnaMtY8RVYE14i_hGBEOAUGyhLZhMAGEpewArt4IRM.ZJ-PHo7PYvpQ_yjOBiq3jSQ85yBES9ASYB7uz8tkN6o");
     res.end();
   });
-
   console.log("> remove all uploaded tmp files with http://{domain}/removeallxxx");
+
+
 };
