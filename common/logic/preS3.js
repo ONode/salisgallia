@@ -213,7 +213,6 @@ module.exports = {
   bucket_name: bucket_active,
   filename: fileName,
   ready_path: remote_base_path,
-
   fnGetLocalPath: getLocalPath,
   fnGetFolderPathS3: getFolderPathS3,
   fnGetRemotePath: getRemotePath,
