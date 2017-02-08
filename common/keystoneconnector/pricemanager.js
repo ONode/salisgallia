@@ -10,10 +10,6 @@ module.exports = {
       state: "pending",
       currency: "USD",
       stock_full_id: stock_id,
-      factory_shared: -1,
-      printed_shared: -1,
-      price: -1,
-      estprice: -1,
       license_price: -1,
       print_limit: -1
     }, content);
