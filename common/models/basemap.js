@@ -283,10 +283,13 @@ module.exports = function (basemap) {
       cb(new Error("not available for this action"), null);
     }
   };
-
   basemap.pricemanager = function (stock_id, content, cb) {
     if (typeof content === 'function') {
       content = undefined;
+    }
+    if (!content) {
+      cb(new Error("body is not found"), null);
+      return;
     }
     ks_db_pricemgr.submit_deal(stock_id, content, function () {
       cb(null, result_bool);
