@@ -5,20 +5,21 @@ const l = require("lodash");
 const ks_db_pricemgr = require("./connector")(process.env.MLAB_M3, "pricings");
 module.exports = {
   submit_deal: function (stock_id, content, callback) {
-    ks_db_pricemgr.insertOrUpdate(stock_id, l.merge({
-        key: stock_id,
-        state: "pending",
-        currency: "USD",
-        stock_full_id: stock_id,
-        factory_shared: -1,
-        printed_shared: -1,
-        price: -1,
-        estprice: -1,
-        license_price: -1,
-        print_limit: -1
-      }, content),
+    var after_merge = l.merge({
+      key: stock_id,
+      state: "pending",
+      currency: "USD",
+      stock_full_id: stock_id,
+      factory_shared: -1,
+      printed_shared: -1,
+      price: -1,
+      estprice: -1,
+      license_price: -1,
+      print_limit: -1
+    }, content);
+    //console.log("merge_test", after_merge);
+    ks_db_pricemgr.insertOrUpdate(stock_id, after_merge,
       function (res) {
-        console.log("item", res);
         callback();
       });
   },
