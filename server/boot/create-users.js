@@ -24,7 +24,7 @@ module.exports = function (app)
   {
     //if (err) throw err;
 
-    console.log('Created users:', users);
+   // console.log('Created users:', users);
 
     //create the admin role
     Role.create({
@@ -33,7 +33,7 @@ module.exports = function (app)
     {
       //if (err) throw err;
 
-      console.log('Created role:', role);
+    //  console.log('Created role:', role);
 
       //make john an admin
       role.principals.create({
@@ -43,7 +43,7 @@ module.exports = function (app)
       {
         //if (err) throw err;
 
-        console.log('Created principal:', principal);
+      //  console.log('Created principal:', principal);
       });
     });
   });

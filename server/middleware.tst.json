@@ -37,6 +37,7 @@
   "final:after": {
     "strong-error-handler": {
       "params": {
+        "safeFields": ["errorCode"],
         "debug": true,
         "log": true
       }

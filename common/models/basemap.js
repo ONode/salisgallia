@@ -287,9 +287,8 @@ module.exports = function (basemap) {
     if (typeof content === 'function') {
       content = undefined;
     }
-    if (!content) {
+    if (_.isEmpty(content)) {
       cb(new Error("body is not found"), null);
-      return;
     }
     ks_db_pricemgr.submit_deal(stock_id, content, function () {
       cb(null, result_bool);

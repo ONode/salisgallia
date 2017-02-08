@@ -1,6 +1,6 @@
 {
-  "name": "galleria-loopback-a72",
-  "version": "2.2.0",
+  "name": "galleria-loopback-a73",
+  "version": "2.3.5",
   "main": "server/server.js",
   "scripts": {
     "pretest": "jshint .",
