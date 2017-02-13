@@ -48,3 +48,4 @@ node_modules
 localkey.txt
 .env
 /__client/
+.idea
