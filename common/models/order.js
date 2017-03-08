@@ -28,9 +28,11 @@ module.exports = function (Order) {
     console.log("> ====================================");
     console.log("> order post from confirmation =======");
 
-    /*   console.log(typeof data);
+    /*
+     console.log(typeof data);
      console.log(user_id);
-     console.log(data);*/
+     console.log(data);
+     */
 
     console.log("> ====================================");
     if (pd.l.isArray(data)) {

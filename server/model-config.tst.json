@@ -12,42 +12,42 @@
     ]
   },
   "AccessToken": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": false
   },
   "Issue": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": true
   },
   "Contract": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": true
   },
   "Order": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": true
   },
   "ACL": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": false
   },
   "Role": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": false
   },
   "User": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "options": {
       "emailVerificationRequired": false
     },
     "public": false
   },
   "Basemap": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": true
   },
   "Email": {
@@ -55,7 +55,7 @@
     "public": false
   },
   "Receipt": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "public": true
   },
   "Artist": {
@@ -63,7 +63,7 @@
     "public": true
   },
   "user": {
-    "dataSource": "rocket_us_east",
+    "dataSource": "mlab_test_db",
     "options": {
       "emailVerificationRequired": false
     },

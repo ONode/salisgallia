@@ -5,12 +5,12 @@
 //const pre = require("./preMap");
 const pS3 = require("./preS3");
 const resizeModule = require("./resize_queue");
-const cloudinary = require("cloudinary");
+//const cloudinary = require("cloudinary");
 const logTag = "> mapMakerV2";
 var upload_prob = function (file_name, cb) {
   this.src_filename = file_name;
   this.callback = cb;
-  cloudinary.config(pS3.cloudinary_access);
+ /// cloudinary.config(pS3.cloudinary_access);
   this.db = null;
   this.user_id = "";
   this.format = "";
@@ -68,13 +68,7 @@ upload_prob.prototype.updateUserProfilePhoto = function (callback) {
 upload_prob.prototype.setUpdateUserObject = function (user) {
   this.db = user;
 };
-upload_prob.prototype.exe_cloudinary = function () {
-  cloudinary.uploader.upload(this.src_filename, function (result) {
-    if (pS3.l.isUndefined(this.callback)) {
-      this.callback(result);
-    }
-  }.bind(this));
-};
+
 upload_prob.prototype.setId = function (userid) {
   this.user_id = userid;
 };
@@ -84,10 +78,21 @@ upload_prob.prototype.setImageSize = function (size) {
 upload_prob.prototype.setformat = function (format) {
   this.format = format;
 };
+/*
+
+ upload_prob.prototype.exe_cloudinary = function () {
+ cloudinary.uploader.upload(this.src_filename, function (result) {
+ if (pS3.l.isUndefined(this.callback)) {
+ this.callback(result);
+ }
+ }.bind(this));
+ };
+
+
 module.exports.profile_upload_cloudinary = function (file_name, cb) {
   var d = new upload_prob(file_name, cb);
   d.exe_cloudinary();
-};
+};*/
 module.exports.profile_upload_s3 = function (result, user_lb, cb) {
   if (pS3.l.isEmpty(result) || pS3.l.isEmpty(result.files)) {
     cb(new Error("no result"));

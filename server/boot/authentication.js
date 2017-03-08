@@ -5,5 +5,5 @@
 //var LoopBackContext = require('loopback-context');
 module.exports = function enableAuthentication(server) {
   // enable authentication
-  // server.enableAuth();
+  server.enableAuth();
 };

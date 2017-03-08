@@ -11,5 +11,6 @@
 
   },
   "acls": [],
-  "methods": []
+  "methods": [],
+  "injectOptionsFromRemoteContext": true
 }

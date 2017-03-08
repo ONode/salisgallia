@@ -120,7 +120,8 @@
     "bitcoin",
     "ltecoin"
   ],
-  "acls": [],
+  "acls": [
+  ],
   "relations": {
     "contract": {
       "type": "hasMany",
@@ -131,6 +132,14 @@
       "type": "hasMany",
       "model": "Order",
       "foreignKey": "orderId"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
+      "foreignKey": "userId",
+      "options": {
+        "disableInclude": true
+      }
     }
   },
   "methods": [

@@ -33,7 +33,7 @@ function getDB() {
       "connector": "mongodb",
       "url": process.env.ROCKET_EAST
     },
-    "mlabheroku": {
+    "mlab_test_db": {
       "connector": "mongodb",
       "url": process.env.MLAB_M1
     },

@@ -12,5 +12,9 @@ module.exports = function (app) {
     }
   });
   console.log('> Models:\n', models);
+
+
+  var Basemap = app.loopback.getModel('Basemap');
+  console.log(Basemap.settings.acls);
 };
 

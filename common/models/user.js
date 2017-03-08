@@ -36,11 +36,36 @@ var check_date_expired = function (expire_time) {
     return false;
 };
 module.exports = function (user) {
-/*  user.disableRemoteMethodByName("createChangeStream");
-  user.disableRemoteMethodByName("patchOrCreate");
-  user.disableRemoteMethodByName("replaceOrCreate");
-  user.disableRemoteMethodByName("replaceById");
-  user.disableRemoteMethodByName("upsertWithWhere");*/
+  /*  user.disableRemoteMethodByName("createChangeStream");
+   user.disableRemoteMethodByName("patchOrCreate");
+   user.disableRemoteMethodByName("replaceOrCreate");
+   user.disableRemoteMethodByName("replaceById");
+   user.disableRemoteMethodByName("upsertWithWhere");*/
+
+  user.beforeRemote('access', function (ctx, unused, next) {
+    if (ctx.req.acccessToken) {
+      // replace "foreignKey" with the name of your foreign key, e.g. "...body.userId"
+      ctx.req.body.foreignKey = ctx.req.accessToken.userId;
+      next();
+    } else {
+      next(new Error('Unexpected error - user not authenticated.'));
+    }
+  });
+
+
+  user.observe('access', function (ctx, next) {
+
+    const token = ctx.options && ctx.options.accessToken;
+    const userId = token && token.userId;
+    const user = userId ? 'user#' + userId : '<anonymous>';
+
+    const modelName = ctx.Model.modelName;
+    const scope = ctx.where ? JSON.stringify(ctx.where) : '<all records>';
+    console.log('%s: %s accessed %s:%s', new Date(), user, modelName, scope);
+    next()
+  });
+
+
   var change_password = function (user_id, new_password, callback_normal) {
     db.updateByIdUpdate(user, user_id, {
       "recovery_code": -1,
@@ -270,7 +295,7 @@ module.exports = function (user) {
       });
     });
   };
-  user.update_meta_call = function (data, id, fn) {
+  user.update_meta_call = function (data, id, options, fn) {
     if (typeof data === "function") {
       // fn = include;
       data = undefined;
@@ -455,7 +480,7 @@ module.exports = function (user) {
    * @param user_id the string in user id
    * @param cb the callback next
    */
-  user.update_profile_photo = function (req, res, user_id, cb) {
+  user.update_profile_photo = function (req, res, user_id, options, cb) {
     var StorageContainer = user.app.models.Container;
     StorageContainer.getContainers(function (err, containers) {
       if (containers.some(function (e) {
@@ -481,17 +506,41 @@ module.exports = function (user) {
       }
     });
   };
+  /*user.check_login_cb = function (options, cb) {
+    if (_.isEmpty(options)) {
+      cb(new Error("data not correct 1"), null);
+    }
+  };
+  user.remoteMethod("check_login_cb", {
+    description: ["See specific action. "],
+    accepts: [
+      {arg: "options", type: "object", http: "optionsFromRequest"}
+    ],
+    returns: {
+      arg: "token", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/check_login"}
+  });*/
+
   user.remoteMethod("email_verify_from_code", {
     description: ["Email verification with the code. "],
     accepts: [
-      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+      {
+        arg: "data",
+        type: "object",
+        http: {source: "body"},
+        required: true,
+        description: "recovery of password from using code"
+      }
     ],
     returns: {
       arg: "token", type: "object", root: true, description: "Return value"
     },
     http: {verb: "post", path: "/reset_code_verify"}
   });
-
+  /**
+   * deprecated
+   */
   user.remoteMethod("requestCode", {
     description: ["Email verification with the code. "],
     accepts: [
@@ -506,7 +555,13 @@ module.exports = function (user) {
   user.remoteMethod("email_verify", {
     description: ["Email verification. "],
     accepts: [
-      {arg: "data", type: "object", http: {source: "body"}, required: true, description: "facebook login document"}
+      {
+        arg: "data",
+        type: "object",
+        http: {source: "body"},
+        required: true,
+        description: "reset password by login code - step 1"
+      }
     ],
     returns: {
       arg: "token", type: "object", root: true, description: "Return value"
@@ -555,7 +610,8 @@ module.exports = function (user) {
       description: ["Update the data object from the object."],
       accepts: [
         {arg: "data", type: "object", http: {source: "body"}, required: true, description: "document in json"},
-        {arg: "id", type: "string", http: {source: "path"}, required: true, description: "id"}
+        {arg: "id", type: "string", http: {source: "path"}, required: true, description: "id"},
+        {arg: "options", type: "object", http: "optionsFromRequest"}
       ],
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"
@@ -568,9 +624,10 @@ module.exports = function (user) {
     {
       description: ["Update user profile in this api"],
       accepts: [
-        {arg: 'req', type: 'object', 'http': {source: 'req'}},
-        {arg: 'res', type: 'object', 'http': {source: 'res'}},
-        {arg: 'id', type: 'string'}
+        {arg: 'req', type: 'object', http: {source: 'req'}},
+        {arg: 'res', type: 'object', http: {source: 'res'}},
+        {arg: 'id', type: 'string'},
+        {arg: "options", type: "object", http: "optionsFromRequest"}
       ],
       returns: {
         arg: "user", type: "object", root: true, description: "Return value"

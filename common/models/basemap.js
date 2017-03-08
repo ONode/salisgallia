@@ -81,7 +81,16 @@ module.exports = function (basemap) {
    * Throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (ctx, next) {
-    //var ctx = loopback.getCurrentContext();
+
+    const token = ctx.options && ctx.options.accessToken;
+    const userId = token && token.userId;
+    const user = userId ? 'user#' + userId : '<anonymous>';
+
+    const modelName = ctx.Model.modelName;
+    const scope = ctx.where ? JSON.stringify(ctx.where) : '<all records>';
+    console.log('%s: %s accessed %s:%s', new Date(), user, modelName, scope);
+
+
     if (!ctx.query.where) {
       ctx.query.where = {};
       // console.log("reset where");
@@ -89,6 +98,14 @@ module.exports = function (basemap) {
 
     var isSingle = !_.isEmpty(ctx.query.where.id);
     var hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
+
+    console.log("=========================");
+    console.log("access token get", ctx.options);
+    console.log("=========================");
+    console.log("access token get active", ctx.active);
+    console.log("=========================");
+   // console.log("access context get", ctx);
+    console.log("=========================");
     /**
      * The query specific for getting the complete listing
      */
