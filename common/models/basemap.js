@@ -62,9 +62,7 @@ function ensureVariableInteger(context, item) {
     //  console.log("added query-- ", item);
   }
 }
-
-const ks_db_pricemgr = require("./../keystoneconnector/pricemanager");
-
+const ks_db_price_mgr = require("./../keystoneconnector/pricemanager");
 module.exports = function (basemap) {
   basemap.disableRemoteMethodByName('create');
   basemap.disableRemoteMethodByName('upsert');
@@ -90,32 +88,37 @@ module.exports = function (basemap) {
     const scope = ctx.where ? JSON.stringify(ctx.where) : '<all records>';
     console.log('%s: %s accessed %s:%s', new Date(), user, modelName, scope);
 
-
     if (!ctx.query.where) {
       ctx.query.where = {};
-      // console.log("reset where");
     }
 
-    var isSingle = !_.isEmpty(ctx.query.where.id);
-    var hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
+    let isSingle = !_.isEmpty(ctx.query.where.id);
+    let hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
 
-    console.log("=========================");
-    console.log("access token get", ctx.options);
-    console.log("=========================");
-    console.log("access token get active", ctx.active);
-    console.log("=========================");
-   // console.log("access context get", ctx);
-    console.log("=========================");
+    /*
+     console.log("=============================================");
+     console.log("access token get", ctx.options);
+     console.log("=============================================");
+     console.log("access token get active", ctx.active);
+     console.log("=============================================");
+     */
+
     /**
      * The query specific for getting the complete listing
      */
-    // console.log(ctx.query);
     if (!isSingle) {
       if (!hasOwnerQuery) {
         ctx.query.where['complete'] = 100;
         ctx.query.where['listing.enabled'] = true;
       } else {
-        ctx.query.where['owner'] = db_worker.patch_find_ensure_id(basemap, ctx.query.where.owner);
+        let str_id = ctx.query.where.owner;
+        let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
+        ctx.query.where['owner'] = object_id;
+        let isQueryListingForTheLoginedOwner = userId == str_id;
+        if (isQueryListingForTheLoginedOwner) {
+          delete ctx.query.where['complete'];
+          delete ctx.query.where['listing.enabled'];
+        }
       }
       ensureVariableInteger(ctx, 'image_meta.material');
       ensureVariableInteger(ctx, 'image_meta.shape');
@@ -127,7 +130,10 @@ module.exports = function (basemap) {
       //console.log("with fields");
     } else {
       ctx.query.fields = display_single_owner;
-      //console.log("no fields");
+      let isContentDisplayForTheLoginOwner = userId == ctx.query.where.id;
+      if (isContentDisplayForTheLoginOwner) {
+        console.log("listing query", "no action for owner where ID---");
+      }
     }
     ctx.query.order = "createtime DESC";
     next()
@@ -307,12 +313,12 @@ module.exports = function (basemap) {
     if (_.isEmpty(content)) {
       cb(new Error("body is not found"), null);
     }
-    ks_db_pricemgr.submit_deal(stock_id, content, function () {
+    ks_db_price_mgr.submit_deal(stock_id, content, function () {
       cb(null, result_bool);
     })
   };
   basemap.checkprice = function (stock_id, cb) {
-    ks_db_pricemgr.get_price(stock_id, function (doc) {
+    ks_db_price_mgr.get_price(stock_id, function (doc) {
       cb(null, doc);
     })
   };
