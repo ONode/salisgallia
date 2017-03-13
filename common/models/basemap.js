@@ -1,6 +1,7 @@
 /**
  * Created by zJJ on 7/19/2016.
  */
+"use strict";
 const _ = require('lodash');
 const async = require('async');
 const db_worker = require("./../util/db.js");
@@ -76,6 +77,7 @@ module.exports = function (basemap) {
   basemap.disableRemoteMethodByName("upsertWithWhere");
   basemap.createOptionsFromRemotingContext = function (ctx) {
     const base = this.base.createOptionsFromRemotingContext(ctx);
+    //console.log("check createOptionsFromRemotingContext---");
     return Object.assign(base, {
       currentUserId: base.accessToken && base.accessToken.userId,
     });
@@ -124,24 +126,17 @@ module.exports = function (basemap) {
       ensureVariableInteger(ctx, 'image_meta.frame_width');
       ensureVariableInteger(ctx, 'image_meta.frame_shadow');
       ctx.query.fields = display_as_list;
-      //console.log("with fields");
     } else {
       ctx.query.fields = display_single_owner;
-      let isContentDisplayForTheLoginOwner = userId == ctx.query.where.id;
-      if (isContentDisplayForTheLoginOwner) {
-        console.log("listing query", "no action for owner where ID---");
-      }
     }
-
     console.log("listing", "query starts================");
     ctx.query.order = "createtime DESC";
     next()
   });
   /*
-
    remotes.before('*.find', function (ctx, next) {
    console.log(log, "===============");
-   var _filter = {};
+   const _filter = {};
    if (ctx.args && ctx.args.filter) {
    console.log(log, ctx.args.filter);
    _filter = ctx.args.filter;
@@ -150,43 +145,41 @@ module.exports = function (basemap) {
    console.log(log, " before query the ids", _filter);
    next();
    });
-
    */
   basemap.observe('before save', function updateTimestamp(ctx, next) {
-    // var ctx = loopback.getCurrentContext();
+    const currentLoginUserId = ctx.options.currentUserId;
+    console.log("checkLogin", currentLoginUserId);
+    // const ctx = loopback.getCurrentContext();
     if (ctx.instance) {
-
       /*  if (!_.isUndefined(ctx.instance.owner)) {
-       var toString = new String(ctx.instance.owner);
+       const toString = new String(ctx.instance.owner);
        ctx.instance.owner = fixId.toObject(toString);
        }*/
-
       ctx.instance.updatetime = new Date();
-
+      console.log("with instance");
     } else {
-
       /* if (!_.isUndefined(ctx.data.owner)) {
-       var toString = new String(ctx.data.owner);
+       const toString = new String(ctx.data.owner);
        ctx.data.owner = fixId.toObject(toString);
        }*/
       ctx.data.updatetime = new Date();
-
+      console.log("without instance");
     }
     next();
   });
 
   basemap.observe('before delete', function (ctx, next) {
-    //var ctx = loopback.getCurrentContext();
+    //const ctx = loopback.getCurrentContext();
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
       ctx.where);
-    var basemapId = ctx.where['id'];
+    const basemapId = ctx.where['id'];
     db_worker.getInstanceById(basemap, basemapId,
       function (data) {
         console.log(logTag, 'remove item', data);
         if (data != null) {
           console.log(logTag, '>========== START removing the files from S3 folder');
-          var base_path = data.folder_base_name;
+          const base_path = data.folder_base_name;
           db_worker.updateByIdAndReduce(
             basemap.app.models.user, data.owner,
             "uploads",
@@ -209,8 +202,8 @@ module.exports = function (basemap) {
   });
 
   basemap.get_lucky_list = function (_count, cb) {
-    var count_final = _count > 20 ? 20 : _count;
-    var where_cond = {
+    const count_final = _count > 20 ? 20 : _count;
+    const where_cond = {
       "listing.enabled": true
     };
     basemap.count(where_cond, function (err, number) {
@@ -218,7 +211,7 @@ module.exports = function (basemap) {
         return cb(err);
       }
       console.log("> get sample list with total items: ", number);
-      var __skip = parseInt(Math.random() * (number - _count));
+      const __skip = parseInt(Math.random() * (number - _count));
 
       basemap.find({
         where: where_cond,
@@ -240,12 +233,12 @@ module.exports = function (basemap) {
   };
 
   basemap.get_by_owner_v2 = function (_the_owner, cb) {
-    var where_cond = {
+    const where_cond = {
       "owner": {
         "exists": true
       }
     };
-    var where_cond2 = {
+    const where_cond2 = {
       "currency": "HKD"
     };
     //57e4c5255410d603006997ff
@@ -276,7 +269,7 @@ module.exports = function (basemap) {
       console.log(logTag, 'done and done for model migration', 'one');
     }).setModelMigrateLogic(function (item, next) {
       if (_.isUndefined(item.mid_size)) {
-        var file_name = item.rename_file;
+        const file_name = item.rename_file;
         item.updateAttribute("mid_size", file_name, function (err, r) {
           console.log(logTag, 'done update on the entry', r.id);
           next();
@@ -433,7 +426,7 @@ module.exports = function (basemap) {
   /*
 
    remotes.after('*.find', function (ctx, next) {
-   var filter;
+   const filter;
    if (ctx.args && ctx.args.filter) {
    console.log('> filter object', ctx.args.filter);
    filter = ctx.args.filter.where;
@@ -455,12 +448,12 @@ module.exports = function (basemap) {
 
 
    CoffeeShop.status = function(cb) {
-   var currentDate = new Date();
-   var currentHour = currentDate.getHours();
-   var OPEN_HOUR = 6;
-   var CLOSE_HOUR = 20;
+   const currentDate = new Date();
+   const currentHour = currentDate.getHours();
+   const OPEN_HOUR = 6;
+   const CLOSE_HOUR = 20;
    console.log('Current hour is ' + currentHour);
-   var response;
+   const response;
    if (currentHour > OPEN_HOUR && currentHour < CLOSE_HOUR) {
    response = 'We are open for business.';
    } else {
