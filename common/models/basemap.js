@@ -112,13 +112,14 @@ module.exports = function (basemap) {
         ctx.query.where['listing.enabled'] = true;
       } else {
         let str_id = ctx.query.where.owner;
-        let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
-        ctx.query.where['owner'] = object_id;
+        // let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
+        ctx.query.where['owner'] = str_id;
         let isQueryListingForTheLoginedOwner = userId == str_id;
         if (isQueryListingForTheLoginedOwner) {
           delete ctx.query.where['complete'];
           delete ctx.query.where['listing.enabled'];
         }
+        console.log("test ownership", isQueryListingForTheLoginedOwner);
       }
       ensureVariableInteger(ctx, 'image_meta.material');
       ensureVariableInteger(ctx, 'image_meta.shape');
@@ -135,6 +136,8 @@ module.exports = function (basemap) {
         console.log("listing query", "no action for owner where ID---");
       }
     }
+
+    console.log("listing", "query starts");
     ctx.query.order = "createtime DESC";
     next()
   });
@@ -177,14 +180,10 @@ module.exports = function (basemap) {
   });
 
   basemap.observe('before delete', function (ctx, next) {
-
     //var ctx = loopback.getCurrentContext();
-
     console.log('Going to delete %s matching %j',
       ctx.Model.pluralModelName,
       ctx.where);
-
-
     var basemapId = ctx.where['id'];
     db_worker.getInstanceById(basemap, basemapId,
       function (data) {
