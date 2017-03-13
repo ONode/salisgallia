@@ -2,14 +2,14 @@
  * Created by zJJ on 4/6/2016.
  */
 "use strict";
-var response_emit_error_object = function (emitting_message) {
+const response_emit_error_object = function (emitting_message) {
   return {
     action_success: false,
     timestamp: new Date().getTime(),
     message: emitting_message
   };
 };
-var response_success_object = function (data_object) {
+const response_success_object = function (data_object) {
   return {
     action_success: true,
     timestamp: new Date().getTime(),
@@ -18,7 +18,7 @@ var response_success_object = function (data_object) {
   };
 };
 
-var response_success_object_message = function (message_success, data_object) {
+const response_success_object_message = function (message_success, data_object) {
   return {
     action_success: true,
     timestamp: new Date().getTime(),
@@ -27,13 +27,13 @@ var response_success_object_message = function (message_success, data_object) {
   };
 };
 
-var res_success = function (data, res) {
+const res_success = function (data, res) {
   return res.json(response_success_object(data));
 };
-var res_error = function (error_mo, res) {
+const res_error = function (error_mo, res) {
   return res.json(response_emit_error_object(error_mo));
 };
-var res_success_message = function (data, message, res) {
+const res_success_message = function (data, message, res) {
   return res.json(response_success_object_message(message, data));
 };
 exports.resError = response_emit_error_object;

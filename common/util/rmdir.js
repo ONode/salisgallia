@@ -10,19 +10,19 @@ const
   fse = require('fs-extra'),
   rimraf = require('gulp-rimraf');
 
-var fast = function (uploadsDir) {
+const fast = function (uploadsDir) {
   fse.emptyDir(uploadsDir, function (err) {
     if (!err) console.log('success!')
   })
 };
 
-var check_time = function (uploadsDir, time_after) {
-  var time_plus = time_after == null ? 10000 : time_after;
+const check_time = function (uploadsDir, time_after) {
+  const time_plus = time_after == null ? 10000 : time_after;
   fs.readdir(uploadsDir, function (err, files) {
     files.forEach(function (file, index) {
       // console.log(logTag, 'found file ' + index);
       fs.stat(path.join(uploadsDir, file), function (err, stat) {
-        var endTime, now;
+        let endTime, now;
         if (err) {
           return console.error(err);
         }

@@ -19,9 +19,9 @@ router.get('/', function (req, res) {
 router.get('/sign', function (req, res) {
     aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
 
-    var s3 = new aws.S3();
+    const s3 = new aws.S3();
 
-    var options = {
+    const options = {
         Bucket: S3_BUCKET,
         Key: req.query.file_name,
         Expires: 60,

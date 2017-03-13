@@ -240,13 +240,21 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
 
 module.exports.transferSimpleSingleSmallMapS3 = function (instance_model, lb_user, basemap_ID, bns) {
   const q = new uploadQueneManager();
-  q.setModelConfig(instance_model, basemap_ID);
-  q.simple_transfer_call(lb_user, bns, null);
+  if (instance_model == null) {
+    console.log("model not working", instance_model);
+  } else {
+    q.setModelConfig(instance_model, basemap_ID);
+    q.simple_transfer_call(lb_user, bns, null);
+  }
 };
 module.exports.transferSyncBaseMapS3 = function (instance_model, basemap_ID, bns) {
   const q = new uploadQueneManager();
-  q.setModelConfig(instance_model, basemap_ID);
-  q.large_transfer_call(bns);
+  if (instance_model == null) {
+    console.log("model not working", instance_model);
+  } else {
+    q.setModelConfig(instance_model, basemap_ID);
+    q.large_transfer_call(bns);
+  }
 };
 
 
