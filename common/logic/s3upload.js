@@ -24,12 +24,12 @@ const setRemoteParamsSample = function (key) {
 const triggerS3 = function (tasks, processors, next) {
   console.log(logTag, "S3 process start");
   if (processors > 0) {
-    pre.async.parallelLimit(tasks, processors, function (err, results) {
+    pre.async.parallelLimit(tasks, processors, (err, results) => {
       console.log(logTag, "S3 process done");
       next();
     });
   } else {
-    pre.async.parallel(tasks, function (err, results) {
+    pre.async.parallel(tasks, (err, results) => {
       console.log(logTag, "S3 process done");
       next();
     });
@@ -68,25 +68,25 @@ uploadQueneManager.prototype.large_transfer_call = function (zoom_map) {
       this.aws_work_queue.push(this.transfer_in_action(zoom_map.folder_base_name + "/" + zoom_map.secret_base_map_file));
       this.aws_work_queue.push(this.transfer_in_action(zoom_map.folder_base_name + "/" + zoom_map.mid_size));
 
-      pre.l.forEach(zoom_map.total_zoom_levels, function (instance) {
+      pre.l.forEach(zoom_map.total_zoom_levels, (instance) => {
         const _level = instance.level;
         console.log(logTag, "level found: " + _level);
-        pre.l.forEach(instance.tiles, function (tile) {
+        pre.l.forEach(instance.tiles, (tile) => {
           const file_path = pre.resolve_format(_level, tile.y, tile.x);
           this.aws_work_queue.push(this.transfer_in_action(zoom_map.folder_base_name + file_path));
           console.log(logTag, "file added: " + file_path);
-        }.bind(this));
-      }.bind(this));
+        });
+      });
 
     }
 
     this.total_items = this.aws_work_queue.length;
     console.log(logTag, "CPU found:" + pre.numCPUs);
-    triggerS3(this.aws_work_queue, 0, function () {
+    triggerS3(this.aws_work_queue, 0, () => {
       //When all the S3 files are uploaded.
       console.log(logTag, "trigger database update.");
       pre.db.updateByIdUpdate(this.instance_model, this.model_instance_id, update_meta_on_complete, null);
-    }.bind(this));
+    });
   } else {
     console.log(logTag, "error cant find it");
     console.log(logTag, zoom_map);
@@ -102,14 +102,14 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
   this.aws_work_queue.push(this.transfer_in_action(bns.folder_base_name + "/" + bns.mid_size));
   console.log(logTag, "CPU found:" + pre.numCPUs);
   this.total_items = this.aws_work_queue.length;
-  triggerS3(this.aws_work_queue, 0, function () {
+  triggerS3(this.aws_work_queue, 0, () => {
     //When all the S3 files are uploaded.
     console.log(logTag, "trigger database update.");
     pre.db.updateByIdUpdate(this.instance_model, this.model_instance_id, update_meta_on_complete, function (doc) {
       if (pre.l.isError(doc)) {
         return;
       }
-      pre.db.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", function (done) {
+      pre.db.updateByIdAndIncrease(lb_user, doc["owner"], "uploads", (done) => {
 
       });
       if (pre.l.isFunction(next)) {
@@ -119,7 +119,7 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
   });
 };
 uploadQueneManager.prototype.transfer_in_action = function (path_key) {
-  return function (aync_next_loop) {
+  return (aync_next_loop) => {
     const dta = {
       localFile: pre.fnGetLocalPath(path_key),
       s3Params: {
@@ -135,19 +135,19 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
     console.log(logTag, dta);
     console.log(logTag, "=======================>end AWS upload");
     const newUp = this.client.uploadFile(dta);
-    newUp.on('error', function (err) {
+    newUp.on('error', (err) => {
       console.error("Unable to upload:", err);
       return aync_next_loop(err);
     });
-    newUp.on('progress', function () {
+    newUp.on('progress', () => {
       //console.log(logTag, newUp.progressMd5Amount, newUp.progressAmount, newUp.progressTotal);
     });
-    newUp.on('end', function () {
-      this.onUpdateProgress(function () {
+    newUp.on('end', () => {
+      this.onUpdateProgress(() => {
         return aync_next_loop();
       });
-    }.bind(this));
-  }.bind(this);
+    });
+  };
 };
 /*
  const  worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns, next) {

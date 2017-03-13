@@ -8,8 +8,8 @@ module.exports = function (app, cb) {
   let requests = [];
   let modelname = "Basemap";
   let model = app.models.Basemap.getDataSource();
-  let tst_subject_db = app.datasources.rocket_us_east;
-  //let tst_subject_db = app.datasources.mlab_test_db;
+  //let tst_subject_db = app.datasources.rocket_us_east;
+  let tst_subject_db = app.datasources.mlab_test_db;
   tst_subject_db.connector.connect(function (err, db) {
     let collection = db.collection(modelname);
     let where = {};

@@ -140,6 +140,11 @@
       "options": {
         "disableInclude": true
       }
+    },
+    "basemaps":{
+      "type":"hasMany",
+      "model":"Basemap",
+      "foreignKey":"owner"
     }
   },
   "methods": [

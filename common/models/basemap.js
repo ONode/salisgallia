@@ -150,16 +150,21 @@ module.exports = function (basemap) {
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     const currentLoginUserId = ctx.options.currentUserId;
     console.log("checkLogin", currentLoginUserId);
-    const owner = ctx.data.owner;
-    if (owner && typeof (owner) == 'string') {
-      console.log("basemap owner id", typeof (owner), "need to be converted.");
-      ctx.data.owner = db_worker.patch_find_ensure_id(basemap, owner);
-    }
+
     if (ctx.instance) {
       /*  if (!_.isUndefined(ctx.instance.owner)) {
        const toString = new String(ctx.instance.owner);
        ctx.instance.owner = fixId.toObject(toString);
        }*/
+
+      console.log("check data", ctx.instance);
+
+      const owner = ctx.instance.owner;
+      if (owner && typeof (owner) == 'string') {
+        console.log("basemap owner id", typeof (owner), "need to be converted.");
+        ctx.instance.owner = db_worker.patch_find_ensure_id(basemap, owner);
+      }
+
       ctx.instance.updatetime = new Date();
       console.log("with instance");
     } else {

@@ -31,24 +31,24 @@ upload_prob.prototype.exe_aws_profile_image = function () {
     console.log(logTag, "==========> start AWS upload profile image too");
     console.log(logTag, aws_upload_meta_configuration);
     const newUp = this.client.uploadFile(aws_upload_meta_configuration);
-    newUp.on('error', function (err) {
+    newUp.on('error', (err) => {
       console.error("Unable to upload:", err);
       return this.callback(err);
-    }.bind(this));
+    });
     newUp.on('progress', function () {
 
     });
-    newUp.on('end', function () {
-      this.updateUserProfilePhoto(function (result) {
+    newUp.on('end', () => {
+      this.updateUserProfilePhoto((result) => {
         console.log("success", "progress completed aws end.");
-      }.bind(this));
-    }.bind(this));
+      });
+    });
     /**
      * give an instance response to the request.
      */
-    this.db.findOne({where: {id: this.user_id}}, function (err, oneDoc) {
+    this.db.findOne({where: {id: this.user_id}}, (err, oneDoc) => {
       return this.callback(null, oneDoc.photo);
-    }.bind(this));
+    });
   }
 };
 upload_prob.prototype.getReturnObject = function () {
@@ -62,8 +62,8 @@ upload_prob.prototype.getReturnObject = function () {
   };
 };
 upload_prob.prototype.updateUserProfilePhoto = function (callback) {
-  pS3.db.updateByIdUpdate(this.db, this.user_id, this.getReturnObject(), function () {
-  }.bind(this));
+  pS3.db.updateByIdUpdate(this.db, this.user_id, this.getReturnObject(), () => {
+  });
 };
 upload_prob.prototype.setUpdateUserObject = function (user) {
   this.db = user;
