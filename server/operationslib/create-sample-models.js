@@ -3,13 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-var async = require('async');
+const  async = require('async');
 
 module.exports = function(app) {
   // data sources
-  var mongoDs = app.dataSources.mongoDs;
-  var rocket = app.dataSources.rocket_us_east;
-  var mysqlDs = app.dataSources.mysqlDs;
+  const  mongoDs = app.dataSources.mongoDs;
+  const  rocket = app.dataSources.rocket_us_east;
+  const  mysqlDs = app.dataSources.mysqlDs;
 
   // create all models
   /*async.parallel({
@@ -59,7 +59,7 @@ module.exports = function(app) {
     rocket.automigrate('Review', function(err) {
       if (err) return cb(err);
 
-      var DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
+      const  DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
       app.models.Review.create([
         {

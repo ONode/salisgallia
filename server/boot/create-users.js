@@ -1,13 +1,14 @@
+"use strict";
 module.exports = function (app) {
 
 
   return;
   if (process.env.NODE_ENV == "tst") {
 
-    var User = app.models.user;
-    var Role = app.models.Role;
-    var RoleMapping = app.models.RoleMapping;
-    var Team = app.models.Artist;
+    const  User = app.models.user;
+    const  Role = app.models.Role;
+    const  RoleMapping = app.models.RoleMapping;
+    const  Team = app.models.Artist;
 
     User.create([
       {username: 'John', email: 'john@doe.com', password: 'opensesame'},

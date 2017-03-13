@@ -203,6 +203,5 @@
       "property": "listing"
     }
   ],
-  "methods": [],
-  "injectOptionsFromRemoteContext": true
+  "methods": []
 }

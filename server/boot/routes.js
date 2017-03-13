@@ -2,6 +2,7 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+"use strict";
 const
   makerMap = require("../../common/logic/mapMakerV2.js"),
   clearall = require("../../common/logic/clearallfolders"),
@@ -27,8 +28,8 @@ module.exports = function (app) {
     makerMap.uploadRegularTest(app, req, res);
   });
   app.get("/api/config/", function (req, res) {
-    var production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
-    var development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";
+    const  production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
+    const  development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";
     request({url: development, json: true}, function (error, response, configuration_body) {
       if (_.isError(error)) {
         res.json({});
@@ -41,11 +42,11 @@ module.exports = function (app) {
   app.use("/static", express.static(__parentDir + "/storage/tmp/"));
   console.log("> server static file path is created and started from http://{domain}/static");
   app.use("/removeallxxx", function (req, res) {
-    var Basemap_model = app.models.Basemap;
+    const  Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
   app.use("/first_install", function (req, res) {
-    var Basemap_model = app.models.Basemap;
+    const  Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
   app.use("/.well-known/acme-challenge/VoIsK8u8Q1UtO5ngPbFOytwGgL_TwGS4fstTx7Sjd3c", function (req, res) {

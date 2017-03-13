@@ -1,3 +1,4 @@
+"use strict";
 const
   __parentDir = require('app-root-path'),
   tool_crypt = require('crypto'),
@@ -26,9 +27,9 @@ const
   ;
 
 
-var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, callback_err) {
-  var _baseFolderName = "";
-  var _storage = uploaderMU.diskStorage({
+const setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, callback_err) {
+  let _baseFolderName = "";
+  const _storage = uploaderMU.diskStorage({
     destination: function (req, file, cb) {
       console.log(logTag, '==================================');
       console.log(logTag, 'check folder structure and define upload folder structures');
@@ -36,7 +37,7 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
 
       _baseFolderName = 'basemap-' + Date.now();
       _data_pre.folder_path = public_folder_path + _baseFolderName + "/";
-      var folder_tmp = base_folder + _baseFolderName;
+      const folder_tmp = base_folder + _baseFolderName;
       fse.mkdirs(folder_tmp, function (err) {
         if (_.isError(err)) {
           return callback_err(err);
@@ -53,7 +54,7 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
     },
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
-      var hash = tool_crypt.createHmac('sha256', saltFile)
+      const hash = tool_crypt.createHmac('sha256', saltFile)
         .update(_baseFolderName)
         .digest('hex');
 
@@ -81,11 +82,11 @@ var setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, cal
       // cb(null, true)
       // You can always pass an error if something goes wrong:
       console.log(logTag, file.mimetype);
-      var okay_format = 'image/jpeg';
+      const okay_format = 'image/jpeg';
       if (file.mimetype == okay_format) {
         cb(null, true);
       } else {
-        var str = 'Cannot accept this upload. I don\'t have a clue!';
+        const str = 'Cannot accept this upload. I don\'t have a clue!';
         console.log(logTag, str);
         cb(new Error(str));
       }

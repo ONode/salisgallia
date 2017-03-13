@@ -1,11 +1,11 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
-var db_worker = require("./../util/db.js");
+const  db_worker = require("./../util/db.js");
 const _ = require('lodash');
 const logTag = '> basemapinfo.js';
 module.exports.startNewMapData = function (mapModel, result_object, next, nextError) {
-  var svClip = new mapModel(result_object);
+  const  svClip = new mapModel(result_object);
   console.log(logTag, "-------------> before save this", result_object);
   svClip.save(function (err, doc) {
     if (err) {
@@ -36,7 +36,7 @@ module.exports.progress = function (mapModel, progress, id, next) {
 
   console.info(logTag, "check id", id);
 
-  var checker_report = function (p) {
+  const  checker_report = function (p) {
     return {
       "complete": p,
       "listing.enabled": Math.ceil(p) == 100
@@ -67,7 +67,7 @@ module.exports.localUploadProgressComplete = function (lb_basemap, lb_user, map_
     });
 };
 module.exports.complete_once_off = function (mapModel, result_object, next) {
-  var svClip = new mapModel(result_object);
+  const  svClip = new mapModel(result_object);
   svClip.save(function (err) {
     if (err) {
       console.log(logTag, "base map error", err);

@@ -1,7 +1,7 @@
 /**
  * Created by zJJ on 7/21/2016.
  */
-
+"use strict";
 const
   logTag = '> rm worker',
   gulp = require('gulp'),

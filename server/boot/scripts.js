@@ -1,18 +1,21 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
-console.log("loading module detector");
+"use strict";
+console.log("Loading module detector");
 module.exports = function (app) {
-  var modelNames = Object.keys(app.models);
-  var models = [];
+  let modelNames = Object.keys(app.models);
+  let models = [];
   modelNames.forEach(function (m) {
-    var modelName = app.models[m].modelName;
+    let modelName = app.models[m].modelName;
     if (models.indexOf(modelName) === -1) {
       models.push(modelName);
     }
   });
   console.log('> Models:\n', models);
-  var Basemap = app.loopback.getModel('Basemap');
+  let Basemap = app.loopback.getModel('Basemap');
   console.log(Basemap.settings.acls);
+  let version = app.loopback.version;
+  console.log('LoopBack system is now running at v%s', version);
 };
 

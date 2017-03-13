@@ -1,8 +1,9 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
+"use strict";
 const request = require('request');
-var countryCode = '+1',
+const countryCode = '+1',
   mobileNumber = '4155550000',
   message = 'Hello from Blower.io';
 
@@ -25,7 +26,7 @@ module.exports = function (countryCode, mobileNumber, verifycode, next) {
  */
 /*
 
-request.post({
+ request.post({
  headers: {
  'content-type': 'application/x-www-form-urlencoded',
  'Accepts': 'application/json'
@@ -39,7 +40,7 @@ request.post({
  if (!error && response.statusCode == 201) {
  console.log('Message sent!')
  } else {
- var apiResult = JSON.parse(body)
+ const  apiResult = JSON.parse(body)
  console.log('Error was: ' + apiResult.message)
  }
  });*/

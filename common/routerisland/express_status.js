@@ -1,7 +1,7 @@
 /**
  * Created by zJJ on 7/20/2016.
  */
-
+"use strict";
 const
   crypto = require('crypto'),
   express = require('express'),

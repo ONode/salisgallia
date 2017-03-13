@@ -1,12 +1,13 @@
 /**
  * Created by hesk on 16年10月31日.
  */
+"use strict";
 const pre = require("./preS3");
-var get_folder_names = function (list_raw_paths) {
-  var list = [];
+const get_folder_names = function (list_raw_paths) {
+  const list = [];
   pre.l.forEach(list_raw_paths, function (path) {
     //console.log("extractedpath: ", path);
-    var g = path.match(pre.crTool.extract_base_id);
+    const g = path.match(pre.crTool.extract_base_id);
     // console.log("extractedpath: ", g);
     if (!pre.l.isEmpty(g[0])) {
       // console.log("p- : ", g[0]);
@@ -15,19 +16,19 @@ var get_folder_names = function (list_raw_paths) {
   });
   return list;
 };
-var s3getlist = function (callback) {
+const s3getlist = function (callback) {
   console.log("test path s3 access: ", pre.access);
   pre.s3Ls({
     bucket: pre.bucket_name
   }).ls('/basemap', function (err, data) {
     // console.log("> done", data);
-    var mlist = get_folder_names(data.folders);
+    const mlist = get_folder_names(data.folders);
     if (pre.l.isFunction(callback)) {
       callback(mlist);
     }
   });
 };
-var processItemFound = function (bm, name_base, callback) {
+const processItemFound = function (bm, name_base, callback) {
   if (!pre.l.isFunction(callback)) {
     console.log("callback from processItemFound is not defined");
     return;
@@ -57,7 +58,7 @@ module.exports = {
     });
   },
   checkExisting: function (bm) {
-    var _list = [];
+    let _list = [];
     pre.async.series([
       function (next) {
         s3getlist(function (list) {

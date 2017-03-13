@@ -1,8 +1,9 @@
-var async = require('async');
-var db_worker = require("./../util/db.js");
-var output = require("./../util/outputjson");
-var loopback = require('loopback');
-var pd = require("./../logic/preS3");
+"use strict";
+const async = require('async');
+const db_worker = require("./../util/db.js");
+const output = require("./../util/outputjson");
+const loopback = require('loopback');
+const pd = require("./../logic/preS3");
 const logTag = "> basemap.js model";
 const ks_db_artist = require("./../keystoneconnector/artistmanager");
 const remotepagination = require("./../../server/middleware/pagination");

@@ -1,8 +1,9 @@
 /**
  * Created by hesk on 16年11月1日.
  */
+"use strict";
 const pre = require("./preMap.js");
-var ResizeOperation = function () {
+const ResizeOperation = function () {
   this.queue_jobs = [];
   this.default_options = {srcPath: ""};
 };
@@ -10,7 +11,7 @@ ResizeOperation.prototype.setSrcPath = function (path) {
   this.default_options = pre._.assign(this.default_options, {srcPath: path});
 };
 ResizeOperation.prototype.appendOperation = function (options) {
-  var j = pre._.merge(options, this.default_options);
+  const j = pre._.merge(options, this.default_options);
   this.queue_jobs.push(j);
 };
 ResizeOperation.prototype.enableAutoRotateOnRootImage = function () {

@@ -5,7 +5,7 @@ const l = require("lodash");
 const ks_db_pricemgr = require("./connector")(process.env.MLAB_M3, "pricings");
 module.exports = {
   submit_deal: function (stock_id, content, callback) {
-    var after_merge = l.merge({
+    const after_merge = l.merge({
       key: stock_id,
       state: "pending",
       currency: "USD",

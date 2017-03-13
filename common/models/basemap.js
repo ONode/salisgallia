@@ -1,18 +1,19 @@
 /**
  * Created by zJJ on 7/19/2016.
  */
-var _ = require('lodash');
-var async = require('async');
-var db_worker = require("./../util/db.js");
-var s3thread = require("./../logic/s3upload");
-var s3clean = require("./../logic/s3cleaner");
-var ai_basemap = require("./../ai/basemap_action");
-var loopback = require('loopback');
+const _ = require('lodash');
+const async = require('async');
+const db_worker = require("./../util/db.js");
+const s3thread = require("./../logic/s3upload");
+const s3clean = require("./../logic/s3cleaner");
+const ai_basemap = require("./../ai/basemap_action");
+const loopback = require('loopback');
+const ks_db_price_mgr = require("./../keystoneconnector/pricemanager");
 const logTag = "> basemap.js model";
-var result_bool = {
+const result_bool = {
   acknowledged: true
 };
-var display_as_list = {
+const display_as_list = {
   id: true,
   owner: true,
   createtime: true,
@@ -28,7 +29,7 @@ var display_as_list = {
   mid_size: true,
   rename_file: true
 };
-var display_single_owner = {
+const display_single_owner = {
   id: true,
   fast_id: true,
   complete: true,
@@ -62,7 +63,6 @@ function ensureVariableInteger(context, item) {
     //  console.log("added query-- ", item);
   }
 }
-const ks_db_price_mgr = require("./../keystoneconnector/pricemanager");
 module.exports = function (basemap) {
   basemap.disableRemoteMethodByName('create');
   basemap.disableRemoteMethodByName('upsert');
@@ -74,27 +74,23 @@ module.exports = function (basemap) {
   basemap.disableRemoteMethodByName("replaceOrCreate");
   basemap.disableRemoteMethodByName("replaceById");
   basemap.disableRemoteMethodByName("upsertWithWhere");
-
+  basemap.createOptionsFromRemotingContext = function (ctx) {
+    const base = this.base.createOptionsFromRemotingContext(ctx);
+    return Object.assign(base, {
+      currentUserId: base.accessToken && base.accessToken.userId,
+    });
+  };
   /**
    * Throwing in an extra request on value in the filter object
    */
   basemap.observe('access', function (ctx, next) {
-
-    const token = ctx.options && ctx.options.accessToken;
-    const userId = token && token.userId;
-    const user = userId ? 'user#' + userId : '<anonymous>';
-
-    const modelName = ctx.Model.modelName;
-    const scope = ctx.where ? JSON.stringify(ctx.where) : '<all records>';
-    console.log('%s: %s accessed %s:%s', new Date(), user, modelName, scope);
-
     if (!ctx.query.where) {
       ctx.query.where = {};
     }
 
-    let isSingle = !_.isEmpty(ctx.query.where.id);
-    let hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
-
+    const isSingle = !_.isEmpty(ctx.query.where.id);
+    const hasOwnerQuery = !_.isEmpty(ctx.query.where.owner);
+    const ownerConfirmed = hasOwnerQuery ? ctx.options.currentUserId == ctx.query.where.owner : false;
     /*
      console.log("=============================================");
      console.log("access token get", ctx.options);
@@ -107,19 +103,19 @@ module.exports = function (basemap) {
      * The query specific for getting the complete listing
      */
     if (!isSingle) {
-      if (!hasOwnerQuery) {
+      if (hasOwnerQuery) {
+        //let str_id = ctx.query.where.owner;
+        //let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
+        // ctx.query.where['owner'] = str_id;
+        if (ownerConfirmed) {
+          console.log("test ownership", "it is logined with the owner too");
+        } else {
+          ctx.query.where['complete'] = 100;
+          ctx.query.where['listing.enabled'] = true;
+        }
+      } else {
         ctx.query.where['complete'] = 100;
         ctx.query.where['listing.enabled'] = true;
-      } else {
-        let str_id = ctx.query.where.owner;
-        // let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
-        ctx.query.where['owner'] = str_id;
-        let isQueryListingForTheLoginedOwner = userId == str_id;
-        if (isQueryListingForTheLoginedOwner) {
-          delete ctx.query.where['complete'];
-          delete ctx.query.where['listing.enabled'];
-        }
-        console.log("test ownership", isQueryListingForTheLoginedOwner);
       }
       ensureVariableInteger(ctx, 'image_meta.material');
       ensureVariableInteger(ctx, 'image_meta.shape');
@@ -137,7 +133,7 @@ module.exports = function (basemap) {
       }
     }
 
-    console.log("listing", "query starts");
+    console.log("listing", "query starts================");
     ctx.query.order = "createtime DESC";
     next()
   });

@@ -1,6 +1,7 @@
 /**
  * Created by zJJ on 7/18/2016.
  */
+"use strict";
 const express = require('express')
     , router = express.Router()
     , aws = require('aws-sdk'),
@@ -19,7 +20,7 @@ router.get('/sign', function (req, res) {
     aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
 
     var s3 = new aws.S3();
-    
+
     var options = {
         Bucket: S3_BUCKET,
         Key: req.query.file_name,

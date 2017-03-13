@@ -7,8 +7,9 @@ module.exports = function (app, cb) {
   console.log("--start working ...");
   let requests = [];
   let modelname = "Basemap";
+  let model = app.models.Basemap.getDataSource();
+  let tst_subject_db = app.datasources.rocket_us_east;
   //let tst_subject_db = app.datasources.mlab_test_db;
-  let tst_subject_db = app.datasources.mlab_test_db;
   tst_subject_db.connector.connect(function (err, db) {
     let collection = db.collection(modelname);
     let where = {};
@@ -22,13 +23,15 @@ module.exports = function (app, cb) {
         //  let document = cursor.next();
         if (document.owner) {
           // console.log("basemap owner id", typeof (document.owner));
-          if (typeof (document.owner) == 'object') {
+          if (typeof (document.owner) == 'string') {
             let t = String(document.owner);
+            let b = model.ObjectID(document.owner);
+            console.log("basemap owner id", typeof (b), b);
             // console.log("basemap owner id", typeof (t), t);
             requests.push({
               "updateOne": {
                 "filter": {"_id": document._id},
-                "update": {"$set": {"owner": t}}
+                "update": {"$set": {"owner": b}}
               }
             });
             //requests.push({id: document._id, owner: t});
@@ -38,6 +41,7 @@ module.exports = function (app, cb) {
         try {
          // console.log("basemap check request size", requests);
           bw = collection.bulkWrite(requests, {ordered: true});
+          console.error("--- corn job is done");
         } catch (e) {
           console.error("bulk operations", e);
         }

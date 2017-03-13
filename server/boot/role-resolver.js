@@ -1,9 +1,9 @@
 /**
  * Created by hesk on 8/3/2017.
  */
-
+"use strict";
 module.exports = function(app) {
-  var Role = app.models.Role;
+  const Role = app.models.Role;
 
   Role.registerResolver('teamMember', function(role, context, cb) {
     function reject() {
@@ -18,7 +18,7 @@ module.exports = function(app) {
     }
 
     // do not allow anonymous users
-    var userId = context.accessToken.userId;
+    const  userId = context.accessToken.userId;
     if (!userId) {
       return reject();
     }
@@ -28,7 +28,7 @@ module.exports = function(app) {
       if (err || !project)
         return reject();
 
-      var Team = app.models.Team;
+      const  Team = app.models.Team;
       Team.count({
         ownerId: project.ownerId,
         memberId: userId

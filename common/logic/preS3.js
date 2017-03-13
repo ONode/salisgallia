@@ -1,3 +1,4 @@
+"use strict";
 const
   test_s3_keyid = "",
   test_s3_accesskey = "",
@@ -23,21 +24,21 @@ const
     map_path_key: "/{z}/t_{y}_{x}.jpg"
   }
   ;
-var _ = require('lodash');
-var __parentDir = require('app-root-path');
-var depthResolver = require('mapslice/lib/util/outputResolve');
-var s3_fs = require('s3fs');
-var dbpatch = require('./../util/db');
-var s3_aws = require('aws-sdk');
-var s3_client_engine = require('s3');
-var base_aws_s3_client = new s3_aws.S3(access);
-var s3ls = function (options) {
-  var bucket = options.bucket;
-  //var s3 = new s3_aws.S3(access);
+const _ = require('lodash');
+const __parentDir = require('app-root-path');
+const depthResolver = require('mapslice/lib/util/outputResolve');
+const s3_fs = require('s3fs');
+const dbpatch = require('./../util/db');
+const s3_aws = require('aws-sdk');
+const s3_client_engine = require('s3');
+const base_aws_s3_client = new s3_aws.S3(access);
+const s3ls = function (options) {
+  const bucket = options.bucket;
+  //const  s3 = new s3_aws.S3(access);
   return {
     ls: function ls(_fpath, callback) {
-      var prefix = _.trimStart(_.trimEnd(_fpath, '/') + '/', '/');
-      var result = {files: [], folders: []};
+      const prefix = _.trimStart(_.trimEnd(_fpath, '/') + '/', '/');
+      const result = {files: [], folders: []};
 
       function s3ListCallback(error, data) {
         if (error) return callback(error);
@@ -69,12 +70,12 @@ var s3ls = function (options) {
     }
   };
 };
-var s3lpkeys = function (options) {
+const s3lpkeys = function (options) {
   return {
     lp: function ls(_fpath, callback) {
-      var result = {files: []};
-      var one_sub_layer = [];
-      var it = 0;
+      const result = {files: []};
+      let one_sub_layer = [];
+      let it = 0;
 
       function s3ListFilesCallback(error, data) {
         if (error) return callback(error);
@@ -103,28 +104,28 @@ var s3lpkeys = function (options) {
     }
   };
 };
-var getProfileHeadLocalPath = function (filename) {
+const getProfileHeadLocalPath = function (filename) {
   return __parentDir + "/storage/tmp/profile/" + filename;
 };
-var getProfileHeadRemotePath = function (filename) {
+const getProfileHeadRemotePath = function (filename) {
   return "profile/" + filename;
 };
-var getLocalPath = function (the_rest) {
+const getLocalPath = function (the_rest) {
   return __parentDir + "/storage/tmp/storage_f/" + the_rest;
 };
-var getRemotePath = function (the_rest) {
+const getRemotePath = function (the_rest) {
   return "basemap/" + the_rest;
 };
 
-var getFolderPathS3 = function (_fpath) {
-  var f = remote_base_path + _fpath;
+const getFolderPathS3 = function (_fpath) {
+  const f = remote_base_path + _fpath;
   console.log(logTag, "check path", f);
   return f;
 };
 
-var rmrecursively_v1 = function (bucket_name, folder_path, callback) {
+const rmrecursively_v1 = function (bucket_name, folder_path, callback) {
   console.log(logTag, "v1 Start operation for bucket name:: ", bucket_name, folder_path);
-  var fsImpl = new s3_fs(bucket_name, access);
+  const fsImpl = new s3_fs(bucket_name, access);
   fsImpl.rmdirp(folder_path).then(function () {
     // Directory has been recursively deleted
     console.log(logTag, "Directory has been recursively deleted", folder_path);
@@ -136,12 +137,12 @@ var rmrecursively_v1 = function (bucket_name, folder_path, callback) {
   });
 };
 
-var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
+const rmrecursively_v2 = function (bucket_name, folder_path, callback) {
   console.log(logTag, "v2 Start operation for bucket name:: ", bucket_name, folder_path);
   //const client_base = new s3_aws.S3(access);
-  var s3client = s3_client_engine.createClient({s3Client: base_aws_s3_client});
+  const s3client = s3_client_engine.createClient({s3Client: base_aws_s3_client});
 
-  var params_remove = {
+  const params_remove = {
     Bucket: bucket_name,
     Delete: {
       Objects: [],
@@ -153,7 +154,7 @@ var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
 
   s3lpkeys({bucket: bucket_name}).lp(folder_path, function (err, data) {
     //console.log("> done", data);
-    //var mlist = get_folder_names(data.folders);
+    //const  mlist = get_folder_names(data.folders);
     ///if (_.isFunction(callback)) {
     //callback(mlist);
     //}
@@ -164,7 +165,7 @@ var rmrecursively_v2 = function (bucket_name, folder_path, callback) {
     });
     if (params_remove.Delete.Objects.length > 0) {
 
-      var deleteOperation = s3client.deleteObjects(params_remove);
+      const deleteOperation = s3client.deleteObjects(params_remove);
 
       deleteOperation.on('error', function (err) {
         console.log(

@@ -1,6 +1,6 @@
 module.exports = getDB();
 function getDB() {
-  var db = {
+  const  db = {
     "db": {
       "name": "db",
       "connector": "memory"

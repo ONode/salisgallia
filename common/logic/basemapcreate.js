@@ -1,6 +1,7 @@
 /**
  * Created by zJJ on 7/18/2016.
  */
+"use strict";
 const
 
   tool_crypt = require('crypto'),
@@ -43,11 +44,11 @@ const fileFilterFn = function fileFilter(req, file, cb) {
   // cb(null, true)
   // You can always pass an error if something goes wrong:
   console.log(logTag, file.mimetype);
-  var okay_format = 'image/jpeg';
+  const  okay_format = 'image/jpeg';
   if (file.mimetype == okay_format) {
     cb(null, true);
   } else {
-    var str = 'Cannot accept this upload. I don\'t have a clue!';
+    const  str = 'Cannot accept this upload. I don\'t have a clue!';
     console.log(logTag, str);
     cb(new Error(str));
   }
@@ -72,8 +73,8 @@ const basic_config = {
   zoomMin: 1
 };
 
-var defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endCallback) {
-  var mapSlicer = mapSliceArc(_.extend(configNew, basic_config));
+const  defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endCallback) {
+  const  mapSlicer = mapSliceArc(_.extend(configNew, basic_config));
   mapSlicer.on("start", function (files, options) {
     console.info("Starting to process " + files + " files.");
   });
@@ -86,8 +87,8 @@ var defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endC
   });
 
   mapSlicer.on("progress", function (progress, total, current, file) {
-    var percentNum = Math.round(progress * 100);
-    var percent = percentNum + "%";
+    const  percentNum = Math.round(progress * 100);
+    const  percent = percentNum + "%";
     //console.info("Progress: " + percent);
     console.info(logTag, "dataStructure.carry_id: ", dataStructure.carry_id);
     if (dataStructure.carry_id != null) {
@@ -109,8 +110,8 @@ var defineSlicer = function (configNew, dataStructure, lb_map, errCallback, endC
   return mapSlicer;
 };
 
-var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined, callback_err) {
-  var _storage = mulOperation.diskStorage({
+const  setupUploader = function (dataStructure, extraOperationFromAfterNameDefined, callback_err) {
+  const  _storage = mulOperation.diskStorage({
     destination: function (req, file, cb) {
       console.log(logTag, '==================================');
       console.log(logTag, 'check folder structure and define upload folder structures');
@@ -118,7 +119,7 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
 
       dataStructure.folder_base_name = 'basemap-' + Date.now();
       dataStructure.folder_path = public_folder_path + dataStructure.folder_base_name + "/";
-      var folder_tmp = base_folder + dataStructure.folder_base_name;
+      const  folder_tmp = base_folder + dataStructure.folder_base_name;
       fse.mkdirs(folder_tmp, function (err) {
         if (_.isError(err)) {
           return callback_err(err);
@@ -135,7 +136,7 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
     },
     filename: function (req, file, cb) {
       console.log(logTag, "rename file");
-      var hash = tool_crypt.createHmac('sha256', saltFile)
+      const  hash = tool_crypt.createHmac('sha256', saltFile)
         .update(dataStructure.folder_base_name)
         .digest('hex');
 
@@ -158,7 +159,7 @@ var setupUploader = function (dataStructure, extraOperationFromAfterNameDefined,
 const wrap_process_tilingmap = function (basemap, req, res, next_step) {
 //http://www.scantips.com/basics1d.html
   console.log(logTag, "cpu: " + numCPUs);
-  var O = {
+  const  O = {
     carry_id: "",
     complete: -1,
     total_zoom_levels: [],
@@ -167,8 +168,8 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
-  var mapSlicer = null;
-  var uploadStarter = setupUploader(O, null, function (err) {
+  let  mapSlicer = null;
+  const  uploadStarter = setupUploader(O, null, function (err) {
     console.log(logTag, "==========================================");
     console.log(logTag, "==> uploadStarter error  =");
     console.log(logTag, "==========================================");
@@ -181,10 +182,10 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
       console.log(logTag, "error from upload", +err.message);
       return next_step(err);
     }
-    //   var storage = "127.0.0.5:3000/";
-    var a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
-    var b = base_folder + O.folder_base_name + "/" + O.rename_file;
-    var c = {
+    //   const  storage = "127.0.0.5:3000/";
+    const  a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
+    const  b = base_folder + O.folder_base_name + "/" + O.rename_file;
+    const  c = {
       size: {
         width: 600,
         height: 400
@@ -197,7 +198,7 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
     console.log(logTag, a);
     console.log(logTag, b);
     console.log("====================================");
-    var options = {
+    const  options = {
       width: 1000,
       height: 400,
       srcPath: a,
@@ -206,7 +207,7 @@ const wrap_process_tilingmap = function (basemap, req, res, next_step) {
     //rmdir(upload_helper_folder);
     _moduleIm.resize(options, function (err) {
       if (err) {
-        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        const  notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
         // output.outResErro(notworking, res);
         return next_step(err);
@@ -258,7 +259,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
 //res.writeHead(200);
 //http://www.scantips.com/basics1d.html
   console.log(logTag, "cpu: " + numCPUs);
-  var O = {
+  const  O = {
     carry_id: "",
     complete: -1,
     total_zoom_levels: [],
@@ -267,7 +268,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
     rename_file: "",
     folder_path: ""
   };
-  var uploadStarter = setupUploader(O, null, function (err) {
+  const  uploadStarter = setupUploader(O, null, function (err) {
     return next_step(err);
   });
   uploadStarter(req, res, function (err) {
@@ -277,10 +278,10 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
       next_step(err);
       return;
     }
-    //var storage = "127.0.0.5:3000/";
-    var a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
-    var b = base_folder + O.folder_base_name + "/" + O.rename_file;
-    var c = {
+    //const  storage = "127.0.0.5:3000/";
+    const  a = base_folder + O.folder_base_name + "/" + O.secret_base_map_file;
+    const  b = base_folder + O.folder_base_name + "/" + O.rename_file;
+    const  c = {
       size: {
         width: 600,
         height: 400
@@ -292,7 +293,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
     console.log(logTag, a);
     console.log(logTag, b);
     console.log("====================================");
-    var options = {
+    const  options = {
       width: 1000,
       height: 400,
       srcPath: a,
@@ -300,7 +301,7 @@ const wrap_process_regular = function (basemap, req, res, next_step) {
     };
     _moduleIm.resize(options, function (err) {
       if (_.isError(err)) {
-        var notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        const  notworking = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, notworking);
         return next_step(err);
       }
@@ -329,13 +330,13 @@ function haltOnTimedout(req, res, next) {
   if (!req.timedout) next();
 }
 module.exports.uploadRegular = function (app, req, res) {
-  var model_base_map = app.models.Basemap;
-  var model_user = app.models.user;
+  const  model_base_map = app.models.Basemap;
+  const  model_user = app.models.user;
   wrap_process_regular(model_base_map, req, res, function (result) {
     if (_.isError(result)) {
       return output.outResErro(result.message, res);
     }
-    var _id = result.carry_id;
+    const  _id = result.carry_id;
 
     if (req.params.owner != null) {
       result["owner"] = req.params.owner;
@@ -363,13 +364,13 @@ module.exports.uploadRegular = function (app, req, res) {
 module.exports.uploadTiling = function (app, req, res) {
   //IF u have large image then. use this to avoid timeout..
   //req.connection.setTimeout(120000);
-  var model_base_map = app.models.Basemap;
-  var model_user = app.models.user;
+  const  model_base_map = app.models.Basemap;
+  const  model_user = app.models.user;
   wrap_process_tilingmap(model_base_map, req, res, function (result) {
     if (_.isError(result)) {
       return output.outResErro(result.message, res);
     }
-    var _id = result.carry_id;
+    const  _id = result.carry_id;
 
     if (req.params.owner != null) {
       console.info(logTag, "Id adding..");

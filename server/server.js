@@ -3,14 +3,14 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 'use strict';
-var loopback = require('loopback');
-var boot = require('loopback-boot');
-var app = module.exports = loopback();
+const  loopback = require('loopback');
+const  boot = require('loopback-boot');
+const  app = module.exports = loopback();
 if (process.env.S3_ACCESS_KEY_ID == undefined) {
   console.log('Now search for .env file');
   require('dotenv').config();
 }
-//var LoopBackContext = require('loopback-context');
+//const  LoopBackContext = require('loopback-context');
 //app.use(loopback.token({model: app.models.accessToken}));
 /*
  app.use(LoopBackContext.perRequest());
@@ -26,7 +26,7 @@ if (process.env.S3_ACCESS_KEY_ID == undefined) {
  if (!user) {
  return next(new Error('No user with this access token was found.'));
  }
- var loopbackContext = LoopBackContext.getCurrentContext();
+ const  loopbackContext = LoopBackContext.getCurrentContext();
  if (loopbackContext) {
  loopbackContext.set('currentUser', user);
  }
@@ -37,10 +37,10 @@ app.start = function () {
   // start the web server
   return app.listen(function () {
     app.emit('started');
-    var baseUrl = app.get('url').replace(/\/$/, '');
+    const  baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', app.get('url'));
     if (app.get('loopback-component-explorer')) {
-      var explorerPath = app.get('loopback-component-explorer').mountPath;
+      const  explorerPath = app.get('loopback-component-explorer').mountPath;
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
@@ -54,7 +54,7 @@ app.buildError = function (err) {
 };
 //app.use(require('compression'));
 //app.use(loopback.token({model: app.models.accessToken, currentUserLiteral: 'me'}));
-/*var bootOptions = {
+/*const  bootOptions = {
  "appRootDir": __dirname,
  "bootScripts": [
  "/full/path/to/boot/script/first.js",

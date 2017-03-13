@@ -1,6 +1,7 @@
 /**
  * Created by zJJ on 7/21/2016.
  */
+"use strict";
 const pre = require("./preS3");
 const preMap = require("./preMap");
 const logTag = "---> transS3";
@@ -20,7 +21,7 @@ const setRemoteParamsSample = function (key) {
   };
 };
 
-var triggerS3 = function (tasks, processors, next) {
+const triggerS3 = function (tasks, processors, next) {
   console.log(logTag, "S3 process start");
   if (processors > 0) {
     pre.async.parallelLimit(tasks, processors, function (err, results) {
@@ -35,7 +36,7 @@ var triggerS3 = function (tasks, processors, next) {
   }
 };
 
-var uploadQueneManager = function () {
+const uploadQueneManager = function () {
   this.total_items = 0;
   this.current_item = 0;
   this.instance_model = null;
@@ -45,7 +46,7 @@ var uploadQueneManager = function () {
 };
 uploadQueneManager.prototype.onUpdateProgress = function (afterprogressupdated) {
   this.current_item++;
-  var mode2progress = this.current_item / this.total_items * 50 + 50;
+  const mode2progress = this.current_item / this.total_items * 50 + 50;
   preMap.basemapInfo.progress(
     this.instance_model,
     mode2progress,
@@ -68,10 +69,10 @@ uploadQueneManager.prototype.large_transfer_call = function (zoom_map) {
       this.aws_work_queue.push(this.transfer_in_action(zoom_map.folder_base_name + "/" + zoom_map.mid_size));
 
       pre.l.forEach(zoom_map.total_zoom_levels, function (instance) {
-        var _level = instance.level;
+        const _level = instance.level;
         console.log(logTag, "level found: " + _level);
         pre.l.forEach(instance.tiles, function (tile) {
-          var file_path = pre.resolve_format(_level, tile.y, tile.x);
+          const file_path = pre.resolve_format(_level, tile.y, tile.x);
           this.aws_work_queue.push(this.transfer_in_action(zoom_map.folder_base_name + file_path));
           console.log(logTag, "file added: " + file_path);
         }.bind(this));
@@ -119,7 +120,7 @@ uploadQueneManager.prototype.simple_transfer_call = function (lb_user, bns, next
 };
 uploadQueneManager.prototype.transfer_in_action = function (path_key) {
   return function (aync_next_loop) {
-    var dta = {
+    const dta = {
       localFile: pre.fnGetLocalPath(path_key),
       s3Params: {
         Bucket: pre.bucket_name,
@@ -149,12 +150,12 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
   }.bind(this);
 };
 /*
- var worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns, next) {
+ const  worker_transfer_simple = function (instance_model, lb_user, basemap_ID, bns, next) {
  console.log(logTag, "simple transfer process: ", bns);
  if (!pre.check_access_keys_filled()) {
  return;
  }
- var ob_file_list = [];
+ const  ob_file_list = [];
  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.rename_file));
  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.secret_base_map_file));
  ob_file_list.push(set_aws_worker(bns.folder_base_name + "/" + bns.mid_size));
@@ -189,12 +190,12 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
  */
 /*
 
- var set_aws_worker = function (path_key) {
+ const  set_aws_worker = function (path_key) {
  const client = pre.s3_node_client.createClient({s3Client: pre.s3_base_engine()});
  // Upload the file to S3
  return function worker(aync_next_loop) {
 
- var dta = {
+ const  dta = {
  localFile: pre.fnGetLocalPath(path_key),
  s3Params: {
  Bucket: pre.bucket_name,
@@ -230,7 +231,7 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
  };*/
 
 /*
- var S = require("string"),
+ const  S = require("string"),
  path = require("path");
  module.exports.outputresolve = function outputResolve(format, z, y, x) {
  return S(format).template({z: z, y: y, x: x, google: path.join(String(z), String(y), String(x))}, '{', '}').s;
@@ -238,12 +239,12 @@ uploadQueneManager.prototype.transfer_in_action = function (path_key) {
  */
 
 module.exports.transferSimpleSingleSmallMapS3 = function (instance_model, lb_user, basemap_ID, bns) {
-  var q = new uploadQueneManager();
+  const q = new uploadQueneManager();
   q.setModelConfig(instance_model, basemap_ID);
   q.simple_transfer_call(lb_user, bns, null);
 };
 module.exports.transferSyncBaseMapS3 = function (instance_model, basemap_ID, bns) {
-  var q = new uploadQueneManager();
+  const q = new uploadQueneManager();
   q.setModelConfig(instance_model, basemap_ID);
   q.large_transfer_call(bns);
 };

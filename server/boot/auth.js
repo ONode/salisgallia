@@ -1,4 +1,5 @@
-var loopback = require('loopback');
+"use strict";
+const  loopback = require('loopback');
 module.exports = function (app) {
 
   /*
@@ -21,7 +22,7 @@ module.exports = function (app) {
     .addBefore('invoke', 'options-from-request')
     .use(function (ctx, next) {
       if (!ctx.args.options) return next();
-      console.log('SERVER OPT', ctx.args.options);
+     // console.log('SERVER OPT', ctx.args.options);
       if (!ctx.args.options.accessToken) return next();
       /*  User.findById(ctx.args.options.accessToken.userId, function(err, user) {
        if (err) return next(err);
@@ -31,8 +32,8 @@ module.exports = function (app) {
 
        next();
        });*/
-      let options = ctx.args.options.accessToken;
-      console.log('SERVER OPT', options);
+     // let options = ctx.args.options.accessToken;
+     // console.log('SERVER OPT', options);
       next();
     });
 

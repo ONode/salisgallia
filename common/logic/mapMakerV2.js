@@ -1,12 +1,13 @@
+"use strict";
 const pre = require("./preMap");
 const resizeModule = require("./resize_queue");
 const logTag = "> mapMakerV2";
-var makeMaker = function (app, req, res) {
+const makeMaker = function (app, req, res) {
   /**
    * as a new item object, the id cannot presented
    * @type {{carry_id: string, complete: number, total_zoom_levels: Array, folder_base_name: string, secret_base_map_file: string, rename_file: string, folder_path: string, owner: string}}
    */
-  var OThis = {
+  const OThis = {
     carry_id: "",
     complete: -1,
     total_zoom_levels: [],
@@ -42,7 +43,7 @@ makeMaker.prototype.defineSlicerConfig = function () {
 };
 
 makeMaker.prototype.define_slicer = function (errCallback, endCallback) {
-  var mapSlicer = pre.mapSliceArc(pre._.extend(this.defineSlicerConfig(), pre.updatebasicconfig));
+  const mapSlicer = pre.mapSliceArc(pre._.extend(this.defineSlicerConfig(), pre.updatebasicconfig));
   mapSlicer.on("start", function (files, options) {
     console.info("Starting to process " + files + " files.");
   }.bind(this));
@@ -55,8 +56,8 @@ makeMaker.prototype.define_slicer = function (errCallback, endCallback) {
   }.bind(this));
 
   mapSlicer.on("progress", function (progress, total, current, file) {
-    var percentNum = Math.round(progress * 100);
-    var percentActual = Math.round(progress * 50);
+    const percentNum = Math.round(progress * 100);
+    const percentActual = Math.round(progress * 50);
     console.info(logTag, "dataStructure.carry_id: ", this.O.id);
     if (this.O.id != null) {
 
@@ -84,7 +85,7 @@ makeMaker.prototype.define_slicer = function (errCallback, endCallback) {
 
 
 makeMaker.prototype.setupTiling = function (next_step, post_process) {
-  var uploadStarter = pre.setupUploader(
+  const uploadStarter = pre.setupUploader(
     this.O,
 
     function (dataThisBaseO) {
@@ -113,7 +114,7 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
       return next_step(err);
     }
 
-    var resizeOp = new resizeModule.core();
+    const resizeOp = new resizeModule.core();
     resizeOp.setSrcPath(pre.base_folder + this.O.folder_base_name + "/" + this.O.secret_base_map_file);
     resizeOp.enableAutoRotateOnRootImage();
     resizeOp.appendOperation({
@@ -126,7 +127,7 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
     });
     resizeOp.execute(function (err) {
       if (pre._.isError(err)) {
-        var kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        const kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, kk);
         return next_step(err);
       }
@@ -138,7 +139,7 @@ makeMaker.prototype.setupTiling = function (next_step, post_process) {
 
         function (new_map_ID) {
           this.O.id = new_map_ID;
-          var mapSlicer = this.define_slicer(
+          const mapSlicer = this.define_slicer(
             function (err) {
               console.log(logTag, "==========================================");
               console.log(logTag, "==> mapSlicer error  =====================");
@@ -193,7 +194,7 @@ makeMaker.prototype.updateThisO = function (data) {
 };
 
 makeMaker.prototype.setupPlain = function (next_step) {
-  var uploadStarter = pre.setupUploader(
+  const uploadStarter = pre.setupUploader(
     this.O,
 
     function (dataThisBaseO) {
@@ -216,7 +217,7 @@ makeMaker.prototype.setupPlain = function (next_step) {
       return next_step(err);
     }
 
-    var resizeOp = new resizeModule.core();
+    const resizeOp = new resizeModule.core();
     resizeOp.setSrcPath(pre.base_folder + this.O.folder_base_name + "/" + this.O.secret_base_map_file);
     resizeOp.enableAutoRotateOnRootImage();
     resizeOp.appendOperation({
@@ -229,7 +230,7 @@ makeMaker.prototype.setupPlain = function (next_step) {
     });
     resizeOp.execute(function (err) {
       if (pre._.isError(err)) {
-        var kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
+        const kk = 'resize image does\'t work and you may check for the installation of gm or imagemagick. error from resizing image';
         console.log(logTag, kk);
         return next_step(err);
       }
@@ -259,8 +260,8 @@ makeMaker.prototype.setupPlain = function (next_step) {
  * @param req - request
  * @param res - response
  */
-var v2 = function (app, req, res) {
-  var process = null;
+const v2 = function (app, req, res) {
+  let process = null;
 
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
@@ -279,7 +280,7 @@ var v2 = function (app, req, res) {
       /**
        * the map id
        */
-      var item_id = result.id;
+      const item_id = result.id;
 
       console.info(logTag, "Finished processing slices. start saving to DB.");
       console.info(logTag, "Process before ------------------>", result);
@@ -313,8 +314,8 @@ var v2 = function (app, req, res) {
  * @param req - request
  * @param res - response
  */
-var v1 = function (app, req, res) {
-  var process = null;
+const v1 = function (app, req, res) {
+  let process = null;
 
   if (!(process instanceof makeMaker)) {
     process = new makeMaker(app, req, res);
@@ -331,7 +332,7 @@ var v1 = function (app, req, res) {
       return pre.output.outResErro("empty result", res);
     }
 
-    var item_id = result.id;
+    const item_id = result.id;
     console.info(logTag, "Finished processing slices. start saving to DB.");
     console.info(logTag, "Process before -------------------->", result);
 
@@ -344,7 +345,7 @@ var v1 = function (app, req, res) {
     return pre.output.outResSuccess(result, res);
   });
 };
-var v3 = function (app, req, res) {
+const v3 = function (app, req, res) {
 
 };
 module.exports.uploadRegular = v1;

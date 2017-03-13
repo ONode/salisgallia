@@ -1,16 +1,16 @@
 /**
  * Created by hesk on 16年11月11日.
  */
-
+"use strict";
 //const pre = require("./preMap");
 const pS3 = require("./preS3");
 const resizeModule = require("./resize_queue");
 //const cloudinary = require("cloudinary");
 const logTag = "> mapMakerV2";
-var upload_prob = function (file_name, cb) {
+const upload_prob = function (file_name, cb) {
   this.src_filename = file_name;
   this.callback = cb;
- /// cloudinary.config(pS3.cloudinary_access);
+  /// cloudinary.config(pS3.cloudinary_access);
   this.db = null;
   this.user_id = "";
   this.format = "";
@@ -19,7 +19,7 @@ var upload_prob = function (file_name, cb) {
 };
 upload_prob.prototype.exe_aws_profile_image = function () {
   if (pS3.l.isFunction(this.callback)) {
-    var aws_upload_meta_configuration = {
+    const aws_upload_meta_configuration = {
       localFile: pS3.fnGetLocalHeadImagePath(this.src_filename),
       s3Params: {
         Bucket: pS3.bucket_name,
@@ -52,8 +52,8 @@ upload_prob.prototype.exe_aws_profile_image = function () {
   }
 };
 upload_prob.prototype.getReturnObject = function () {
-  var path_sub = pS3.fnGetRemoteHeadImagePath(this.src_filename);
-  var path_pre = "http://s3.heskeyo.com/" + path_sub;
+  const path_sub = pS3.fnGetRemoteHeadImagePath(this.src_filename);
+  const path_pre = "http://s3.heskeyo.com/" + path_sub;
   return {
     "photo.url": path_pre,
     "photo.secure_url": path_pre,
@@ -89,20 +89,20 @@ upload_prob.prototype.setformat = function (format) {
  };
 
 
-module.exports.profile_upload_cloudinary = function (file_name, cb) {
-  var d = new upload_prob(file_name, cb);
-  d.exe_cloudinary();
-};*/
+ module.exports.profile_upload_cloudinary = function (file_name, cb) {
+ const  d = new upload_prob(file_name, cb);
+ d.exe_cloudinary();
+ };*/
 module.exports.profile_upload_s3 = function (result, user_lb, cb) {
   if (pS3.l.isEmpty(result) || pS3.l.isEmpty(result.files)) {
     cb(new Error("no result"));
   } else {
-    var image = result.files.user_image[0];
-    var filename = image.name;
-    var path = image.container;
-    var size = image.size;
-    var format = image.format;
-    var d = new upload_prob(path + "/" + filename, cb);
+    const image = result.files.user_image[0];
+    const filename = image.name;
+    const path = image.container;
+    const size = image.size;
+    const format = image.format;
+    const d = new upload_prob(path + "/" + filename, cb);
     d.setImageSize(size);
     d.setId(path);
     d.setformat(format);

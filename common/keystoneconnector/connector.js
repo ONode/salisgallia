@@ -1,8 +1,9 @@
-var
+"use strict";
+const
   l = require("lodash"),
   async = require('async');
 
-var mongodb = require('mongodb'),
+const mongodb = require('mongodb'),
   Db = mongodb.Db,
   MongoClient = mongodb.MongoClient,
   Server = mongodb.Server,
@@ -16,10 +17,10 @@ var mongodb = require('mongodb'),
   error_ks = "ks error"
   ;
 
-var connector_settings = {
+const connector_settings = {
   native_parser: true
 };
-var internal_connect = function (url, transaction_callback) {
+const internal_connect = function (url, transaction_callback) {
   mongodb.MongoClient.connect(url, connector_settings, function (err, db) {
     if (!err) {
       transaction_callback(null, db)
@@ -28,14 +29,14 @@ var internal_connect = function (url, transaction_callback) {
     }
   });
 };
-var ensureVariableInteger = function (Query, item) {
+const ensureconstiableInteger = function (Query, item) {
   if (!l.isUndefined(Query.where[item])) {
     Query.where[item] = parseInt(Query.where[item]);
   }
 };
-var connection_db = function (db_url_set, model) {
+const connection_db = function (db_url_set, model) {
   this.init(db_url_set, model);
-  var self = this;
+  const self = this;
   return {
     find: function (_idstring, result_callback) {
       self.Model.findOne({
@@ -48,7 +49,7 @@ var connection_db = function (db_url_set, model) {
       self.Model.find({
         keyName: SimpleValue
       }).then(function (cursor) {
-        var myDocument = cursor.hasNext() ? cursor.next() : null;
+        const myDocument = cursor.hasNext() ? cursor.next() : null;
         result_callback(myDocument);
       });
     },
@@ -56,13 +57,13 @@ var connection_db = function (db_url_set, model) {
       self.Model.find({
         keyName: SimpleValue
       }).skip(_skip).limit(_limit).then(function (cursor) {
-        var myDocument = cursor.hasNext() ? cursor.next() : null;
+        const myDocument = cursor.hasNext() ? cursor.next() : null;
         result_callback(myDocument);
       });
     },
     lbQueryLooper: function (QueryContext, query_additional_options, resultcb) {
-      var Query = QueryContext.req;
-      var Q = Query.query;
+      const Query = QueryContext.req;
+      let Q = Query.query;
 
       if (!Query) {
         Q = {
@@ -97,17 +98,17 @@ var connection_db = function (db_url_set, model) {
         Q.filter.skip = parseInt(Q.filter.skip);
       }
 
-      var isSingle = !l.isEmpty(Q.filter.where.id && Q.filter.where._id);
-      var hasOwnerQuery = !l.isEmpty(Q.filter.where.owner);
+      const isSingle = !l.isEmpty(Q.filter.where.id && Q.filter.where._id);
+      const hasOwnerQuery = !l.isEmpty(Q.filter.where.owner);
 
       if (isSingle) {
-        var id = Q.filter.where.id || Q.filter.where._id;
+        const id = Q.filter.where.id || Q.filter.where._id;
         Q.filter.where._id = new ObjectID(id);
         self.Model.findOne(Q.filter.where).then(function (doc) {
           resultcb(null, doc);
         });
       } else {
-        var cursor = self.Model.find(Q.filter.where).skip(Q.filter.skip).limit(Q.filter.limit);
+        const cursor = self.Model.find(Q.filter.where).skip(Q.filter.skip).limit(Q.filter.limit);
         cursor.count().then(function (count_n) {
           Q.result.count = count_n;
           Q.result.page = Math.floor(count_n / Q.filter.limit) + 1;
@@ -168,7 +169,7 @@ var connection_db = function (db_url_set, model) {
   }
 };
 connection_db.prototype.castInt = function (q, value) {
-  return ensureVariableInteger(q, value);
+  return ensureconstiableInteger(q, value);
 };
 connection_db.prototype.init = function (a, _model) {
   internal_connect(a, function (err, db) {

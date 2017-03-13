@@ -1,10 +1,11 @@
+"use strict";
 /**
  * Created by zJJ on 7/21/2016.
  */
 const logTag = "> db.js";
 const _ = require('lodash');
 const ay = require('async');
-var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name_inc_1, next) {
+const updateByIdAndIncrease = function (persistentModel, query_item_id, field_name_inc_1, next) {
 
   if (persistentModel == null) {
     console.log(logTag, "updateByIdAndIncrease, persistentModel is undefined ..... ");
@@ -20,9 +21,9 @@ var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name
       console.log(logTag, "findById has error ..... ", err);
       return;
     }
-    var val = 0;
+    let val = 0;
     console.log(logTag, "got item for value increase [", field_name_inc_1, " : ", _doc_user[field_name_inc_1], " ]");
-    var read = _doc_user[field_name_inc_1];
+    const read = _doc_user[field_name_inc_1];
     if (_.isNumber(read)) {
       val = read + 1;
     } else {
@@ -41,7 +42,7 @@ var updateByIdAndIncrease = function (persistentModel, query_item_id, field_name
     })
   });
 };
-var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, next) {
+const updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, next) {
 
   if (persistentModel == null) {
     console.log(logTag, "updateByIdAndReduce, persistentModel is undefined ..... ");
@@ -53,7 +54,7 @@ var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, nex
   console.log(logTag, "==> Update By Id And Reduce Start Here ===");
   console.log(logTag, "==========================================");
   persistentModel.findOne({where: {id: _id_}}, function (err, oneDoc) {
-    var val = 0;
+    let val = 0;
     if (_.isNaN(parseInt(oneDoc[field_name_inc_1]))) {
       val = 0;
     } else {
@@ -80,7 +81,7 @@ var updateByIdAndReduce = function (persistentModel, _id_, field_name_inc_1, nex
     })
   });
 };
-var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
+const updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
 
   if (persistentModel == null) {
     console.log(logTag, "updateByIdUpdate, persistentModel is undefined ..... ");
@@ -108,7 +109,7 @@ var updateByIdUpdate = function (persistentModel, _id_, update_object, next) {
     }
   });
 };
-var getInstanceById = function (persistentModel, _id, next, errnext) {
+const getInstanceById = function (persistentModel, _id, next, errnext) {
   persistentModel.findOne({where: {id: _id}}, function (err, oneDoc) {
     if (_.isError(next)) {
       return errnext(err);
@@ -118,24 +119,24 @@ var getInstanceById = function (persistentModel, _id, next, errnext) {
     }
   });
 };
-var patch_to_ensure_monogodb_id = function (persistentModel, _id) {
+const patch_to_ensure_monogodb_id = function (persistentModel, _id) {
   return persistentModel.getDataSource().ObjectID(_id);
 };
-var removeAll = function (persistentModel, where, callback) {
+const removeAll = function (persistentModel, where, callback) {
   persistentModel.destroyAll(where, callback);
 };
-var patch_find_by_fk = function (persistentModel, persistentModelName, fk_field, fk_id, callback) {
+const patch_find_by_fk = function (persistentModel, persistentModelName, fk_field, fk_id, callback) {
   persistentModel.getDataSource().connector.connect(function (err, db) {
-    var collection = db.collection(persistentModelName);
-    var where = {};
+    const collection = db.collection(persistentModelName);
+    const where = {};
     where[fk_field] = patch_to_ensure_monogodb_id(persistentModel, fk_id);
     collection.find(where).toArray(callback);
   });
 };
 module.exports.customJobLoopOverModel = function (model_obj, next_up) {
-  var _offset = 0, page = 10, migrate_fn;
+  let _offset = 0, page = 10, migrate_fn;
 
-  var uploop = function () {
+  const uploop = function () {
     model_obj.find({limit: page, offset: _offset}, function (err, docList) {
 
       if (_.isError(err) || docList.length == 0) {

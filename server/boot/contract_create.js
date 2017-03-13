@@ -1,5 +1,6 @@
-var output = require('./../../common/util/outputjson');
-var contract_process = require("./../../common/logic/contract_process");
+"use strict";
+const output = require('./../../common/util/outputjson');
+const contract_process = require("./../../common/logic/contract_process");
 module.exports = function (app) {
   //app.use(loopback.token());
   console.log("contract process app");
