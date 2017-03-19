@@ -68,9 +68,7 @@ module.exports = function (contract) {
           licensed: false
         });
       }
-
     });
-
   };
 
   contract.remoteMethod("by_user", {
@@ -89,6 +87,7 @@ module.exports = function (contract) {
     },
     http: {verb: "get", path: "/by_user/:user_id"}
   });
+
   contract.remoteMethod("licensed", {
     description: ["Request of query for a user having the license to issue the price or not."],
     accepts: [
@@ -101,12 +100,13 @@ module.exports = function (contract) {
       }
     ],
     returns: {
-      arg: "luckylist", type: "object", root: true, description: "Return value"
+      arg: "n", type: "object", root: true, description: "Return value"
     },
     http: {verb: "get", path: "/licensed/:user_id"}
   });
+
   contract.remoteMethod("sell_ready", {
-    description: ["Answer whether this user can make sell of artworks."],
+    description: ["Answer whether this user can make sell of artworks. depreciated as of 2017/3"],
     accepts: [
       {
         arg: "user_id",
