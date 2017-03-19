@@ -16,27 +16,27 @@ const
   multia = require('multer');
 
 
-const  fileFilterFn = function fileFilter(req, file, cb) {
+const fileFilterFn = function fileFilter(req, file, cb) {
   console.log(logTag, file.mimetype);
-  const  okay_format = 'image/jpeg';
+  const okay_format = 'image/jpeg';
   if (file.mimetype == okay_format) {
     cb(null, true);
   } else {
-    const  str = 'Cannot accept this upload. It must be in jpg format';
+    const str = 'Cannot accept this upload. It must be in jpg format';
     console.log(logTag, str);
     cb(new Error(str));
   }
 };
 
-const  upload_start = function (pre_fix, user_id) {
-  const  c = {
+const upload_start = function (pre_fix, user_id) {
+  const c = {
     engine: null,
     basepath: "",
     fileNames: []
   };
-  const  _storage = multia.diskStorage({
+  const _storage = multia.diskStorage({
     destination: function (req, file, cb) {
-      const  folder_name = __parentDir + "/storage/profile/" + user_id + "/";
+      const folder_name = __parentDir + "/storage/profile/" + user_id + "/";
       fse.mkdirsSync(folder_name);
       c.basepath = folder_name;
       cb(null, folder_name);
@@ -49,7 +49,7 @@ const  upload_start = function (pre_fix, user_id) {
         generated = uuid.v4();
 
 
-      const  newFile = pre_fix + "_" + generated.substring(generated.length - 12, generated.length - 1) + '.' + extension;
+      const newFile = pre_fix + "_" + generated.substring(generated.length - 12, generated.length - 1) + '.' + extension;
       c.fileNames.push(newFile);
 
       console.log("===========");
@@ -71,10 +71,10 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
   let uploader = upload_start(pre_fix, user_id);
   uploader.engine(req, res, function (err) {
     const fileList = uploader.fileNames;
-    const  paths = _.map(fileList, function (it) {
+    const paths = _.map(fileList, function (it) {
       return uploader.basepath + it;
     });
-    const  submission = req.query;
+    const submission = req.query;
 
     console.log("===========");
     console.log("field for body");
@@ -133,7 +133,7 @@ module.exports.process = function (req, res, pre_fix, user_id, contract, cb) {
 };
 
 module.exports.list_contracts = function (contract, user_id, cb) {
-  const  where_cond = {
+  const where_cond = {
     "userId": user_id
   };
 
@@ -153,24 +153,27 @@ module.exports.list_contracts = function (contract, user_id, cb) {
   });
 };
 
-const  approve_can_sell = module.exports.approved_can_sell_now = function (contract, user_id, cb) {
-  const  result_call = function (err, results) {
+const approve_can_sell = module.exports.approved_can_sell_now = function (contract, user_id, cb) {
+  const result_call = function (err, results) {
     if (pres3.l.isError(err)) {
       return cb(err);
     }
     let allowed = false;
-    pres3.async.eachSeries(results, function (result, next) {
-      if (!pres3.l.isUndefined(result.status)) {
-        if (result.status == 2) {
-          allowed = true;
+    pres3.async.eachSeries(
+      results,
+      function (result, next) {
+        if (!pres3.l.isUndefined(result.status)) {
+          if (result.status == 2) {
+            allowed = true;
+          }
         }
-      }
-      next();
-    }, function (next_done) {
-      cb(null, {
-        allow_making_sale: allowed
+        next();
+      },
+      function (next_done) {
+        cb(null, {
+          allow_making_sale: allowed
+        });
       });
-    });
   };
   /*
    const  where_cond = {
@@ -180,6 +183,9 @@ const  approve_can_sell = module.exports.approved_can_sell_now = function (contr
    order: "createtime DESC",
    skip: 0
    }, result_call);*/
-  pres3.patchFindFk(contract, "Contract", "userId", user_id, result_call);
+  //pres3.patchFindFk(contract, "Contract", "userId", user_id, result_call);
+  cb(null, {
+    allow_making_sale: false
+  });
 };
 

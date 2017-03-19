@@ -12,7 +12,7 @@ const
 
 const fast = function (uploadsDir) {
   fse.emptyDir(uploadsDir, function (err) {
-    if (!err) console.log('success!')
+    if (!err) console.log('success!');
   })
 };
 
