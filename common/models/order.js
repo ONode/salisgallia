@@ -2,13 +2,13 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-var loopback = require('loopback');
-var _ = require('lodash');
-var db_worker = require("./../util/db.js");
-var pd = require("./../logic/preS3");
-var output = require("./../util/outputjson");
+const loopback = require('loopback');
+const _ = require('lodash');
+const db_worker = require("./../util/db.js");
+const pd = require("./../logic/preS3");
+const output = require("./../util/outputjson");
 const logTag = ">OrderOp";
-var LoopBackContext = require('loopback-context');
+const LoopBackContext = require('loopback-context');
 
 module.exports = function (Order) {
   Order.disableRemoteMethodByName('create');
@@ -29,18 +29,19 @@ module.exports = function (Order) {
     console.log("> order post from confirmation =======");
 
     /*
+
      console.log(typeof data);
      console.log(user_id);
      console.log(data);
+
      */
 
     console.log("> ====================================");
     if (pd.l.isArray(data)) {
       pd.async.eachSeries(data, function (d, next) {
-        var _recorded = new Date;
-
+        const _recorded = new Date;
         d.userID = user_id;
-        var mOrder = new Order(d);
+        const mOrder = new Order(d);
         mOrder.save(function (err, doc) {
           if (err) {
             console.log(logTag, "save order error", err);

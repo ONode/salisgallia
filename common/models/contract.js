@@ -11,10 +11,10 @@ module.exports = function (contract) {
   contract.disableRemoteMethodByName('upsert');
   contract.disableRemoteMethodByName("deleteById");
   contract.disableRemoteMethodByName("updateAll");
-  contract.disableRemoteMethodByName("updateAttributes");
+  //contract.disableRemoteMethodByName("updateAttributes");
   contract.disableRemoteMethodByName("createChangeStream");
 
-  contract.disableRemoteMethodByName("patchOrCreate");
+  //contract.disableRemoteMethodByName("patchOrCreate");
   contract.disableRemoteMethodByName("replaceOrCreate");
   contract.disableRemoteMethodByName("replaceById");
   contract.disableRemoteMethodByName("upsertWithWhere");

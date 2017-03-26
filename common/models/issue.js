@@ -2,19 +2,19 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
-var loopback = require('loopback');
-var _ = require('lodash');
-var db_worker = require("./../util/db.js");
-var s3_worker = require("./../logic/s3upload");
-var output = require("./../util/outputjson");
+const loopback = require('loopback');
+const _ = require('lodash');
+const db_worker = require("./../util/db.js");
+const s3_worker = require("./../logic/s3upload");
+const output = require("./../util/outputjson");
 const log = "> basemap op";
-var LoopBackContext = require('loopback-context');
+const LoopBackContext = require('loopback-context');
 /*MyIssue = loopback.Model.extend('Issue');
  MyIssue.on('myEvent', function() {
  console.log('meep meep!');
  });
  MyIssue.setup = function() {
- var MyModel = this;
+ const MyModel = this;
  // since setup is called for every extended model
  // the extended model will also have the event listener
  MyIssue.on('myEvent', function() {
@@ -35,7 +35,7 @@ module.exports = function (Issue) {
   Issue.disableRemoteMethodByName("replaceById");
   Issue.disableRemoteMethodByName("upsertWithWhere");
   Issue.setup = function () {
-    var MyModel = this;
+    const MyModel = this;
     // since setup is called for every extended model
     // the extended model will also have the event listener
     Issue.on('myEvent', function () {
@@ -87,7 +87,7 @@ module.exports = function (Issue) {
       data = undefined;
     }
 
-    var actiontaken = parseInt(data["actiontaken"]),
+    const actiontaken = parseInt(data["actiontaken"]),
       confirmations = data["violation_code"],
       verify = data["verify"],
       subject_id = data["subject_id"],
@@ -98,7 +98,7 @@ module.exports = function (Issue) {
        Remove all items based on
        1. subject id
        */
-      var basemap = loopback.getModel("Basemap");
+      const basemap = loopback.getModel("Basemap");
       basemap.findById(subject_id, function (err, ins) {
         ins.updateAttributes({
           "listing.enabled": false,

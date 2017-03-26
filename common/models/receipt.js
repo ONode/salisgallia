@@ -2,8 +2,8 @@
  * Created by hesk on 17年1月9日.
  */
 const pre = require("../util/outputjson");
-var _ = require('lodash');
-var stripe = require("stripe")(process.env.STRIPE_API_LIVE_SC || "");
+const _ = require('lodash');
+const stripe = require("stripe")(process.env.STRIPE_API_LIVE_SC || "");
 module.exports = function (Receipt) {
   Receipt.disableRemoteMethodByName('create');
   Receipt.disableRemoteMethodByName('upsert');
@@ -38,8 +38,8 @@ module.exports = function (Receipt) {
   }
 
   Receipt.push_receipt = function (data, cb) {
-    var event_json = data;
-    var doc = event_json.data.object;
+    const event_json = data;
+    const doc = event_json.data.object;
     console.log(data);
     Receipt.create({
       "source_network_id": event_json.request,

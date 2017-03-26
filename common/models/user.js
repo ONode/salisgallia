@@ -1,7 +1,8 @@
+'use strict';
 /**
  * Created by zJJ on 7/20/2016.
  */
-var speakeasy = require("speakeasy"),
+const speakeasy = require("speakeasy"),
   _ = require("lodash"),
   salt = "moc43viv8ipum",
   https = require("https"),
@@ -15,16 +16,16 @@ var speakeasy = require("speakeasy"),
     acknowledged: true
   };
 
-var pwdassign = function (token) {
+const pwdassign = function (token) {
   return _crypto.createHmac("md5", salt)
     .update(token)
     .digest("hex");
 };
 
-var check_date_expired = function (expire_time) {
+const check_date_expired = function (expire_time) {
   if (!_.isEmpty(expire_time)) {
-    var date = new Date(expire_time);
-    var now = new Date();
+    const date = new Date(expire_time);
+    const now = new Date();
     if (date.parse() >= now.parse()) {
       console.log("> login =====================");
       console.log("This token is expired.");
@@ -247,14 +248,13 @@ module.exports = function (user) {
           ).on("error", function () {
             // handle errors somewhow
             console.log("Error in here from using nexmo");
-            var err = new Error("Sorry, nexmo is having issue from making the sms request!");
+            const err = new Error("Sorry, nexmo is having issue from making the sms request!");
             err.statusCode = 401;
             err.code = "LOGIN_FAILED";
             return fn(err);
           });
-
         } else {
-          var err = new Error("Sorry, but that email and password do not match!");
+          const err = new Error("Sorry, but that email and password do not match!");
           err.statusCode = 401;
           err.code = "LOGIN_FAILED";
           return fn(err);
@@ -282,7 +282,7 @@ module.exports = function (user) {
     err.code = "LOGIN_FAILED";
     this.findOne({where: {email: credentials.email}}, function (err, user) {
       // And don"t forget to match this secret to the one in requestCode()
-      var code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
+      const code = speakeasy.totp({secret: "APP_SECRET" + credentials.email});
       if (code !== credentials.twofactor) {
         return fn(err);
       }
@@ -307,7 +307,7 @@ module.exports = function (user) {
     //  var ojec = JSON.parse(data);
     //  console.log("update ojec", ojec);
     //console.log("update data", data);
-    var err = new Error("Sorry, but that verification code does not work!");
+    const err = new Error("Sorry, but that verification code does not work!");
     err.statusCode = 401;
     err.code = "LOGIN_FAILED";
     //  console.log("update", "line3");
@@ -325,11 +325,11 @@ module.exports = function (user) {
       data = undefined;
     }
     //console.log("> ==== :", data);
-    var _url_ = data["photo"];
-    var facebook_id = data["facebook.userid"];
-    var email = data["facebook.email"];
-    var facebook_token = data["facebook.token"];
-    var facebook_expire = data["facebook.expire"];
+    const _url_ = data["photo"];
+    const facebook_id = data["facebook.userid"];
+    const email = data["facebook.email"];
+    const facebook_token = data["facebook.token"];
+    const facebook_expire = data["facebook.expire"];
     console.log("> ====================================");
     console.log("> Facebook login =====================");
     console.log("> ====================================");
@@ -382,7 +382,7 @@ module.exports = function (user) {
 
       } else {
 
-        var user_id = r.id;
+        const user_id = r.id;
 
         console.log("> ============================================================================");
         console.log("> found existing user id from using the facebook user ID =====================");
@@ -399,17 +399,17 @@ module.exports = function (user) {
           return fn(new Error("Facebook object is not found"), null);
         }
 
-        var __facebook = r.facebook;
-        var __email = r.facebook.email;
-        var __pwd = pwdassign(r.facebook.token);
-        var __pwd_from_request = pwdassign(facebook_token);
+        const __facebook = r.facebook;
+        const __email = r.facebook.email;
+        const __pwd = pwdassign(r.facebook.token);
+        const __pwd_from_request = pwdassign(facebook_token);
 
         console.log("> =======================================================");
         console.log("> Review facebook object before login =======", r.facebook);
         console.log("> Review facebook email =======", __email);
         console.log("> Review facebook password =======", __pwd);
         console.log("> =======================================================");
-        var bool_expired = check_date_expired(__facebook.expire);
+        const bool_expired = check_date_expired(__facebook.expire);
         if (__facebook.token != facebook_token) {
           console.log("> =======================================================");
           console.log("> Found differ from the previous token now need to change a new password");
@@ -462,15 +462,15 @@ module.exports = function (user) {
     });
     console.log("update", "execute first faster line here");
   };
-  var renamefiles = function (fileInfo, req, res) {
-    var uuid = require('node-uuid');
-    var origFilename = fileInfo.name;
+  const renamefiles = function (fileInfo, req, res) {
+    const uuid = require('node-uuid');
+    const origFilename = fileInfo.name;
     // optimisticly get the extension
-    var parts = origFilename.split('.'),
+    const parts = origFilename.split('.'),
       extension = parts[parts.length - 1];
     // Using a local timestamp + user id in the filename (you might want to change this)
-    var newFilename1 = (new Date()).getTime() + '_' + uuid.v1() + '.' + extension;
-    var newFilename2 = uuid.v1() + '.' + extension;
+    const newFilename1 = (new Date()).getTime() + '_' + uuid.v1() + '.' + extension;
+    const newFilename2 = uuid.v1() + '.' + extension;
     return newFilename2;
   };
   /**
@@ -481,7 +481,7 @@ module.exports = function (user) {
    * @param cb the callback next
    */
   user.update_profile_photo = function (req, res, user_id, options, cb) {
-    var StorageContainer = user.app.models.Container;
+    const StorageContainer = user.app.models.Container;
     StorageContainer.getContainers(function (err, containers) {
       if (containers.some(function (e) {
           return e.name == user_id;
@@ -507,20 +507,20 @@ module.exports = function (user) {
     });
   };
   /*user.check_login_cb = function (options, cb) {
-    if (_.isEmpty(options)) {
-      cb(new Error("data not correct 1"), null);
-    }
-  };
-  user.remoteMethod("check_login_cb", {
-    description: ["See specific action. "],
-    accepts: [
-      {arg: "options", type: "object", http: "optionsFromRequest"}
-    ],
-    returns: {
-      arg: "token", type: "object", root: true, description: "Return value"
-    },
-    http: {verb: "get", path: "/check_login"}
-  });*/
+   if (_.isEmpty(options)) {
+   cb(new Error("data not correct 1"), null);
+   }
+   };
+   user.remoteMethod("check_login_cb", {
+   description: ["See specific action. "],
+   accepts: [
+   {arg: "options", type: "object", http: "optionsFromRequest"}
+   ],
+   returns: {
+   arg: "token", type: "object", root: true, description: "Return value"
+   },
+   http: {verb: "get", path: "/check_login"}
+   });*/
 
   user.remoteMethod("email_verify_from_code", {
     description: ["Email verification with the code. "],
@@ -594,8 +594,7 @@ module.exports = function (user) {
     },
     http: {verb: "post", path: "/direct_login"}
   });
-  user.remoteMethod(
-    "most_popular", {
+  user.remoteMethod("most_popular", {
       description: ["List out the filter of popular artist in the community."],
       accepts: [],
       returns: {
@@ -604,8 +603,7 @@ module.exports = function (user) {
       http: {verb: "get", path: "/most_popular"}
     }
   );
-  user.remoteMethod(
-    "update_meta_call",
+  user.remoteMethod("update_meta_call",
     {
       description: ["Update the data object from the object."],
       accepts: [
@@ -619,8 +617,7 @@ module.exports = function (user) {
       http: {verb: "post", path: "/:id/insertimagemeta"}
     }
   );
-  user.remoteMethod(
-    "update_profile_photo",
+  user.remoteMethod("update_profile_photo",
     {
       description: ["Update user profile in this api"],
       accepts: [
