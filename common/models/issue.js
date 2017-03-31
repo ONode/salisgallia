@@ -82,7 +82,7 @@ module.exports = function (Issue) {
     });
   });
 
-  const _bmp = loopback.getModel("Basemap");
+
   const remove_tickets_related = function removeAllIssues(subject_id, fn) {
     Issue.destroyAll({subject_id}, function (err, info) {
       if (_.isError(err)) {
@@ -98,7 +98,7 @@ module.exports = function (Issue) {
     if (typeof data === 'function') {
       data = undefined;
     }
-
+    const _bmp = loopback.getModel("Basemap");
     const actiontaken = parseInt(data["actiontaken"]),
       confirmations = data["violation_code"],
       verify = data["verify"],
