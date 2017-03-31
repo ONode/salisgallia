@@ -82,6 +82,18 @@ module.exports = function (Issue) {
     });
   });
 
+  const _bmp = loopback.getModel("Basemap");
+  const remove_tickets_related = function removeAllIssues(subject_id, fn) {
+    Issue.destroyAll({subject_id}, function (err, info) {
+      if (_.isError(err)) {
+        console.log("remove error found:", err);
+        fn(err, null);
+      }
+      console.log("remove done:");
+      fn(null, info);
+    });
+  };
+
   Issue.resolve_issue = function (data, fn) {
     if (typeof data === 'function') {
       data = undefined;
@@ -94,12 +106,11 @@ module.exports = function (Issue) {
       from_agent_id = data["from_agent_id"];
 
     if (actiontaken == 601) {
-      /*
-       Remove all items based on
-       1. subject id
-       */
-      const basemap = loopback.getModel("Basemap");
-      basemap.findById(subject_id, function (err, ins) {
+      /* Remove all items based on 1. subject id */
+      console.log("notified - Remove all items based on ID:", subject_id);
+
+      _bmp.findById(subject_id, function (err, ins) {
+        console.log("found item for:", subject_id);
         ins.updateAttributes({
           "listing.enabled": false,
           "listing.violations": confirmations
@@ -107,20 +118,25 @@ module.exports = function (Issue) {
           if (_.isError(err)) {
             fn(err, null);
           }
-          Issue.destroyAll({
-            subject_id: subject_id
-          }, function (err, info) {
-            if (_.isError(err)) {
-              fn(err, null);
-            }
-            fn(null, info);
-          });
+          console.log("removing items for:", subject_id);
+          remove_tickets_related(subject_id, fn)
         });
       });
 
     } else if (actiontaken == 602) {
-      //there
-      fn(new Error("no action is taken 602"), null);
+      console.log("notified - Approve all of them and enable the listing:", subject_id);
+      _bmp.findById(subject_id, function (err, ins) {
+        ins.updateAttributes({
+          "listing.enabled": true,
+          "listing.violations": []
+        }, function (err, ins) {
+          if (_.isError(err)) {
+            fn(err, null);
+          }
+          remove_tickets_related(subject_id, fn)
+        });
+      });
+
     } else if (actiontaken == 603) {
       //there
       fn(new Error("no action is taken 603"), null);

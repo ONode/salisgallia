@@ -39,9 +39,12 @@ module.exports = function (app, cb) {
         }
       }, (err) => {
         try {
-         // console.log("basemap check request size", requests);
-          bw = collection.bulkWrite(requests, {ordered: true});
-          console.error("--- corn job is done");
+          if (requests.length > 0) {
+            bw = collection.bulkWrite(requests, {ordered: true});
+            console.log("---corn job is done");
+          } else {
+            console.log("---there is no operations in bulk");
+          }
         } catch (e) {
           console.error("bulk operations", e);
         }

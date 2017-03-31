@@ -145,6 +145,11 @@
       "type":"hasMany",
       "model":"Basemap",
       "foreignKey":"owner"
+    },
+    "issue":{
+      "type":"hasMany",
+      "model":"Issue",
+      "foreignKey":"from_agent_id"
     }
   },
   "methods": [

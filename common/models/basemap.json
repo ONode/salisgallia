@@ -166,7 +166,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "issue":{
+      "type":"hasMany",
+      "model":"Issue",
+      "foreignKey":"subject_id"
+    }
+  },
   "acls": [
     {
       "accessType": "*",
