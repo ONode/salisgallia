@@ -36,7 +36,7 @@
     },
     "status": {
       "type": "number",
-      "description": "the current status of certification 1 -pending 2 -approved 3 -rejected 4 -revoked",
+      "description": "the current status of certification (1 -pending. 2 -approved. 3 -rejected. 4 -revoked.)",
       "required": true
     },
     "path": {
