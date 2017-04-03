@@ -85,7 +85,10 @@ module.exports = function (Contrax) {
       if (err) cb(err, null);
       // console.log("update what now", oneDoc, b.actionCode);
       if (b.actionCode) {
-        oneDoc.updateAttribute("status", b.actionCode, function (err, r) {
+        oneDoc.updateAttributes({
+          "status": b.actionCode,
+          "updatetime": new Date()
+        }, function (err, r) {
           if (err) cb(err, null);
           //   console.log("update success", r);
           cb(null, result_bool);
