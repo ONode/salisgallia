@@ -3,9 +3,9 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 'use strict';
-const  loopback = require('loopback');
-const  boot = require('loopback-boot');
-const  app = module.exports = loopback();
+const loopback = require('loopback');
+const boot = require('loopback-boot');
+const app = module.exports = loopback();
 if (process.env.S3_ACCESS_KEY_ID == undefined) {
   console.log('Now search for .env file');
   require('dotenv').config();
@@ -37,10 +37,10 @@ app.start = function () {
   // start the web server
   return app.listen(function () {
     app.emit('started');
-    const  baseUrl = app.get('url').replace(/\/$/, '');
+    const baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', app.get('url'));
     if (app.get('loopback-component-explorer')) {
-      const  explorerPath = app.get('loopback-component-explorer').mountPath;
+      const explorerPath = app.get('loopback-component-explorer').mountPath;
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });

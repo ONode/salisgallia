@@ -1,6 +1,6 @@
 {
   "restApiRoot": "/api",
-  "host": "0.0.0.0",
+  "host": "::",
   "port": 3001,
   "remoting": {
     "rest": {
