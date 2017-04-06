@@ -125,8 +125,7 @@
     "bitcoin",
     "ltecoin"
   ],
-  "acls": [
-  ],
+  "methods": [],
   "relations": {
     "contract": {
       "type": "hasMany",
@@ -157,7 +156,7 @@
       "foreignKey": "from_agent_id"
     }
   },
-  "methods": [
+  "acls": [
     {
       "accessType": "READ",
       "principalType": "ROLE",
