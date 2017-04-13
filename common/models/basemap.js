@@ -306,6 +306,54 @@ module.exports = function (basemap) {
     }
   };
 
+  basemap.admin_get_price_list = function (skip, limit, cb) {
+    ks_db_price_mgr.list_pending_deals(skip, limit, function (res) {
+      cb(null, res);
+    })
+  };
+
+  basemap.adminApprovePrice = function (sku, data, cb) {
+    const new_status = data["state"];
+    ks_db_price_mgr.adminStatus(sku, new_status, function (res) {
+
+      ks_db_price_mgr.get_price(sku, function (docc) {
+        //console.log("docc object", docc);
+
+        basemap.findOne({where: {id: sku}}, function (err, doc) {
+          //console.log("find one object", doc);
+
+          doc.updateAttributes({
+            "baseprice":docc.baseprice,
+            "license_price":docc.license_price,
+            "print_limit":docc.print_limit,
+            "listing.monetize": true,
+            "listing.searchable": true
+          }, function (err, r) {
+            cb(null, r);
+          });
+        });
+      });
+    });
+  };
+
+  basemap.pricemanager = function (stock_id, content, cb) {
+    if (typeof content === 'function') {
+      content = undefined;
+    }
+    if (_.isEmpty(content)) {
+      cb(new Error("body is not found"), null);
+    }
+    ks_db_price_mgr.submit_deal(stock_id, content, function () {
+      cb(null, result_bool);
+    })
+  };
+
+  basemap.checkprice = function (stock_id, cb) {
+    ks_db_price_mgr.get_price(stock_id, function (doc) {
+      cb(null, doc);
+    })
+  };
+
   basemap.remoteMethod("admin_get_price_list", {
     description: ["Request action for running against the approval of listing process."],
     accepts: [
@@ -329,54 +377,6 @@ module.exports = function (basemap) {
     },
     http: {verb: "get", path: "/adminpricelist/:skip/:limit"}
   });
-  basemap.admin_get_price_list = function (skip, limit, cb) {
-    ks_db_price_mgr.list_pending_deals(skip, limit, function (res) {
-      cb(null, res);
-    })
-  };
-  basemap.remoteMethod("admin_change_price_status", {
-    description: ["Request action for running against the approval of listing process."],
-    accepts: [
-      {
-        arg: "sku",
-        type: "number",
-        http: {source: "path"},
-        required: true,
-        description: "pagination skip items"
-      },
-      {
-        arg: "data", type: "object", http: {source: "body"},
-        required: true,
-        description: "the new status in change"
-      }
-    ],
-    returns: {
-      arg: "list_price", type: "object", root: true, description: "Return value"
-    },
-    http: {verb: "get", path: "/admin_price_status/:sku"}
-  });
-  basemap.admin_change_price_status = function (sku, data, cb) {
-    const new_status = data["status"];
-    ks_db_price_mgr.adminStatus(sku, new_status, function (res) {
-      cb(null, res);
-    });
-  };
-  basemap.pricemanager = function (stock_id, content, cb) {
-    if (typeof content === 'function') {
-      content = undefined;
-    }
-    if (_.isEmpty(content)) {
-      cb(new Error("body is not found"), null);
-    }
-    ks_db_price_mgr.submit_deal(stock_id, content, function () {
-      cb(null, result_bool);
-    })
-  };
-  basemap.checkprice = function (stock_id, cb) {
-    ks_db_price_mgr.get_price(stock_id, function (doc) {
-      cb(null, doc);
-    })
-  };
   basemap.remoteMethod("request_action", {
     description: ["Request action for running against the approval of listing process."],
     accepts: [
@@ -401,7 +401,27 @@ module.exports = function (basemap) {
     http: {verb: "get", path: "/request_action/:basemapid/:requeststatuscode"}
   });
 
-
+  basemap.remoteMethod("adminApprovePrice", {
+    description: ["Request action for running against the approval of listing process."],
+    accepts: [
+      {
+        arg: "sku",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "pagination skip items"
+      },
+      {
+        arg: "data", type: "object", http: {source: "body"},
+        required: true,
+        description: "the new status in change"
+      }
+    ],
+    returns: {
+      arg: "list_price", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/adminpriceaction/:sku"}
+  });
   basemap.remoteMethod("get_custom_job", {
     description: ["Cron get empty removals ..."],
     accepts: [],
@@ -410,7 +430,6 @@ module.exports = function (basemap) {
     },
     http: {verb: "get", path: "/get_custom_job/"}
   });
-
   basemap.remoteMethod("get_empty_check", {
     description: ["Cron get empty removals ..."],
     accepts: [],
