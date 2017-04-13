@@ -305,6 +305,62 @@ module.exports = function (basemap) {
       cb(new Error("not available for this action"), null);
     }
   };
+
+  basemap.remoteMethod("admin_get_price_list", {
+    description: ["Request action for running against the approval of listing process."],
+    accepts: [
+      {
+        arg: "skip",
+        type: "number",
+        http: {source: "path"},
+        required: true,
+        description: "pagination skip items"
+      },
+      {
+        arg: "limit",
+        type: "number",
+        http: {source: "path"},
+        required: true,
+        description: "pagination limit"
+      }
+    ],
+    returns: {
+      arg: "list_price", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/adminpricelist/:skip/:limit"}
+  });
+  basemap.admin_get_price_list = function (skip, limit, cb) {
+    ks_db_price_mgr.list_pending_deals(skip, limit, function (res) {
+      cb(null, res);
+    })
+  };
+  basemap.remoteMethod("admin_change_price_status", {
+    description: ["Request action for running against the approval of listing process."],
+    accepts: [
+      {
+        arg: "sku",
+        type: "number",
+        http: {source: "path"},
+        required: true,
+        description: "pagination skip items"
+      },
+      {
+        arg: "data", type: "object", http: {source: "body"},
+        required: true,
+        description: "the new status in change"
+      }
+    ],
+    returns: {
+      arg: "list_price", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/admin_price_status/:sku"}
+  });
+  basemap.admin_change_price_status = function (sku, data, cb) {
+    const new_status = data["status"];
+    ks_db_price_mgr.adminStatus(sku, new_status, function (res) {
+      cb(null, res);
+    });
+  };
   basemap.pricemanager = function (stock_id, content, cb) {
     if (typeof content === 'function') {
       content = undefined;

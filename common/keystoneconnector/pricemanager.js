@@ -1,6 +1,7 @@
 /**
  * Created by hesk on 17年2月6日.
  */
+"use strict";
 const l = require("lodash");
 const ks_db_pricemgr = require("./connector")(process.env.MLAB_M3, "pricings");
 module.exports = {
@@ -18,6 +19,16 @@ module.exports = {
       function (res) {
         callback();
       });
+  },
+  adminStatus: function (sku, statusName, cb) {
+    ks_db_pricemgr.updateOnly(sku, {status: statusName}, cb);
+  },
+  list_pending_deals: function (skip, limit, callback) {
+    ks_db_pricemgr.findFromPagination({
+      state: "pending"
+    }, skip, limit, function (res) {
+      callback(res);
+    });
   },
   get_price: function (stock_id, callback) {
     ks_db_pricemgr.find(stock_id,

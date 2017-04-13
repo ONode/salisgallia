@@ -167,10 +167,10 @@
   },
   "validations": [],
   "relations": {
-    "issue":{
-      "type":"hasMany",
-      "model":"Issue",
-      "foreignKey":"subject_id"
+    "issue": {
+      "type": "hasMany",
+      "model": "Issue",
+      "foreignKey": "subject_id"
     }
   },
   "acls": [
@@ -207,6 +207,13 @@
       "principalId": "admin",
       "permission": "ALLOW",
       "property": "listing"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "admin_get_price_list"
     }
   ],
   "methods": []

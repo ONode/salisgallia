@@ -53,13 +53,14 @@ const connection_db = function (db_url_set, model) {
         result_callback(myDocument);
       });
     },
-    findByAttrKeyPagination: function (keyName, SimpleValue, result_callback, _skip, _limit) {
-      self.Model.find({
-        keyName: SimpleValue
-      }).skip(_skip).limit(_limit).then(function (cursor) {
-        const myDocument = cursor.hasNext() ? cursor.next() : null;
-        result_callback(myDocument);
-      });
+    findFromPagination: function (_where, _skip, _limit, result_callback) {
+      const cursor = self.Model.find(_where).skip(_skip).limit(_limit);
+      const my_doc = cursor.hasNext() ? cursor.next() : null;
+      if (my_doc) {
+        cursor.toArray(function (err, results) {
+          result_callback(results);
+        });
+      }
     },
     lbQueryLooper: function (QueryContext, query_additional_options, resultcb) {
       const Query = QueryContext.req;
@@ -133,6 +134,13 @@ const connection_db = function (db_url_set, model) {
     findByAttrKeyAdvance: function (objectQuery, result_callback) {
       self.Model.find(objectQuery).then(function (cursor) {
         result_callback(cursor.toArray());
+      });
+    },
+    updateOnly:function(_id, object, result_cb){
+      self.Model.updateOne({
+        _id: new ObjectID(_id)
+      }, {$set: object}).then(function (result) {
+        result_cb(result);
       });
     },
     insertOrUpdate: function (_id_, object, result_callback) {
