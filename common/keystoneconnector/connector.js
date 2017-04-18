@@ -136,7 +136,7 @@ const connection_db = function (db_url_set, model) {
         result_callback(cursor.toArray());
       });
     },
-    updateOnly:function(_id, object, result_cb){
+    updateOnly: function (_id, object, result_cb) {
       self.Model.updateOne({
         _id: new ObjectID(_id)
       }, {$set: object}).then(function (result) {

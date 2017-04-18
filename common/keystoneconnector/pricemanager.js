@@ -20,8 +20,12 @@ module.exports = {
         callback();
       });
   },
-  adminStatus: function (sku, statusName, cb) {
-    ks_db_pricemgr.updateOnly(sku, {status: statusName}, cb);
+  adminStatus: function (sku, data,  cb) {
+    ks_db_pricemgr.updateOnly(sku, {
+      state: data.state,
+      estlicenseprice: data.estlicenseprice,
+      estprice: data.estprice
+    }, cb);
   },
   list_pending_deals: function (skip, limit, callback) {
     ks_db_pricemgr.findFromPagination({

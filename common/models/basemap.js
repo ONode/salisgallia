@@ -313,9 +313,8 @@ module.exports = function (basemap) {
   };
 
   basemap.adminApprovePrice = function (sku, data, cb) {
-    const new_status = data["state"];
-    console.log("dta", data);
-    ks_db_price_mgr.adminStatus(sku, new_status, function (res) {
+    console.log("adminApprovePrice", data);
+    ks_db_price_mgr.adminStatus(sku, data, function (res) {
       ks_db_price_mgr.get_price(sku, function (docc) {
         //console.log("docc object", docc);
         basemap.findOne({where: {id: sku}}, function (err, doc) {
