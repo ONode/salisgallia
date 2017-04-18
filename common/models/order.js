@@ -59,7 +59,6 @@ module.exports = function (Order) {
     }
   };
 
-
   Order.remoteMethod(
     "post_order_notification",
     {
