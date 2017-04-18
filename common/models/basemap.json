@@ -151,6 +151,8 @@
         "violations": "array",
         "meta_ready": "Boolean",
         "status": "number",
+        "sold_license": "Boolean",
+        "sold_out": "Boolean",
         "searchable": "Boolean"
       }
     },

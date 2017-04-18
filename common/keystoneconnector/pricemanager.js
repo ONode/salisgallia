@@ -5,6 +5,12 @@
 const l = require("lodash");
 const ks_db_pricemgr = require("./connector")(process.env.MLAB_M3, "pricings");
 module.exports = {
+  /**
+   * the price is provided by the customers
+   * @param stock_id the stock id
+   * @param content the content
+   * @param callback the callback is now
+   */
   submit_deal: function (stock_id, content, callback) {
     const after_merge = l.merge({
       key: stock_id,
@@ -20,11 +26,11 @@ module.exports = {
         callback();
       });
   },
-  adminStatus: function (sku, data,  cb) {
+  adminStatus: function (sku, data, cb) {
     ks_db_pricemgr.updateOnly(sku, {
       state: data.state,
-      estlicenseprice: data.estlicenseprice,
-      estprice: data.estprice
+      estlicenseprice: parseInt(data.estlicenseprice),
+      estprice: parseInt(data.estprice)
     }, cb);
   },
   list_pending_deals: function (skip, limit, callback) {

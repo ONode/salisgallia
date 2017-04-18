@@ -319,10 +319,14 @@ module.exports = function (basemap) {
         //console.log("docc object", docc);
         basemap.findOne({where: {id: sku}}, function (err, doc) {
           //console.log("find one object", doc);
+          const unit = parseInt(docc.print_limit);
           doc.updateAttributes({
-            "baseprice": docc.baseprice,
-            "license_price": docc.license_price,
-            "print_limit": docc.print_limit,
+            "price": docc.estprice,
+            "baseprice": docc.estprice,
+            "license_price": docc.estlicenseprice,
+            "print_limit": unit,
+            "listing.sold_out": unit == 0,
+            "listing.sold_license": false,
             "listing.monetize": true,
             "listing.searchable": true
           }, function (err, r) {
