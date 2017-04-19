@@ -67,7 +67,7 @@ function ensureVariableInteger(context, item) {
 module.exports = function (basemap) {
   basemap.disableRemoteMethodByName('create');
   basemap.disableRemoteMethodByName('upsert');
-  basemap.disableRemoteMethodByName("deleteById");
+ // basemap.disableRemoteMethodByName("deleteById");
   basemap.disableRemoteMethodByName("updateAll");
   basemap.disableRemoteMethodByName("updateAttributes");
   basemap.disableRemoteMethodByName("createChangeStream");
@@ -180,31 +180,26 @@ module.exports = function (basemap) {
   });
 
   basemap.observe('before delete', function (ctx, next) {
-    //const ctx = loopback.getCurrentContext();
-    console.log('Going to delete %s matching %j',
-      ctx.Model.pluralModelName,
-      ctx.where);
+    //     const ctx=loopback.getCurrentContext();
+    //     console.log('Going to delete %s matching %j', ctx.Model.pluralModelName, ctx.where);
     const basemapId = ctx.where['id'];
-    db_worker.getInstanceById(basemap, basemapId,
-      function (data) {
-        console.log(logTag, 'remove item', data);
-        if (data != null) {
-          console.log(logTag, '>========== START removing the files from S3 folder');
-          const base_path = data.folder_base_name;
-          db_worker.updateByIdAndReduce(
-            basemap.app.models.user, data.owner,
-            "uploads",
-            function () {
-              s3clean.remove_file_from_dest(base_path, function () {
-                console.log(logTag, '>========== END removing the files from S3 folder');
-              });
-            });
-        }
-        next();
-      }, function (err) {
-        console.log(logTag, 'remove item', err);
-        next();
-      });
+    const usr = basemap.app.models.user;
+    db_worker.getInstanceById(basemap, basemapId, function (data) {
+      //   console.log(logTag, '/-\-Remove item', data);
+      const base_path = data.folder_base_name;
+      if (data != null) {
+        // console.log(logTag, '/-\-Start removing files from S3 folder');
+        db_worker.updateByIdAndReduce(usr, data.owner, "uploads", function () {
+          s3clean.remove_file_from_dest(base_path, function () {
+            //console.log(logTag, '/-\-End removing files from S3 folder');
+          });
+        });
+      }
+      next();
+    }, function (err) {
+      console.log(logTag, 'remove item', err);
+      next();
+    });
   });
 
   basemap.observe('after delete', function (ctx, next) {
