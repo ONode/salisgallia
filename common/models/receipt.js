@@ -3,6 +3,7 @@
  */
 const pre = require("../util/outputjson");
 const _ = require('lodash');
+const db_worker = require("./../util/db.js");
 const stripe = require("stripe")(process.env.STRIPE_API_LIVE_SC || "");
 module.exports = function (Receipt) {
   Receipt.disableRemoteMethodByName('create');
@@ -56,7 +57,26 @@ module.exports = function (Receipt) {
       if (_.isError(err)) {
         return cb(err);
       }
-      cb(null, pre.outAcknowledgePositive());
+      const order = Receipt.app.models.Order;
+      const source_n_id = r.source_rec_id;
+      /**
+       * now we need to confirm the previous order and confirm those order has been filled.
+       */
+      order.updateAll(
+        {source_network_id: source_n_id},
+        {isOrderfilled: true},
+        function (err, info) {
+
+          if (err) {
+            console.error("error", err);
+          }
+
+          if (_.isArray(info)) {
+            console.log("info is found", info);
+          }
+
+          cb(null, pre.outAcknowledgePositive());
+        });
     });
   };
 
