@@ -52,6 +52,10 @@
       "required": true,
       "description": "is that a test mode or the live mode"
     },
+    "buyerId": {
+      "type": "string",
+      "required": false
+    },
     "createtime": {
       "type": "Date",
       "default": "$now",

@@ -1,6 +1,7 @@
 /**
  * Created by hesk on 17年1月9日.
  */
+"use strict";
 const pre = require("../util/outputjson");
 const _ = require('lodash');
 const db_worker = require("./../util/db.js");
@@ -59,23 +60,29 @@ module.exports = function (Receipt) {
       }
       const order = Receipt.app.models.Order;
       const source_n_id = r.source_rec_id;
+      //const clip_id = r._id;
       /**
-       * now we need to confirm the previous order and confirm those order has been filled.
+       now we need to confirm the previous order and confirm those order has been filled.
+       update user Id with the buyer Id
        */
       order.updateAll(
         {source_network_id: source_n_id},
         {isOrderfilled: true},
         function (err, info) {
-
           if (err) {
             console.error("error", err);
           }
-
           if (_.isArray(info)) {
-            console.log("info is found", info);
+            console.log("order update all with [source net id] info is found", info);
           }
-
-          cb(null, pre.outAcknowledgePositive());
+          r.updateAttribute({buyerId: item.buyerId}, function (err, item) {
+            if (err) {
+              console.error("error", err);
+            }
+            console.log("info buyer is updated.");
+            cb(null, pre.outAcknowledgePositive());
+          });
+          /*order.find({where: {source_network_id: source_n_id}}, function (callback) {});*/
         });
     });
   };

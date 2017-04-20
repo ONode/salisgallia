@@ -142,6 +142,16 @@
       "model": "Order",
       "foreignKey": "buyerId"
     },
+    "receiptSell": {
+      "type": "hasMany",
+      "model": "Receipt",
+      "foreignKey": "sellerId"
+    },
+    "receiptBuy": {
+      "type": "hasMany",
+      "model": "Receipt",
+      "foreignKey": "buyerId"
+    },
     "accessTokens": {
       "type": "hasMany",
       "model": "AccessToken",
