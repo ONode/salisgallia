@@ -29,12 +29,12 @@ module.exports = function (Receipt) {
    */
 
   function trycc(source_cc) {
-    var city = source_cc.address_city == undefined ? "" : source_cc.address_city;
-    var address_country = source_cc.address_country == undefined ? "" : source_cc.address_country;
-    var address_line1 = source_cc.address_line1 == undefined ? "" : source_cc.address_line1;
-    var address_line2 = source_cc.address_line2 == undefined ? "" : source_cc.address_line2;
-    var address_state = source_cc.address_state == undefined ? "" : source_cc.address_state;
-    var address_zip = source_cc.address_zip == undefined ? "" : source_cc.address_zip;
+    const city = source_cc.address_city == undefined ? "" : source_cc.address_city;
+    const address_country = source_cc.address_country == undefined ? "" : source_cc.address_country;
+    const address_line1 = source_cc.address_line1 == undefined ? "" : source_cc.address_line1;
+    const address_line2 = source_cc.address_line2 == undefined ? "" : source_cc.address_line2;
+    const address_state = source_cc.address_state == undefined ? "" : source_cc.address_state;
+    const address_zip = source_cc.address_zip == undefined ? "" : source_cc.address_zip;
 
     return city + " " + address_country + " " + address_line1 + " " + address_line2 + " " + address_state + " " + address_zip;
   }
@@ -42,7 +42,8 @@ module.exports = function (Receipt) {
   Receipt.push_receipt = function (data, cb) {
     const event_json = data;
     const doc = event_json.data.object;
-    console.log(data);
+    console.log("> post receipt review");
+    // console.log(data);
     Receipt.create({
       "source_network_id": event_json.request,
       "source_rec_id": doc.id == undefined ? "" : doc.id,
@@ -60,30 +61,37 @@ module.exports = function (Receipt) {
       }
       const order = Receipt.app.models.Order;
       const source_n_id = r.source_rec_id;
-      //const clip_id = r._id;
+      console.log("list of orders for seller ID");
       /**
        now we need to confirm the previous order and confirm those order has been filled.
        update user Id with the buyer Id
-       */
+       **/
       order.updateAll(
         {source_network_id: source_n_id},
         {isOrderfilled: true},
-        function (err, info) {
+        function (err, count) {
           if (err) {
             console.error("error", err);
           }
-          if (_.isArray(info)) {
-            console.log("order update all with [source net id] info is found", info);
-          }
-          r.updateAttribute({buyerId: item.buyerId}, function (err, item) {
-            if (err) {
-              console.error("error", err);
-            }
-            console.log("info buyer is updated.");
-            cb(null, pre.outAcknowledgePositive());
+          console.log(">check receipt object", r);
+          order.findOne({where: {source_network_id: source_n_id}}, function (err, info) {
+            console.log(">check buyer Id now", info);
+            Receipt.findById(r.id, function (err, instance_receipt) {
+              if (err) {
+                console.error("error", err);
+              } else {
+                instance_receipt.updateAttributes({buyerId: info.buyerId}, function (err, item) {
+                  if (err) {
+                    console.error("error", err);
+                  }
+                  console.log("info buyer is updated.");
+                  cb(null, pre.outAcknowledgePositive());
+                });
+              }
+            });
           });
-          /*order.find({where: {source_network_id: source_n_id}}, function (callback) {});*/
         });
+
     });
   };
 
