@@ -2,6 +2,7 @@
 // Node module: loopback-getting-started-intermediate
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
+"use strict";
 const loopback = require('loopback');
 const _ = require('lodash');
 const db_worker = require("./../util/db.js");
@@ -9,6 +10,14 @@ const pd = require("./../logic/preS3");
 const output = require("./../util/outputjson");
 const logTag = ">OrderOp";
 const LoopBackContext = require('loopback-context');
+const
+  ORIGINAL_WORK = 1001,
+  LIMITED_AI_WORK = 1006,
+  ORIGINAL_WORK_ANDROID = 2,
+  LIMITED_COPY_FROM_ORIGINAL_ANDROID = 3,
+  LIMITED_COPY_CANVAS_FROM_ORIGINAL_ANDROID = 4,
+  PRODUCT_WOODWORK = 5000,
+  LIMITED_COPY_FROM_ORIGINAL = 1005;
 
 module.exports = function (Order) {
   Order.disableRemoteMethodByName('create');
@@ -21,35 +30,66 @@ module.exports = function (Order) {
   Order.disableRemoteMethodByName("replaceOrCreate");
   Order.disableRemoteMethodByName("replaceById");
   Order.disableRemoteMethodByName("upsertWithWhere");
+
+  const processOrderP1 = function (liveMode, ptype, stock_uuid, next) {
+    const basemap = Order.app.models.basemap;
+    if (liveMode) {
+      console.log("live mode is started now");
+      if (ptype == ORIGINAL_WORK || ptype == ORIGINAL_WORK_ANDROID) {
+        db_worker.updateByIdUpdate(basemap, stock_uuid, {
+          "listing.sold_license": true
+        }, next);
+      } else if (ptype == LIMITED_COPY_FROM_ORIGINAL) {
+        //TODO: sold out with the limited items only
+        db_worker.updateByIdUpdate(basemap, stock_uuid, {
+          "listing.sold_out": false
+        }, next);
+      } else {
+        console.log(logTag, 'error occurred from verification of the order [product type]:', ptype);
+        next();
+      }
+    } else {
+      next();
+    }
+  };
+
+
   Order.post_order_notification = function (data, user_id, fn) {
     if (typeof data === "function") {
       data = undefined;
     }
-    console.log("> ====================================");
     console.log("> order post from confirmation =======");
-
+    const basemap = Order.app.models.basemap;
     /*
-
      console.log(typeof data);
      console.log(user_id);
      console.log(data);
-
      */
-
-    console.log("> ====================================");
     if (pd.l.isArray(data)) {
+      console.log("> ====================================");
       pd.async.eachSeries(data, function (d, next) {
         const _recorded = new Date;
         d.userID = user_id;
-        const mOrder = new Order(d);
-        mOrder.save(function (err, doc) {
-          if (err) {
-            console.log(logTag, "save order error", err);
-            return next(err);
-          } else {
-            console.log(logTag, "save order success", doc.id);
-            return next();
-          }
+        db_worker.getInstanceById(basemap, d.stock_uuid, function (bm_data) {
+          d.sellerId = bm_data.owner;
+          d.buyerId = user_id;
+          const mOrder = new Order(d);
+          console.log("order now");
+          processOrderP1(d.is_live_mode, d.product_type, d.stock_uuid, function () {
+            mOrder.save(function (err, doc) {
+              console.log("save items");
+              if (err) {
+                console.log(logTag, "save order error", err);
+                return next(err);
+              } else {
+                console.log(logTag, "save order success", doc.id);
+                return next();
+              }
+            });
+          });
+        }, function (err) {
+          console.log(logTag, 'error occurred from verification of the order.', err);
+          next();
         });
       }, function (next_done) {
         fn(null, output.outAcknowledgePositive());
@@ -78,7 +118,7 @@ module.exports = function (Order) {
   //https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
 };
 /** sample in here
-
+ product_type: 2 -
 
  [
  {

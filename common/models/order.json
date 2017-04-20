@@ -106,6 +106,14 @@
       "required": false,
       "description": "email related source"
     },
+    "sellerId": {
+      "type": "string",
+      "required": false
+    },
+    "buyerId": {
+      "type": "string",
+      "required": false
+    },
     "is_live_mode": {
       "type": "Boolean",
       "required": true,

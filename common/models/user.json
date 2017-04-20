@@ -132,10 +132,15 @@
       "model": "Contract",
       "foreignKey": "contractId"
     },
-    "order": {
+    "orderSell": {
       "type": "hasMany",
       "model": "Order",
-      "foreignKey": "orderId"
+      "foreignKey": "sellerId"
+    },
+    "orderBuy": {
+      "type": "hasMany",
+      "model": "Order",
+      "foreignKey": "buyerId"
     },
     "accessTokens": {
       "type": "hasMany",
