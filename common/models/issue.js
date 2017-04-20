@@ -23,7 +23,6 @@ const LoopBackContext = require('loopback-context');
  };*/
 module.exports = function (Issue) {
 
-
   Issue.disableRemoteMethodByName('upsert');
   Issue.disableRemoteMethodByName("deleteById");
   Issue.disableRemoteMethodByName("updateAll");

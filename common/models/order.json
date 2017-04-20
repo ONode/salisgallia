@@ -117,6 +117,13 @@
     "is_live_mode": {
       "type": "Boolean",
       "required": true,
+      "default": false,
+      "description": "is that a test mode or the live mode"
+    },
+    "isOrderfilled": {
+      "type": "Boolean",
+      "required": true,
+      "default": false,
       "description": "is that a test mode or the live mode"
     },
     "createtime": {

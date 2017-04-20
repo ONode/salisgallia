@@ -31,17 +31,16 @@ module.exports = function (Order) {
   Order.disableRemoteMethodByName("replaceById");
   Order.disableRemoteMethodByName("upsertWithWhere");
 
-  const processOrderP1 = function (liveMode, ptype, stock_uuid, next) {
-    const basemap = Order.app.models.basemap;
+  const processOrderP1 = function (modelInstance, liveMode, ptype, stock_uuid, next) {
     if (liveMode) {
       console.log("live mode is started now");
       if (ptype == ORIGINAL_WORK || ptype == ORIGINAL_WORK_ANDROID) {
-        db_worker.updateByIdUpdate(basemap, stock_uuid, {
+        db_worker.updateByIdUpdate(modelInstance, stock_uuid, {
           "listing.sold_license": true
         }, next);
       } else if (ptype == LIMITED_COPY_FROM_ORIGINAL) {
         //TODO: sold out with the limited items only
-        db_worker.updateByIdUpdate(basemap, stock_uuid, {
+        db_worker.updateByIdUpdate(modelInstance, stock_uuid, {
           "listing.sold_out": false
         }, next);
       } else {
@@ -52,13 +51,13 @@ module.exports = function (Order) {
       next();
     }
   };
-  
+
   Order.post_order_notification = function (data, user_id, fn) {
     if (typeof data === "function") {
       data = undefined;
     }
     console.log("> order post from confirmation =======");
-    const basemap = Order.app.models.basemap;
+    const basemap = Order.app.models.Basemap;
     if (pd.l.isArray(data)) {
       console.log("> ====================================");
       pd.async.eachSeries(data, function (d, next) {
@@ -69,7 +68,7 @@ module.exports = function (Order) {
           d.buyerId = user_id;
           const mOrder = new Order(d);
           console.log("order now");
-          processOrderP1(d.is_live_mode, d.product_type, d.stock_uuid, function () {
+          processOrderP1(basemap, d.is_live_mode, d.product_type, d.stock_uuid, function () {
             mOrder.save(function (err, doc) {
               console.log("save items");
               if (err) {
@@ -108,8 +107,7 @@ module.exports = function (Order) {
     }
   );
 
-
-  //https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
+//https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
 };
 /** sample in here
  product_type: 2 -
@@ -122,7 +120,7 @@ module.exports = function (Order) {
    "currency_type":"usd",
    "stock_uuid":"324789sdf98sd",
    "device_order_uuid":"234gert3434",
-   "detail_customization":"oisjdfijsio jeiofj32o982\nsfiosr\nodkfoskef",
+   "detail_customization":"oisjdfijsio_eiofj32o982\nsfiosr\nodkfoskef",
    "product_type":2,
    "is_live_mode":"false"
 
