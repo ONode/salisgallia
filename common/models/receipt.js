@@ -73,9 +73,9 @@ module.exports = function (Receipt) {
           if (err) {
             console.error("error", err);
           }
-          console.log(">check receipt object", r);
+          console.log("> check receipt object", r);
           order.findOne({where: {source_network_id: source_n_id}}, function (err, info) {
-            console.log(">check buyer Id now", info);
+            console.log("> check buyer Id now", info);
             Receipt.findById(r.id, function (err, instance_receipt) {
               if (err) {
                 console.error("error", err);
@@ -91,9 +91,9 @@ module.exports = function (Receipt) {
             });
           });
         });
-
     });
   };
+
 
   Receipt.remoteMethod("push_receipt", {
     description: ["Items are charged and full into the bank now."],
@@ -106,4 +106,11 @@ module.exports = function (Receipt) {
     http: {verb: "post", path: "/prp/"}
   });
 
+  Receipt.observe('access', function (ctx, next) {
+    if (!ctx.query.where) {
+      ctx.query.where = {};
+    }
+    ctx.query.order = "updatetime DESC";
+    next()
+  });
 };

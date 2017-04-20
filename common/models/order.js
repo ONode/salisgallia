@@ -107,7 +107,13 @@ module.exports = function (Order) {
     }
   );
 
-
+  Order.observe('access', function (ctx, next) {
+    if (!ctx.query.where) {
+      ctx.query.where = {};
+    }
+    ctx.query.order = "updatetime DESC";
+    next()
+  });
 
 
   //https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
