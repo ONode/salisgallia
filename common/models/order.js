@@ -52,19 +52,13 @@ module.exports = function (Order) {
       next();
     }
   };
-
-
+  
   Order.post_order_notification = function (data, user_id, fn) {
     if (typeof data === "function") {
       data = undefined;
     }
     console.log("> order post from confirmation =======");
     const basemap = Order.app.models.basemap;
-    /*
-     console.log(typeof data);
-     console.log(user_id);
-     console.log(data);
-     */
     if (pd.l.isArray(data)) {
       console.log("> ====================================");
       pd.async.eachSeries(data, function (d, next) {
