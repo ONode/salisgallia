@@ -107,7 +107,10 @@ module.exports = function (Order) {
     }
   );
 
-//https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
+
+
+
+  //https://github.com/strongloop/loopback-example-user-management/blob/master/common/models/user.js
 };
 /** sample in here
  product_type: 2 -
