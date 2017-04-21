@@ -140,8 +140,6 @@
   "hidden": [
     "source_network_id",
     "maker_email",
-    "updatetime",
-    "createtime",
     "is_live_mode"
   ],
   "acls": [
