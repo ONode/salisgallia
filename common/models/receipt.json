@@ -67,13 +67,7 @@
       "required": false
     }
   },
-  "hidden": [
-    "recovery_code",
-    "customer_source_country",
-    "customer_source_email",
-    "customer_source_address",
-    "is_live_mode"
-  ],
+  "hidden": [],
   "acls": [
     {
       "accessType": "*",
