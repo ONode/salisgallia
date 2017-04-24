@@ -186,41 +186,39 @@ module.exports = function (user) {
       /**
        * step2
        */
-
-      var data_confirmation = {
+      const data_confirmation = {
         to: credentials.email,
         from: "no-reply@zyntario.com",
         subject: "Password recovery for missing account.",
         text: message,
         html: ""
       };
-
-      user.app.models.Email.send(data_confirmation,
-        function (err, mail) {
-          console.log("Email Sent!");
-
-          if (_.isError(err)) {
-            cb(err, null);
-            return;
+      try {
+        user.app.models.Email.send(data_confirmation,
+          function (err, mail) {
+            console.log("Email Sent!");
+            if (_.isError(err)) {
+              cb(err, null);
+              return;
+            }
+            console.log(mail);
+            cb(null, result_bool);
           }
-
-          console.log(mail);
-
-          if (mail != null) {
-            db.updateByIdUpdate(user, r.id, {
-              "recovery_code": code
-            }, function (doc) {
-              cb(null, result_bool);
-            });
-          }
-        }
-      );
+        );
+      } catch (e) {
+        console.log("Email Sent, there is a warning from the gmail server. It stops the request from sending it.");
+        cb(null, result_bool);
+      } finally {
+        db.updateByIdUpdate(user, r.id, {
+          "recovery_code": code
+        }, function (doc) {
+          console.log("recovery_code updated!");
+        });
+      }
       /**
        * update
        */
     });
-
-
   };
 
 

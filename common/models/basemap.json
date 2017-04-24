@@ -156,6 +156,15 @@
         "searchable": "Boolean"
       }
     },
+    "shipping": {
+      "type": {
+        "width": "number",
+        "height": "number",
+        "depth": "number",
+        "weight": "number",
+        "gross_weight": "number"
+      }
+    },
     "createtime": {
       "type": "Date",
       "default": "$now",

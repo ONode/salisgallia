@@ -67,7 +67,7 @@ function ensureVariableInteger(context, item) {
 module.exports = function (basemap) {
   basemap.disableRemoteMethodByName('create');
   basemap.disableRemoteMethodByName('upsert');
- // basemap.disableRemoteMethodByName("deleteById");
+  // basemap.disableRemoteMethodByName("deleteById");
   basemap.disableRemoteMethodByName("updateAll");
   basemap.disableRemoteMethodByName("updateAttributes");
   basemap.disableRemoteMethodByName("createChangeStream");
@@ -106,8 +106,8 @@ module.exports = function (basemap) {
      */
     if (!isSingle) {
       if (hasOwnerQuery) {
-        //let str_id = ctx.query.where.owner;
-        //let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
+        // let str_id = ctx.query.where.owner;
+        // let object_id = db_worker.patch_find_ensure_id(basemap, str_id);
         // ctx.query.where['owner'] = str_id;
         if (ownerConfirmed) {
           console.log("test ownership", "it is logined with the owner too");
@@ -332,6 +332,11 @@ module.exports = function (basemap) {
     });
   };
 
+  basemap.easyship = function (id, easy) {
+
+
+  };
+
   basemap.pricemanager = function (stock_id, content, cb) {
     if (typeof content === 'function') {
       content = undefined;
@@ -450,7 +455,6 @@ module.exports = function (basemap) {
     http: {verb: "get", path: "/get_by_owner/:owner"}
   });
 
-
   basemap.remoteMethod("get_lucky_list", {
     description: ["Cron job to the list locally.."],
     accepts: [{
@@ -465,6 +469,22 @@ module.exports = function (basemap) {
     },
     http: {verb: "get", path: "/getlucky/:count"}
   });
+
+  basemap.remoteMethod("shipping_eval_easyship", {
+    description: ["Cron job to the list locally.."],
+    accepts: [{
+      arg: "count",
+      type: "number",
+      http: {source: "path"},
+      required: true,
+      description: "the count number of the random list"
+    }],
+    returns: {
+      arg: "luckylist", type: "array", root: true, description: "Return value"
+    },
+    http: {verb: "post", path: "/shipping_easyship"}
+  });
+
 
   basemap.remoteMethod("pricemanager", {
     description: ["This is the submission of the suggestion price models .."],

@@ -223,6 +223,7 @@ module.exports = {
   loopback: require('loopback')(),
   async: require('async'),
   fs: require('fs'),
+  jwt: require('jwt-simple'),
   rootpath: __parentDir,
   l: _,
   cluster: require('cluster'),
