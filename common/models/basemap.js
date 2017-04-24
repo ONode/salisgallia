@@ -48,7 +48,7 @@ const display_single_owner = {
   printed_shared: true,
   print_limit: true,
   currency: true,
-
+  shipping: true,
   total_zoom_levels: true,
   secret_base_map_file: true,
   image_meta: true,
