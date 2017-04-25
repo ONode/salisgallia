@@ -24,12 +24,12 @@ module.exports = function (Contrax) {
   Contrax.observe('after save', function (ctx, next) {
     if (ctx.instance) {
       const id = ctx.instance.userId;
-      /* ctx.instance.updateAttribute("userId", pre.makeId(Contrax, id), function (callback) {
-       console.log('update after save');
-       next();
-       });*/
+      ctx.instance.updateAttribute("userId", pre.makeId(Contrax, id), function (callback) {
+        console.log('update after save');
+        next();
+      });
       console.log('update after save');
-      next();
+      //next();
     } else {
       next();
     }
@@ -177,7 +177,7 @@ module.exports = function (Contrax) {
    * document
    * status
    * 101 - ready for public sale
-   * 102 - not for public sale
+   * 102 - it is not for public sale
    * 103 - sold not price shall be listed
    * 104 - reserved for private sale during the period
    * 105 - scheduled for private sale

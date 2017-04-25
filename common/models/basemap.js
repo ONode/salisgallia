@@ -7,6 +7,7 @@ const async = require('async');
 const db_worker = require("./../util/db.js");
 const s3thread = require("./../logic/s3upload");
 const s3clean = require("./../logic/s3cleaner");
+const easyship = require("./../logic/easyship");
 const ai_basemap = require("./../ai/basemap_action");
 const loopback = require('loopback');
 const ks_db_price_mgr = require("./../keystoneconnector/pricemanager");
@@ -332,9 +333,8 @@ module.exports = function (basemap) {
     });
   };
 
-  basemap.easyship = function (id, easy) {
-
-
+  basemap.shipping_eval_easyship = function ( cb) {
+    easyship.gettoken(cb);
   };
 
   basemap.pricemanager = function (stock_id, content, cb) {
@@ -472,13 +472,7 @@ module.exports = function (basemap) {
 
   basemap.remoteMethod("shipping_eval_easyship", {
     description: ["Cron job to the list locally.."],
-    accepts: [{
-      arg: "count",
-      type: "number",
-      http: {source: "path"},
-      required: true,
-      description: "the count number of the random list"
-    }],
+    accepts: [],
     returns: {
       arg: "luckylist", type: "array", root: true, description: "Return value"
     },
