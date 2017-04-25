@@ -3,6 +3,7 @@
  */
 "use strict";
 const l = require("lodash");
+const pd = require("./../logic/preS3");
 const ks_db_pricemgr = require("./connector")(process.env.MLAB_M3, "pricings");
 module.exports = {
   /**
@@ -45,5 +46,39 @@ module.exports = {
       function (res) {
         callback(res);
       });
+  },
+  clean_price_record: function (basemap) {
+    ks_db_pricemgr.lbloopget({
+      limit: 50,
+      skip: 0,
+      result: {
+        count: 0,
+        page: 0
+      }
+    }, function (err, results, q) {
+      pd.async.eachSeries(results, function (d, next) {
+        const d_od = d._id;
+        basemap.findOne({where: {id: d_od}}, function (err, d) {
+          if (d === null || d === {}) {
+            ks_db_pricemgr.removeById(d_od, function (e) {
+              console.log("bulk", "remove by id not exists");
+              next();
+            });
+          } else {
+            if (!d.listing.enabled) {
+              ks_db_pricemgr.removeById(d_od, function (e) {
+                console.log("bulk", "removed by enabled - false");
+                next();
+              });
+            } else
+              next();
+          }
+        });
+      }, function (nextDone) {
+        //ks_db_pricemgr.get_collection().bulkWrite(requests, {ordered: true});
+        console.log("bulk", "clean up done");
+      });
+
+    });
   }
 };

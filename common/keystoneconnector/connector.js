@@ -45,6 +45,13 @@ const connection_db = function (db_url_set, model) {
         result_callback(myDocument);
       });
     },
+    removeById: function (ob_idstring, result_callback) {
+      self.Model.remove({
+        _id: ob_idstring
+      }).then(function (count) {
+        result_callback(count);
+      });
+    },
     findByAttrKey: function (keyName, SimpleValue, result_callback) {
       self.Model.find({
         keyName: SimpleValue
@@ -61,6 +68,20 @@ const connection_db = function (db_url_set, model) {
           result_callback(results);
         });
       }
+    },
+    lbloopget: function (Q, result) {
+      const cursor = self.Model.find({}).skip(Q.skip).limit(Q.limit);
+      cursor.count().then(function (count_n) {
+        Q.result.count = count_n;
+        Q.result.page = Math.floor(count_n / Q.limit) + 1;
+        cursor.toArray(function (err, rs) {
+          if (err) {
+            result(err, null);
+            return;
+          }
+          result(null, rs, Q);
+        });
+      });
     },
     lbQueryLooper: function (QueryContext, query_additional_options, resultcb) {
       const Query = QueryContext.req;

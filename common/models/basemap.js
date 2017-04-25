@@ -333,7 +333,7 @@ module.exports = function (basemap) {
     });
   };
 
-  basemap.shipping_eval_easyship = function ( cb) {
+  basemap.shipping_eval_easyship = function (cb) {
     easyship.gettoken(cb);
   };
 
@@ -354,7 +354,18 @@ module.exports = function (basemap) {
       cb(null, doc);
     })
   };
-
+  basemap.price_clean_up = function (cb) {
+    ks_db_price_mgr.clean_price_record(basemap);
+    cb(null, {known: true});
+  };
+  basemap.remoteMethod("price_clean_up", {
+    description: ["Request action for running against the approval of listing process."],
+    accepts: [],
+    returns: {
+      arg: "list_price", type: "object", root: true, description: "Return value"
+    },
+    http: {verb: "get", path: "/admin_price_cln"}
+  });
   basemap.remoteMethod("admin_get_price_list", {
     description: ["Request action for running against the approval of listing process."],
     accepts: [
