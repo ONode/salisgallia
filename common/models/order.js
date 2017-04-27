@@ -64,9 +64,10 @@ module.exports = function (Order) {
         const _recorded = new Date;
         d.userID = user_id;
         db_worker.getInstanceById(basemap, d.stock_uuid, function (bm_data) {
-          d.sellerId = bm_data.owner;
+          d.sellerId = bm_data.owner.toString();
           d.buyerId = user_id;
           const mOrder = new Order(d);
+          console.log("> ============ owner confirmed ================", d);
           console.log("order now");
           processOrderP1(basemap, d.is_live_mode, d.product_type, d.stock_uuid, function () {
             mOrder.save(function (err, doc) {

@@ -7,7 +7,8 @@ const async = require('async');
 const db_worker = require("./../util/db.js");
 const s3thread = require("./../logic/s3upload");
 const s3clean = require("./../logic/s3cleaner");
-const easyship = require("./../logic/easyship");
+const easyship = require("./../shipping/easyship");
+const shippo = require("./../shipping/shippo");
 const ai_basemap = require("./../ai/basemap_action");
 const loopback = require('loopback');
 const ks_db_price_mgr = require("./../keystoneconnector/pricemanager");
@@ -334,7 +335,7 @@ module.exports = function (basemap) {
   };
 
   basemap.shipping_eval_easyship = function (cb) {
-    easyship.gettoken(cb);
+    shippo.gettoken(cb);
   };
 
   basemap.pricemanager = function (stock_id, content, cb) {
