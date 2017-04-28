@@ -26,19 +26,16 @@ function generateAssertion() {
     exp: now + 3600,
     iat: now
   };
-  // const jwt_sim = new jwst();
   return jwtsim.encode(jwt_claim_set, getcert(), 'RS256');
 };
 function generateHeader() {
   // console.log("jwst - generateHeader");
   // new Buffer({"alg": "RS256", "typ": "JWT"}).toString('base64');
   // return eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9
-
   //eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9
   const str = JSON.stringify({"alg": "RS256", "typ": "JWT"});
   const base_64 = Buffer.from(str).toString('base64');
   console.log(str, ">", base_64);
-  //return strg;
   return base_64;
 }
 
@@ -86,7 +83,6 @@ function getToken(cb) {
 function getRate(token, from, to, shipping_info, cb) {
   console.log("token here", token);
   //const formData = new FormData();
-
   const d = {
     "origin_country_alpha2": "CN",
     "origin_postal_code": "518054",
@@ -135,7 +131,6 @@ function getRate(token, from, to, shipping_info, cb) {
     },
     function (err, resraw) {
       if (err || resraw.statusCode !== 200) {
-        console.log('fail to get rate');
         if (resraw) {
           console.log(resraw.request);
           console.log(resraw.body);
