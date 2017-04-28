@@ -334,8 +334,8 @@ module.exports = function (basemap) {
     });
   };
 
-  basemap.shipping_eval_easyship = function (cb) {
-    shippo.gettoken(cb);
+  basemap.shipping_eval_easyship = function (sku, cb) {
+    easyship.check_rate_easyship(basemap, sku, cb);
   };
 
   basemap.pricemanager = function (stock_id, content, cb) {
@@ -484,11 +484,17 @@ module.exports = function (basemap) {
 
   basemap.remoteMethod("shipping_eval_easyship", {
     description: ["Cron job to the list locally.."],
-    accepts: [],
+    accepts: [{
+      arg: "sku",
+      type: "string",
+      http: {source: "path"},
+      required: true,
+      description: "Deal with the price model and its calculations"
+    }],
     returns: {
       arg: "luckylist", type: "array", root: true, description: "Return value"
     },
-    http: {verb: "post", path: "/shipping_easyship"}
+    http: {verb: "post", path: "/shipping/rate/easyship/:sku"}
   });
 
 
