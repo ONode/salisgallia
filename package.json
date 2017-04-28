@@ -26,7 +26,6 @@
     "crypto-js": "^3.1.9-1",
     "dotenv": "2.0.0",
     "express": "4.14.0",
-    "form-data": "^2.1.4",
     "fs-extra": "^0.30.0",
     "gulp-async-func-runner": "https://github.com/Cellarise/gulp-async-func-runner.git",
     "gulp-rimraf": "^0.2.0",
@@ -67,6 +66,7 @@
     "strong-remoting": "3.1.1",
     "strong-wait-till-listening": "git+https://github.com/strongloop/strong-wait-till-listening.git",
     "yocto-jwt": "^2.0.1",
+    "jwt-simple": "^0.5.1",
     "zyn-imagemagick": "git+https://github.com/ONode/node-imagemagick"
   },
   "devDependencies": {

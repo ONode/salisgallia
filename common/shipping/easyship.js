@@ -5,13 +5,11 @@
 const pd = require("./../logic/preS3");
 const express = require("express");
 const jwtsim = require('jwt-simple');
-const base64url = require('base64url');
 const jwst = require("yocto-jwt");
 const timeout = require("req-timeout");
 const request = require("request");
 const fs = require("fs");
 const fetch = require('node-fetch');
-const FormData = require('form-data');
 //https://app.goeasyship.com/tools/api
 //http://docs.easyshipapi.apiary.io/#introduction/generate-the-access-token/step-2.3.-forming-the-signature
 function getcert() {
