@@ -81,7 +81,11 @@ function getToken(cb) {
     });
 }
 function getRate(token, from, to, shipping_info, cb) {
-  console.log("token here", token);
+  if (token == null) {
+    cb("cannot find the token");
+    return;
+  }
+  //console.log("token here", token);
   //const formData = new FormData();
   const d = {
     "origin_country_alpha2": "CN",
@@ -100,26 +104,6 @@ function getRate(token, from, to, shipping_info, cb) {
       "declared_customs_value": "100",
     }]
   };
-  /*
-   for (let k in d) {
-   formData.append(k, d[k]);
-   }
-
-   const request = {
-   method: 'POST',
-   headers: {
-   'Authorization': 'Bearer ' + token,
-   'Content-Type': 'application/x-www-form-urlencoded'
-   },
-   body: formData
-   };
-   fetch('https://api.goeasyship.com/rate/v1/rates', request).then(function (res) {
-   if (res.statusCode !== 200) {
-   console.log('fail to get rate');
-   } else {
-   cb(null, res);
-   }
-   });*/
   request.post({
       headers: {
         'Authorization': 'Bearer ' + token,
@@ -133,7 +117,7 @@ function getRate(token, from, to, shipping_info, cb) {
       if (err || resraw.statusCode !== 200) {
         if (resraw) {
           console.log(resraw.request);
-          console.log(resraw.body);
+          // console.log(resraw.body);
         }
         cb('fail to get rate');
         return;

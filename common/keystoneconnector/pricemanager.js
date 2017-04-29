@@ -34,6 +34,13 @@ module.exports = {
       estprice: parseInt(data.estprice)
     }, cb);
   },
+  listbystate: function (stateName, skip, limit, callback) {
+    ks_db_pricemgr.findFromPagination({
+      state: stateName
+    }, skip, limit, function (res) {
+      callback(res);
+    });
+  },
   list_pending_deals: function (skip, limit, callback) {
     ks_db_pricemgr.findFromPagination({
       state: "pending"

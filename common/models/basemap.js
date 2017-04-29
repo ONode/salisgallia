@@ -303,8 +303,8 @@ module.exports = function (basemap) {
     }
   };
 
-  basemap.admin_get_price_list = function (skip, limit, cb) {
-    ks_db_price_mgr.list_pending_deals(skip, limit, function (res) {
+  basemap.admin_get_price_list = function (skip, limit, status_name, cb) {
+    ks_db_price_mgr.listbystate(status_name, skip, limit, function (res) {
       cb(null, res);
     })
   };
@@ -383,12 +383,19 @@ module.exports = function (basemap) {
         http: {source: "path"},
         required: true,
         description: "pagination limit"
+      },
+      {
+        arg: "status_name",
+        type: "string",
+        http: {source: "path"},
+        required: true,
+        description: "status name"
       }
     ],
     returns: {
       arg: "list_price", type: "object", root: true, description: "Return value"
     },
-    http: {verb: "get", path: "/adminpricelist/:skip/:limit"}
+    http: {verb: "get", path: "/adminpricelist/:skip/:limit/:status_name"}
   });
   basemap.remoteMethod("request_action", {
     description: ["Request action for running against the approval of listing process."],
