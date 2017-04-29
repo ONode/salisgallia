@@ -324,7 +324,7 @@ module.exports = function (basemap) {
               "license_price": updated_doc_.estlicenseprice,
               "print_limit": print_limit_,
               "currency": updated_doc_.currency,
-              "listing.sold_out": unit == 0,
+              "listing.sold_out": print_limit_ == 0,
               "listing.sold_license": false,
               "listing.monetize": true,
               "listing.searchable": true
