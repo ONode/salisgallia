@@ -31,7 +31,8 @@ module.exports = {
     ks_db_pricemgr.updateOnly(sku, {
       state: data.state,
       estlicenseprice: parseInt(data.estlicenseprice),
-      estprice: parseInt(data.estprice)
+      estprice: parseInt(data.estprice),
+      currency: data.currency
     }, cb);
   },
   listbystate: function (stateName, skip, limit, callback) {

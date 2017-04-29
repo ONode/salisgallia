@@ -312,25 +312,29 @@ module.exports = function (basemap) {
   basemap.adminApprovePrice = function (sku, data, cb) {
     console.log("adminApprovePrice", data);
     ks_db_price_mgr.adminStatus(sku, data, function (res) {
-      ks_db_price_mgr.get_price(sku, function (docc) {
+      ks_db_price_mgr.get_price(sku, function (updated_doc_) {
         //console.log("docc object", docc);
-        basemap.findOne({where: {id: sku}}, function (err, doc) {
-          //console.log("find one object", doc);
-          const unit = parseInt(docc.print_limit);
-          doc.updateAttributes({
-            "price": docc.estprice,
-            "baseprice": docc.estprice,
-            "license_price": docc.estlicenseprice,
-            "print_limit": unit,
-            "currency": doc.currency,
-            "listing.sold_out": unit == 0,
-            "listing.sold_license": false,
-            "listing.monetize": true,
-            "listing.searchable": true
-          }, function (err, r) {
-            cb(null, r);
+        if (data.state == 'proved_publish') {
+          basemap.findOne({where: {id: sku}}, function (err, doc_basemap_) {
+            //console.log("check data from pricings collection", updated_doc_);
+            const print_limit_ = parseInt(updated_doc_.print_limit);
+            doc_basemap_.updateAttributes({
+              "price": updated_doc_.estprice,
+              "baseprice": updated_doc_.estprice,
+              "license_price": updated_doc_.estlicenseprice,
+              "print_limit": print_limit_,
+              "currency": updated_doc_.currency,
+              "listing.sold_out": unit == 0,
+              "listing.sold_license": false,
+              "listing.monetize": true,
+              "listing.searchable": true
+            }, function (err, r) {
+              cb(null, result_bool);
+            });
           });
-        });
+        } else {
+          cb(null, result_bool);
+        }
       });
     });
   };

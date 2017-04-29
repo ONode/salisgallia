@@ -17,7 +17,6 @@
     "app-root-path": "2.0.1",
     "async": "git+https://github.com/caolan/async.git",
     "aws-sdk": "git+https://github.com/aws/aws-sdk-js.git",
-    "base64url": "^2.0.0",
     "body-parser": "^1.15.2",
     "colors-palette": "0.0.4",
     "compression": "git+https://github.com/expressjs/compression.git",
