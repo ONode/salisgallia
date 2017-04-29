@@ -322,6 +322,7 @@ module.exports = function (basemap) {
             "baseprice": docc.estprice,
             "license_price": docc.estlicenseprice,
             "print_limit": unit,
+            "currency": doc.currency,
             "listing.sold_out": unit == 0,
             "listing.sold_license": false,
             "listing.monetize": true,

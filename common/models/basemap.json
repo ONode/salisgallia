@@ -103,7 +103,7 @@
       "type": "number"
     },
     "currency": {
-      "default": "HKD",
+      "default": "USD",
       "type": "string",
       "required": true
     },
