@@ -19,8 +19,7 @@ angular.module('app')
         var conp2 = 'rawgit';
         var conp3 = 'https://cdn.' + conp2 + '.com/GDxU/';
 
-        var default_path1 = "http://dobsh22.s3.amazonaws.com/basemap/";
-        var default_path2 = "http://xboxdoc.s3.amazonaws.com/basemap/";
+        var default_path1 = "http://s3.heskeyo.com/basemap/";
 
         setInterval(function () {
           jQuery('.star-1').fadeOut(150).delay(2000).fadeIn(300).fadeOut(150).delay(1254);
