@@ -12,6 +12,25 @@
     },
     "facebook": {
       "type": {
+        "followers": "number",
+        "userid": "string",
+        "token": "string",
+        "expire": "Date",
+        "email": "string"
+      }
+    },
+    "instagram": {
+      "type": {
+        "followers": "number",
+        "userid": "string",
+        "token": "string",
+        "expire": "Date",
+        "email": "string"
+      }
+    },
+    "snapchat": {
+      "type": {
+        "followers": "number",
         "userid": "string",
         "token": "string",
         "expire": "Date",
@@ -213,6 +232,20 @@
       "principalId": "$everyone",
       "permission": "ALLOW",
       "property": "fb_login_call"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "ig_login_call"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "ig_callback"
     },
     {
       "accessType": "EXECUTE",

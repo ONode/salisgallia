@@ -60,6 +60,7 @@ module.exports = function (Receipt) {
         return cb(err);
       }
       const order = Receipt.app.models.Order;
+      const Basemap = Receipt.app.models.Basemap;
       const source_n_id = r.source_rec_id;
       console.log("list of orders for seller ID");
       /**
@@ -71,22 +72,39 @@ module.exports = function (Receipt) {
         {isOrderfilled: true},
         function (err, count) {
           if (err) {
-            console.error("error", err);
+            console.log("error", err);
           }
           console.log("> check receipt object", r);
-          order.findOne({where: {source_network_id: source_n_id}}, function (err, info) {
-            console.log("> check buyer Id now", info);
-            Receipt.findById(r.id, function (err, instance_receipt) {
+          order.findOne({where: {source_network_id: source_n_id}}, function (err, order_info) {
+            console.log("> check buyer Id now", order_info);
+            Receipt.findById(r.id, function (err, ins_receipt) {
               if (err) {
-                console.error("error", err);
+                console.log("error", err);
               } else {
-                instance_receipt.updateAttributes({buyerId: info.buyerId}, function (err, item) {
+
+                Basemap.findOne({
+                  id: order_info.stock_uuid
+                }, function (err, basemap_info) {
+
+
+                  basemap_info.updateAttributes({"listing.sold_license": true}, function (err, count) {
+                    if (err) {
+                      console.log("error", err);
+                    }
+                    console.log("info sold license update.");
+                  });
+                });
+
+
+                ins_receipt.updateAttributes({buyerId: order_info.buyerId}, function (err, count) {
                   if (err) {
-                    console.error("error", err);
+                    console.log("error", err);
                   }
                   console.log("info buyer is updated.");
                   cb(null, pre.outAcknowledgePositive());
                 });
+
+
               }
             });
           });
