@@ -24,12 +24,18 @@ module.exports = function (app) {
   app.post("/api/basemapnonstd/:owner/", function (req, res) {
     makerMap.uploadRegular(app, req, res);
   });
+  app.post("/api/bmreplacestd/:owner/:sku", function (req, res) {
+    makerMap.uploadRegular(app, req, res);
+  });
+  app.post("/api/bmreplacetil/:owner/:sku", function (req, res) {
+    makerMap.uploadTiling(app, req, res);
+  });
   app.post("/api/basemap_std_test_upload/", function (req, res) {
     makerMap.uploadRegularTest(app, req, res);
   });
   app.get("/api/config/", function (req, res) {
-    const  production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
-    const  development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";
+    const production = "https://cdn.rawgit.com/GDxU/gallerygo/master/configurations.json";
+    const development = "https://rawgit.com/GDxU/gallerygo/master/configurations.json";
     request({url: development, json: true}, function (error, response, configuration_body) {
       if (_.isError(error)) {
         res.json({});
@@ -42,11 +48,11 @@ module.exports = function (app) {
   app.use("/static", express.static(__parentDir + "/storage/tmp/"));
   console.log("> server static file path is created and started from http://{domain}/static");
   app.use("/removeallxxx", function (req, res) {
-    const  Basemap_model = app.models.Basemap;
+    const Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
   app.use("/first_install", function (req, res) {
-    const  Basemap_model = app.models.Basemap;
+    const Basemap_model = app.models.Basemap;
     clearall(Basemap_model, req, res);
   });
   app.use("/.well-known/acme-challenge/VoIsK8u8Q1UtO5ngPbFOytwGgL_TwGS4fstTx7Sjd3c", function (req, res) {

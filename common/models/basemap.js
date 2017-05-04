@@ -151,32 +151,27 @@ module.exports = function (basemap) {
 
   basemap.observe('before save', function updateTimestamp(ctx, next) {
     const currentLoginUserId = ctx.options.currentUserId;
-    console.log("checkLogin", currentLoginUserId);
-
+    //console.log("> checkLogin", currentLoginUserId);
     if (ctx.instance) {
       /*  if (!_.isUndefined(ctx.instance.owner)) {
        const toString = new String(ctx.instance.owner);
        ctx.instance.owner = fixId.toObject(toString);
        }*/
-
-      console.log("check data", ctx.instance);
-
+      //console.log("check data checkLogin", ctx.instance);
       const owner = ctx.instance.owner;
       if (owner && typeof (owner) == 'string') {
         console.log("basemap owner id", typeof (owner), "need to be converted.");
         ctx.instance.owner = db_worker.patch_find_ensure_id(basemap, owner);
       }
-
       ctx.instance.updatetime = new Date();
-      console.log("with instance");
+      // console.log("with instance");
     } else {
       /* if (!_.isUndefined(ctx.data.owner)) {
        const toString = new String(ctx.data.owner);
        ctx.data.owner = fixId.toObject(toString);
        }*/
-
       ctx.data.updatetime = new Date();
-      console.log("without instance");
+      // console.log("without instance");
     }
     next();
   });
@@ -372,6 +367,7 @@ module.exports = function (basemap) {
     },
     http: {verb: "get", path: "/admin_price_cln"}
   });
+
   basemap.remoteMethod("admin_get_price_list", {
     description: ["Request action for running against the approval of listing process."],
     accepts: [

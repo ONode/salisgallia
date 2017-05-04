@@ -26,7 +26,60 @@ const
 
   ;
 
+const setuploadReplace = function (existing_doc, callback_err) {
+  const folder_base_name = existing_doc.folder_base_name;
+  const secret_base_map_file = existing_doc.secret_base_map_file;
+  const rename_file = existing_doc.rename_file;
+  const mid_size = existing_doc.mid_size;
+  const local_path = existing_doc.folder_path;
+  const _storage = uploaderMU.diskStorage({
+    destination: function (req, file, cb) {
+      const folder_tmp = base_folder + folder_base_name;
+      fse.mkdirs(folder_tmp, function (err) {
+        if (_.isError(err)) {
+          return callback_err(err);
+        } else {
+          fse.mkdirsSync(base_folder_process);
+          console.log(logTag, '==================================');
+          console.log(logTag, 'create folder that is not existed!');
+          console.log(logTag, folder_tmp);
+          console.log(logTag, base_folder_process);
+          console.log(logTag, '==================================');
+          cb(null, folder_tmp);
+        }
+      });
+    },
+    filename: function (req, file, cb) {
+      cb(null, secret_base_map_file);
+    }
+  });
 
+
+  return uploaderMU({
+    fileFilter: function fileFilter(req, file, cb) {
+      // The function should call `cb` with a boolean
+      // to indicate if the file should be accepted
+      // To reject this file pass `false`, like so:
+      // cb(null, false)
+      // To accept the file pass `true`, like so:
+      // cb(null, true)
+      // You can always pass an error if something goes wrong:
+      console.log(logTag, file.mimetype);
+      const okay_format = 'image/jpeg';
+      if (file.mimetype == okay_format) {
+        cb(null, true);
+      } else {
+        const str = 'Cannot accept this upload. I don\'t have a clue!';
+        console.log(logTag, str);
+        cb(new Error(str));
+      }
+    },
+    storage: _storage,
+    //dest: __parentDir + '/tmp/',
+    limits: {fileSize: 104857600, files: 1}
+  }).single(upload_file_field);
+
+};
 const setupUploader = function (_data_pre, extraOperationFromAfterNameDefined, callback_err) {
   let _baseFolderName = "";
   const _storage = uploaderMU.diskStorage({
@@ -143,6 +196,7 @@ module.exports = {
   s3thread: uploaderS32,
   basemapInfo: basemapInfo,
   setupUploader: setupUploader,
+  setUploadRepl: setuploadReplace,
   colorPalGen: colorPaletteGenerator
 
 };
