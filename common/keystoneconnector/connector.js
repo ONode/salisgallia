@@ -62,6 +62,11 @@ const connection_db = function (db_url_set, model) {
     },
     findFromPagination: function (_where, _skip, _limit, result_callback) {
       const cursor = self.Model.find(_where).skip(_skip).limit(_limit);
+
+      /* const cursor = self.Model.find(_where).skip(_skip).limit(_limit).sort({
+       id:-1
+       });
+       */
       const my_doc = cursor.hasNext() ? cursor.next() : null;
       if (my_doc) {
         cursor.toArray(function (err, results) {

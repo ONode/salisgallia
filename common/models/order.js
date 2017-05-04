@@ -125,10 +125,10 @@ module.exports = function (Order) {
  [
  {
    "source_network_id":"ch_foeni324",
-   "amount_in_cent":389283,
+   "amount_in_cent":38928300,
    "unit":2,
    "currency_type":"usd",
-   "stock_uuid":"324789sdf98sd",
+   "stock_uuid":"58febd95315e0b00046522cf",
    "device_order_uuid":"234gert3434",
    "detail_customization":"oisjdfijsio_eiofj32o982\nsfiosr\nodkfoskef",
    "product_type":2,

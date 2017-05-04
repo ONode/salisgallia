@@ -44,7 +44,7 @@ module.exports = function (Receipt) {
     const doc = event_json.data.object;
     console.log("> post receipt review");
     // console.log(data);
-    Receipt.create({
+    const data_pack = {
       "source_network_id": event_json.request,
       "source_rec_id": doc.id == undefined ? "" : doc.id,
       "amount_in_cent": doc.amount,
@@ -55,7 +55,8 @@ module.exports = function (Receipt) {
       "customer_source_email": doc.receipt_email == undefined ? "" : doc.receipt_email,
       "is_live_mode": event_json.livemode,
       "createtime": doc.created
-    }, function (err, r) {
+    };
+    Receipt.create(data_pack, function (err, r) {
       if (_.isError(err)) {
         return cb(err);
       }
@@ -76,37 +77,42 @@ module.exports = function (Receipt) {
           }
           console.log("> check receipt object", r);
           order.findOne({where: {source_network_id: source_n_id}}, function (err, order_info) {
-            console.log("> check buyer Id now", order_info);
-            Receipt.findById(r.id, function (err, ins_receipt) {
-              if (err) {
-                console.log("error", err);
-              } else {
 
-                Basemap.findOne({
-                  id: order_info.stock_uuid
-                }, function (err, basemap_info) {
+            if (order_info == null) {
+              console.log("> skip update buyer info of null found from order detail.");
+              cb(null, pre.outAcknowledgePositive());
+            } else {
+              console.log("> check buyer Id now", order_info);
+              Receipt.findById(r.id, function (err, ins_receipt) {
+                if (err) {
+                  console.log("error", err);
+                } else {
 
+                  Basemap.findOne({
+                    id: order_info.stock_uuid
+                  }, function (err, basemap_info) {
 
-                  basemap_info.updateAttributes({"listing.sold_license": true}, function (err, count) {
+                    basemap_info.updateAttributes({"listing.sold_license": true}, function (err, count) {
+                      if (err) {
+                        console.log("error", err);
+                      }
+                      console.log("info sold license update.");
+                    });
+                  });
+
+                  ins_receipt.updateAttributes({buyerId: order_info.buyerId}, function (err, count) {
                     if (err) {
                       console.log("error", err);
                     }
-                    console.log("info sold license update.");
+                    console.log("info buyer is updated.");
+                    cb(null, pre.outAcknowledgePositive());
                   });
-                });
+
+                }
+              });
+            }
 
 
-                ins_receipt.updateAttributes({buyerId: order_info.buyerId}, function (err, count) {
-                  if (err) {
-                    console.log("error", err);
-                  }
-                  console.log("info buyer is updated.");
-                  cb(null, pre.outAcknowledgePositive());
-                });
-
-
-              }
-            });
           });
         });
     });
