@@ -29,7 +29,7 @@
     "gulp-async-func-runner": "https://github.com/Cellarise/gulp-async-func-runner.git",
     "gulp-rimraf": "^0.2.0",
     "lodash": "4.17.4",
-    "loopback": "3.6.0",
+    "loopback": "3.8.0",
     "loopback-boot": "git+https://github.com/strongloop/loopback-boot.git",
     "loopback-component-explorer": "git+https://github.com/strongloop/loopback-component-explorer.git",
     "loopback-component-push": "3.0.0",

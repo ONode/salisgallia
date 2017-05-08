@@ -8,8 +8,8 @@ const logTag = "> basemap.js model";
 const ks_db_artist = require("./../keystoneconnector/artistmanager");
 const remotepagination = require("./../../server/middleware/pagination");
 module.exports = function (artist) {
-  artist.disableRemoteMethodByName('create');
-  artist.disableRemoteMethodByName('upsert');
+  //artist.disableRemoteMethodByName('create');
+ // artist.disableRemoteMethodByName('upsert');
   artist.disableRemoteMethodByName("deleteById");
   artist.disableRemoteMethodByName("updateAll");
   artist.disableRemoteMethodByName("updateAttributes");
@@ -19,6 +19,14 @@ module.exports = function (artist) {
   artist.disableRemoteMethodByName("replaceById");
   artist.disableRemoteMethodByName("upsertWithWhere");
 
+  artist.observe('before save', function updateTimestamp(ctx, next) {
+    if (ctx.instance) {
+      ctx.instance.updated = new Date();
+    } else {
+      ctx.data.updated = new Date();
+    }
+    next();
+  });
   artist.create_artist = function (data, user_id, fn) {
     if (typeof data === "function") {
       data = undefined;
