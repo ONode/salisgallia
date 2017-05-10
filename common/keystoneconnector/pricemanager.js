@@ -56,9 +56,8 @@ module.exports = {
       });
   },
   clean_price_record: function (basemap) {
+    let took_actions = 0;
     const on_result = function (err, results, q) {
-      console.log("price q", q);
-      let took_actions = 0;
       pd.async.eachSeries(results, function (d, next) {
         const d_od = d._id;
         basemap.findOne({where: {id: d_od}}, function (err, d) {

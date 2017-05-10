@@ -305,7 +305,7 @@ module.exports = function (basemap) {
   };
 
   basemap.adminApprovePrice = function (sku, data, cb) {
-    console.log("adminApprovePrice", data);
+    //console.log("adminApprovePrice", data);
     ks_db_price_mgr.adminStatus(sku, data, function (res) {
       ks_db_price_mgr.get_price(sku, function (updated_doc_) {
         //console.log("docc object", docc);
