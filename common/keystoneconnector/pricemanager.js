@@ -56,11 +56,13 @@ module.exports = {
       });
   },
   clean_price_record: function (basemap) {
-    let took_actions = 0;
+    let took_actions = 0, page = 0, results_count = 0;
     const on_result = function (err, results, q) {
+      results_count = results.length;
       pd.async.eachSeries(results, function (d, next) {
         const d_od = d._id;
         basemap.findOne({where: {id: d_od}}, function (err, d) {
+          //console.log("bulkcheck", d);
           if (d === null || d === {}) {
             ks_db_pricemgr.removeById(d_od, function (e) {
               console.log("bulk", "remove by id not exists");
@@ -74,14 +76,16 @@ module.exports = {
                 took_actions++;
                 next();
               });
-            } else
+            } else {
               next();
+            }
           }
         });
       }, function (nextDone) {
-        const isLastPage = q.limit > q.result.count;
-        const skip_start = q.limit - took_actions;
-        console.log("bulk", "isLastPage", isLastPage);
+        page++;
+        const isLastPage = q.limit > results_count;
+        const skip_start = page * q.limit - took_actions;
+        console.log("clean works done", skip_start, isLastPage);
         if (!isLastPage) {
           ks_db_pricemgr.lbloopget({
             limit: 50,

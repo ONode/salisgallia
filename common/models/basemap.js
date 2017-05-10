@@ -131,7 +131,7 @@ module.exports = function (basemap) {
     } else {
       ctx.query.fields = display_single_owner;
     }
-    console.log("listing", "query starts================");
+    // console.log("listing", "query starts================");
     ctx.query.order = "createtime DESC";
     next()
   });
