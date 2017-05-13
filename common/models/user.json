@@ -102,6 +102,11 @@
       "required": false,
       "description": "country key to show"
     },
+    "device_country": {
+      "type": "string",
+      "required": false,
+      "description": "country key to be located"
+    },
     "onesignal": {
       "type": "string",
       "required": false,
