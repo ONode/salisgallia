@@ -50,7 +50,12 @@ module.exports = function (Contrax) {
   Contrax.sell_ready = function (user_id, cb) {
     contract_process.approved_can_sell_now(Contrax, user_id, cb);
   };
-
+  /**
+   * 1 - pending
+   * 2 - approved
+   * @param user_id
+   * @param cb
+   */
   Contrax.licensed = function (user_id, cb) {
     Contrax.find({where: {userId: user_id}, limit: 20, order: "createtime DESC"}, (err, list) => {
       if (err) {
@@ -59,7 +64,7 @@ module.exports = function (Contrax) {
       }
       let triggered = false;
       pre.l.forEach(list, function (item, i) {
-        if (item.status && item.status == 1) {
+        if (item.status && item.status == 2) {
           triggered = true;
           cb(null, {
             licensed: true
