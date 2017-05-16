@@ -78,21 +78,26 @@ module.exports = function (Pl) {
     //  console.log("--> add_relation_view this", _src_bundle);
     Pl.find({where: _src_bundle}, function (err, rec) {
       if (err) {
-        console.log("--> error from this");
+        console.log("--> find from table is error --- ", err);
         cb(null, result_bool);
       } else {
         // console.log("-->result ", rec);
         if (rec.length === 0) {
           //   console.log("--> new from this");
-          Pl.create(_src_bundle, function (err, rec) {
+          Pl.create(_src_bundle, function (err1, rec) {
+            if(err){
+              console.log("--> create from table is error --- ", err1);
+            }
             cb(null, result_bool);
           });
         } else {
           //console.log("--> items:: ");
           const item = rec[0],
             new_count = parseInt(item.count) > 0 ? parseInt(item.count) + 1 : 1;
-          item.updateAttributes({count: new_count}, function (err, counts) {
-            //  console.log("--> update action counts ::", new_count);
+          item.updateAttributes({count: new_count}, function (err3, counts) {
+            if(err){
+              console.log("--> updateAttributes from table is error --- ", err3);
+            }
             cb(null, result_bool)
           });
         }
