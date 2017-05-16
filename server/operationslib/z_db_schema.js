@@ -3,6 +3,9 @@
  */
 "use strict";
 //setup postsql table
+const sql = `CREATE TEMPORARY TABLE IF NOT EXISTS mytable
+(id int(11) NOT NULL, PRIMARY KEY (id)) ENGINE=MyISAM;
+INSERT IGNORE INTO mytable SELECT id FROM table WHERE xyz;`;
 /**
  * Warning!!!!
  * will drop the table for the start!!!

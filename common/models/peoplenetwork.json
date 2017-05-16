@@ -1,5 +1,6 @@
 {
   "name": "PeopleNetwork",
+
   "options": {
     "idInjection": false,
     "postgresql": {
@@ -9,7 +10,7 @@
   },
   "properties": {
     "id": {
-      "type": "string",
+      "type": "String",
       "length": 64,
       "id": true,
       "precision": null,
@@ -88,7 +89,6 @@
     },
     "createtime": {
       "type": "Date",
-      "default": "$now",
       "required": false
     },
     "updatetime": {

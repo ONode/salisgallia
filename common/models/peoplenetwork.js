@@ -84,20 +84,28 @@ module.exports = function (Pl) {
         // console.log("-->result ", rec);
         if (rec.length === 0) {
           //   console.log("--> new from this");
-          Pl.create(_src_bundle, function (err1, rec) {
-            if(err){
+          const _time = {
+            createtime: Date()
+          };
+          Pl.create(Object.assign(_src_bundle, _time), function (err1, rec) {
+            if (err) {
               console.log("--> create from table is error --- ", err1);
             }
+            console.log("success - create row", rec);
             cb(null, result_bool);
           });
         } else {
           //console.log("--> items:: ");
           const item = rec[0],
             new_count = parseInt(item.count) > 0 ? parseInt(item.count) + 1 : 1;
-          item.updateAttributes({count: new_count}, function (err3, counts) {
-            if(err){
+          item.updateAttributes({
+            count: new_count,
+            updatetime: Date()
+          }, function (err3, updated_row) {
+            if (err) {
               console.log("--> updateAttributes from table is error --- ", err3);
             }
+            console.log("success - update row", updated_row);
             cb(null, result_bool)
           });
         }
