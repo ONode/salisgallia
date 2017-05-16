@@ -1,0 +1,111 @@
+{
+  "name": "PeopleNetwork",
+  "options": {
+    "idInjection": false,
+    "postgresql": {
+      "schema": "people_net",
+      "table": "pl_network"
+    }
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "length": 64,
+      "id": true,
+      "precision": null,
+      "scale": null,
+      "required": false,
+      "postgresql": {
+        "columnName": "id",
+        "dataType": "CHARACTER VARYING",
+        "dataLength": 64,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "NO"
+      }
+    },
+    "userFrom": {
+      "type": "String",
+      "required": false,
+      "length": 24,
+      "precision": null,
+      "scale": null,
+      "id": 1,
+      "postgresql": {
+        "columnName": "user_from",
+        "dataType": "CHARACTER VARYING",
+        "dataLength": 24,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      }
+    },
+    "subjectTo": {
+      "type": "String",
+      "required": false,
+      "length": 24,
+      "precision": null,
+      "scale": null,
+      "id": 1,
+      "postgresql": {
+        "columnName": "user_to",
+        "dataType": "CHARACTER VARYING",
+        "dataLength": 24,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "YES"
+      }
+    },
+    "actionType": {
+      "type": "Number",
+      "required": false,
+      "length": 10,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "action_type",
+        "dataType": "INTEGER",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      }
+    },
+    "count": {
+      "type": "Number",
+      "required": false,
+      "length": 10,
+      "precision": 32,
+      "scale": 0,
+      "postgresql": {
+        "columnName": "count",
+        "dataType": "INTEGER",
+        "dataLength": null,
+        "dataPrecision": 32,
+        "dataScale": 0,
+        "nullable": "YES"
+      }
+    },
+    "createtime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    },
+    "updatetime": {
+      "type": "Date",
+      "default": "$now",
+      "required": false
+    }
+  },
+  "validations": [],
+  "relations": {
+  },
+  "acls": [
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    }
+  ]
+}

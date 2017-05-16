@@ -72,5 +72,9 @@
   "Container": {
     "dataSource": "storage",
     "public": true
+  },
+  "PeopleNetwork": {
+    "dataSource": "psql_pl_re",
+    "public": true
   }
 }

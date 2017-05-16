@@ -56,6 +56,15 @@ function getDB() {
           }
         }
       ]
+    },
+    "psql_pl_re":{
+      "name": "psql_pl_re",
+      "connector": "postgresql",
+      "port": 5432,
+      "database": "uoridjav",
+      "password": "E56D4Y_GzxSSC-inAKobOsF2KZsTeutk",
+      "user": "uoridjav",
+      "url": process.env.POSTGRESQL_PL_REL
     }
   };
 

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = getDB();
 function getDB() {
-  const  db = {
+  const db = {
     "db": {
       "name": "db",
       "connector": "memory"
@@ -42,7 +42,6 @@ function getDB() {
       "connector": "mongodb",
       "url": process.env.MLAB_M3
     },
-
     "gmail_data_source": {
       "connector": "mail",
       "transports": [
@@ -58,9 +57,13 @@ function getDB() {
           }
         }
       ]
+    },
+    "psql_pl_re": {
+      "name": "psql_pl_re",
+      "connector": "postgresql",
+      "url": process.env.POSTGRESQL_PL_REL
     }
   };
-
   console.log('using mongodb');
   return db;
 }
