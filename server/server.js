@@ -10,6 +10,8 @@ if (process.env.S3_ACCESS_KEY_ID == undefined) {
   console.log('Now search for .env file');
   require('dotenv').config();
 }
+console.log(process.platform, process.arch, process.versions.node)
+console.log('env config', process.env.NODE_ENV);
 //const  LoopBackContext = require('loopback-context');
 //app.use(loopback.token({model: app.models.accessToken}));
 /*

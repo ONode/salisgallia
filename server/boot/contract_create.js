@@ -3,7 +3,6 @@ const output = require('./../../common/util/outputjson');
 const contract_process = require("./../../common/logic/contract_process");
 module.exports = function (app) {
   //app.use(loopback.token());
-  console.log("contract process app");
   app.post("/api/contracts_static/construct/:userId",
     function (req, res) {
       contract_process.process(
@@ -18,4 +17,6 @@ module.exports = function (app) {
           return output.outSimpleAcknowledge(res);
         });
     });
+
+  console.log("Contract Process App");
 };

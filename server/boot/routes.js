@@ -65,6 +65,4 @@ module.exports = function (app) {
     res.end();
   });
   console.log("> remove all uploaded tmp files with http://{domain}/removeallxxx");
-
-
 };

@@ -16,7 +16,6 @@ module.exports = function (app) {
   let Basemap = app.loopback.getModel('Basemap');
   console.log(Basemap.settings.acls);
   let version = app.loopback.version;
-
   console.log('LoopBack system is now running at v%s and it is now running the application with the configuration of [[%s]]',
     version, process.env.NODE_ENV);
 };

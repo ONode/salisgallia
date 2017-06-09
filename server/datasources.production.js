@@ -1,28 +1,9 @@
 "use strict";
-module.exports = getDB();
 function getDB() {
-  const db = {
+  const ____db = {
     "db": {
       "name": "db",
       "connector": "memory"
-    },
-    "mysqlDs": {
-      "host": "demo.strongloop.com",
-      "port": 3306,
-      "database": "getting_started_intermediate",
-      "username": "demo",
-      "password": "L00pBack",
-      "name": "mysqlDs",
-      "connector": "mysql"
-    },
-    "mongoDs": {
-      "host": "demo.strongloop.com",
-      "port": 27017,
-      "database": "getting_started_intermediate",
-      "username": "demo",
-      "password": "L00pBack",
-      "name": "mongoDs",
-      "connector": "mongodb"
     },
     "storage": {
       "name": "storage",
@@ -31,18 +12,22 @@ function getDB() {
       "root": "./storage/tmp/profile"
     },
     "rocket_us_east": {
+      "name": "rocket_us_east",
       "connector": "mongodb",
       "url": process.env.ROCKET_EAST
     },
     "mlab_test_db": {
+      "name": "mlab_test_db",
       "connector": "mongodb",
       "url": process.env.MLAB_M1
     },
     "mlabKSdb": {
+      "name": "mlabKSdb",
       "connector": "mongodb",
       "url": process.env.MLAB_M3
     },
     "gmail_data_source": {
+      "name": "gmail_data_source",
       "connector": "mail",
       "transports": [
         {
@@ -64,6 +49,7 @@ function getDB() {
       "url": process.env.POSTGRESQL_PL_REL
     }
   };
-  console.log('using mongodb');
-  return db;
+  console.log('using production datasource');
+  return ____db;
 }
+module.exports = getDB();

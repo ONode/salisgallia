@@ -1,8 +1,5 @@
 "use strict";
 module.exports = function (app) {
-
-
-  return;
   if (process.env.NODE_ENV == "tst") {
 
     const  User = app.models.user;

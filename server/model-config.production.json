@@ -4,11 +4,11 @@
       "../common/models"
     ],
     "mixins": [
+      "./mixins",
+      "../common/mixins",
       "loopback/common/mixins",
       "loopback/server/mixins",
-      "../node_modules/loopback-ds-timestamp-mixin",
-      "../common/mixins",
-      "./mixins"
+      "../node_modules/loopback-ds-timestamp-mixin"
     ]
   },
   "AccessToken": {
@@ -69,12 +69,13 @@
     },
     "public": true
   },
-  "Container": {
-    "dataSource": "storage",
-    "public": true
-  },
   "PeopleNetwork": {
     "dataSource": "psql_pl_re",
     "public": true
+  },
+  "Container": {
+    "dataSource": "storage",
+    "public": true
   }
+
 }
